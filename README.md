@@ -36,7 +36,7 @@ Notre objectif? Créer une application intuitive et dynamique qui permettra aux 
 
 * phpMyAdmin
 
-### Base de données
+#### Base de données
 
 * MySQL
 
