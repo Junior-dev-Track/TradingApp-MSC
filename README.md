@@ -1,4 +1,4 @@
-#Trading app
+# Trading app
 
 ## Notre Objectif
 
