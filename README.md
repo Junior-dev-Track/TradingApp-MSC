@@ -27,7 +27,7 @@ Notre objectif? Créer une application intuitive et dynamique qui permettra aux 
 
 #### Framework
 
-* Laravel : 
+* Laravel 
 
 ## Conclusion
 
