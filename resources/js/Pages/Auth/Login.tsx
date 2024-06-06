@@ -60,6 +60,7 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="current-password"
+                        placeholder='minimum 8 characters'
                         onChange={(e) => setData('password', e.target.value)}
                     />
 

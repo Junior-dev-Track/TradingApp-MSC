@@ -60,8 +60,8 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                     <Dropdown.Content>
                                         <div className="py-1">
                                             <div className="font-medium text-base text-gray-800">{user.first_name} {user.last_name}</div>
-                                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
-                                            <div className="font-medium text-sm text-gray-500">{user.address}</div> 
+                                            {/**pour rajouter l'imail où il y'a le profil et logout <div className="font-medium text-sm text-gray-500">{user.email}</div>*/}
+                                            <div className="font-medium text-sm text-gray-500">{user.address}</div>
                                         </div>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
