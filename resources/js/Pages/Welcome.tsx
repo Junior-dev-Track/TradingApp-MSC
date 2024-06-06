@@ -2,7 +2,8 @@ import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
 export default function Welcome({
-    auth
+    auth,
+
 }: PageProps<{}>) {
     return (
         <>
