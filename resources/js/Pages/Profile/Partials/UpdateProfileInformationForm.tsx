@@ -18,15 +18,21 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage<PageProps>().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-        });
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        address: user.address,
+        email: user.email,
+    });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+
+        // Validation simple pour vérifier que l'adresse n'est pas vide et a une longueur minimale raisonnable
+        if (!data.address.trim() || data.address.trim().length < 10) {
+            alert("Please enter a more complete address."); // Utilisez une manière plus intégrée de montrer les erreurs
+            return;
+        }
 
         patch(route("profile.update"));
     };
@@ -34,10 +40,7 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
-                </h2>
-
+                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
                 <p className="mt-1 text-sm text-gray-600">
                     Update your account's profile information and email address.
                 </p>
@@ -52,7 +55,6 @@ export default function UpdateProfileInformation({
                         value={data.first_name}
                         className="mt-1 block w-full"
                         autoComplete="given-name"
-                        isFocused={true}
                         onChange={(e) => setData("first_name", e.target.value)}
                         required
                     />
@@ -73,9 +75,22 @@ export default function UpdateProfileInformation({
                     <InputError message={errors.last_name} className="mt-2" />
                 </div>
 
+                <div className="mt-4">
+                    <InputLabel htmlFor="address" value="Address" />
+                    <TextInput
+                        id="address"
+                        type="text"
+                        name="address"
+                        value={data.address}
+                        className="mt-1 block w-full"
+                        autoComplete="street-address"
+                        placeholder="123 Your Street, City, Country"
+                        onChange={(e) => setData('address', e.target.value)}
+                        required
+                    />
+                    </div>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
-
                     <TextInput
                         id="email"
                         type="email"
@@ -85,7 +100,6 @@ export default function UpdateProfileInformation({
                         required
                         autoComplete="username"
                     />
-
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
@@ -105,8 +119,7 @@ export default function UpdateProfileInformation({
 
                         {status === "verification-link-sent" && (
                             <div className="mt-2 font-medium text-sm text-green-600">
-                                A new verification link has been sent to your
-                                email address.
+                                A new verification link has been sent to your email address.
                             </div>
                         )}
                     </div>

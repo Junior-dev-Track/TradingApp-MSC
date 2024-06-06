@@ -40,6 +40,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                                 {user.first_name}
                                                 {user.last_name}
 
+
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +58,11 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
+                                        <div className="py-1">
+                                            <div className="font-medium text-base text-gray-800">{user.first_name} {user.last_name}</div>
+                                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
+                                            <div className="font-medium text-sm text-gray-500">{user.address}</div> 
+                                        </div>
                                         <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
@@ -105,6 +111,9 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                 {user.first_name}
                                 {user.last_name}
                             </div>
+
+                            <div className="font-medium text-sm text-gray-500">{user.address}</div>
+
                             <div className="font-medium text-sm text-gray-500">{user.email}</div>
                         </div>
 
