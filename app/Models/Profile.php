@@ -10,6 +10,17 @@ class Profile extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'address',
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
