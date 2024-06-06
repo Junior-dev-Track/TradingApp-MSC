@@ -73,6 +73,7 @@ export default function Register() {
                         value={data.address}
                         className="mt-1 block w-full"
                         autoComplete="street-address"
+                        placeholder="123 Your Street, City, Country"
                         onChange={(e) => setData('address', e.target.value)}
                         required
                     />
