@@ -42,6 +42,7 @@ export default function Register() {
             value={data.first_name}
             className="mt-1 block w-full"
             autoComplete="given-name"
+            
             isFocused={true}
             onChange={(e) => setData('first_name', e.target.value)}
             required
@@ -57,6 +58,7 @@ export default function Register() {
             value={data.last_name}
             className="mt-1 block w-full"
             autoComplete="family-name"
+
             onChange={(e) => setData('last_name', e.target.value)}
             required
         />
@@ -106,6 +108,7 @@ export default function Register() {
                         value={data.password}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
+                        placeholder='minimum 8 characters'
                         onChange={(e) => setData('password', e.target.value)}
                         required
                     />
@@ -123,6 +126,7 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
+                        placeholder='minimum 8 characters'
                         onChange={(e) => setData('password_confirmation', e.target.value)}
                         required
                     />
