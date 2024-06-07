@@ -20,7 +20,7 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   investedBalance = 0
 }) => {
     return (
-        <div className="portfolio-summary max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="portfolio-summary max-w-7xl w:px-50 mx-auto sm:px-6 lg:px-8 text-dark-blue bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2>État du Portefeuille</h2>
             <p>Solde Total: ${totalBalance.toLocaleString()}</p>
             <p>Solde Disponible: ${availableBalance.toLocaleString()}</p>

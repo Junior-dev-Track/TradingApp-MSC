@@ -10,18 +10,18 @@ export default function Authenticated({ user, header, children }: PropsWithChild
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-100">
+        <div className="min-h-screen bg-dark-blue text-white">
+            <nav className=" ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <div className="flex mx">
+                        <div className="flex ">
                           {/** <div className="shrink-0 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div> peux mettre notre logo plustard */}
-
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                           <div className='flex justify-center '>
+                           <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
@@ -36,6 +36,8 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                     Log Out
                                 </NavLink>
                             </div>
+                           </div>
+
                         </div>
 
 
@@ -94,12 +96,6 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     </div>
                 </div>
             </nav>
-
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )}
 
             <main>{children}</main>
         </div>
