@@ -29,10 +29,24 @@ export default function Dashboard({ auth }: PageProps) {
             <div>
             <PortfolioSummary  />
             </div>
-<div>
-
-</div>
             </section>
+            <section>
+            <div className="bg-gray-100 p-4 rounded-lg shadow">
+                                
+                            </div>
+                            <div className="bg-gray-100 p-4 rounded-lg shadow">
+                                {/* Placeholder for another component */}
+                            </div>
+                            <div className="bg-gray-100 p-4 rounded-lg shadow">
+                                {/* Placeholder for another component */}
+                            </div>
+                            <div className="bg-gray-100 p-4 rounded-lg shadow">
+                                {/* Placeholder for another component */}
+                            </div>
+                            <div className="bg-gray-100 p-4 rounded-lg shadow">
+                                {/* Placeholder for another component */}
+                            </div>
+                        </section>
 
 
         </AuthenticatedLayout>
