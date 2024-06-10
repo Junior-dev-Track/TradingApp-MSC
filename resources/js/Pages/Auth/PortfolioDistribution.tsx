@@ -1,5 +1,7 @@
 import React from "react";
-import { Doughnut } from "react-chartjs-2"; // Importez le type de graphique que vous souhaitez utiliser
+import { Doughnut } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+
 
 interface YourDataTypeHere {
     type: string;

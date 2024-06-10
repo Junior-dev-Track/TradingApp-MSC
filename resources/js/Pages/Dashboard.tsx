@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react';
 import { PageProps } from '@/types';
 import PortfolioSummary from '@/Pages/Auth/PortfolioSummary';  // Import the correct module
 import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';  // Import the correct module
-import { Doughnut } from "react-chartjs-2";
+import { Doughnut } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+
+
 
 
 export default function Dashboard({ auth }: PageProps) {
@@ -22,7 +25,15 @@ export default function Dashboard({ auth }: PageProps) {
 
                 </div>
             </div>
+            <section>
+            <div>
             <PortfolioSummary  />
+            </div>
+<div>
+
+</div>
+            </section>
+
 
         </AuthenticatedLayout>
 
