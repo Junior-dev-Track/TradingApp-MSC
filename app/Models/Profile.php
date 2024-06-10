@@ -31,4 +31,20 @@ class Profile extends Model
         'last_name',
         'address',
     ];
+
+    public static function getWallet($userId)
+    {
+        return Profile::where('user_id', $userId)->pluck('wallet')->first();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function wires()
+    {
+
+        return $this->hasMany(Wire::class);
+    }
 }

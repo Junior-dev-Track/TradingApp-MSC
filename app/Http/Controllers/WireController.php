@@ -7,9 +7,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Wire;
 use App\Models\Profile;
+use Inertia\Inertia;
 
 class WireController extends Controller
 {
+
+    public function index()
+    {
+
+        $user = Auth::user();
+        $profile = $user->profile;
+        $profile_id = $profile->id;
+        $wires = Wire::getUserWires($profile_id);
+        return Inertia::render('wallet/wires', ['wires' => $wires]);
+    }
+
     public function storeDeposit(Request $request)
     {
         $request->validate([
