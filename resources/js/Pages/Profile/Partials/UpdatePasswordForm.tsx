@@ -39,15 +39,15 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Update Password</h2>
+                <h2 className="text-lg font-medium text-dark-blue">Update Password</h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-dark-blue">
                     Ensure your account is using a long, random password to stay secure.
                 </p>
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                <div>
+                <div className='text-dark-blue'>
                     <InputLabel htmlFor="current_password" value="Current Password" />
 
                     <TextInput
@@ -63,7 +63,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     <InputError message={errors.current_password} className="mt-2" />
                 </div>
 
-                <div>
+                <div className='text-dark-blue'>
                     <InputLabel htmlFor="password" value="New Password" />
 
                     <TextInput
@@ -79,7 +79,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div>
+                <div className='text-dark-blue'>
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
                     <TextInput
@@ -104,7 +104,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-dark-blue">Saved.</p>
                     </Transition>
                 </div>
             </form>
