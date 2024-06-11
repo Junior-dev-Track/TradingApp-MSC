@@ -32,7 +32,7 @@ export default function Dashboard({ auth }: PageProps) {
             </section>
             <section>
             <div className="bg-gray-100 p-4 rounded-lg shadow">
-                                
+                                {/**porfolioDistribution */}
                             </div>
                             <div className="bg-gray-100 p-4 rounded-lg shadow">
                                 {/* Placeholder for another component */}
