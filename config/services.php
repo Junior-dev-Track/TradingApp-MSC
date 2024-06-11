@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'alpaca' => [
+        'key' => env('APCA_API_KEY_ID'),
+        'secret' => env('APCA_API_SECRET_KEY'),
+    ],
+
 ];
