@@ -16,7 +16,7 @@ class TradingService
             ])->get('https://data.alpaca.markets/v2/stocks/bars', [
                 'symbols' => 'AAPL',
                 'timeframe' => '1Day',
-                'start' => '2022-01-01T00:00:00Z',
+                'start' => '2024-01-01T00:00:00Z',
                 'limit' => 1000,
                 'adjustment' => 'raw',
                 'feed' => 'iex',
