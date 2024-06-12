@@ -21,9 +21,9 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
   investedBalance = 0
 }) => {
     return (
-        <div className="flex portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className=" portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-dark-blue overflow-hidden shadow-sm sm:rounded-lg">
         <h2 className="text-2xl font-bold mb-4">État du Portefeuille</h2>
-        <div className='flex justify-end'>
+        <div className='flex '>
             <div className=" ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
                 <p>Solde Total: ${totalBalance.toLocaleString()}</p>
             </div>
