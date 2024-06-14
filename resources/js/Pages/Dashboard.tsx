@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { PageProps } from "@/types";
 import PortfolioSummary from "@/Pages/Auth/PortfolioSummary"; // Import the correct module
 import PortfolioDistribution from "@/Pages/Auth/PortfolioDistribution"; // Import the correct module
-import HistoricalBars from "./Trading/HistoricalBars";
+import HistoricalBars from "./Widgets/HistoricalBars";
 import { Doughnut } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import Icons from "@/Pages/Auth/Icons"; // Comment out the import statement for Icons

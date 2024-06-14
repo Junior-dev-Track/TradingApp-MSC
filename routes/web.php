@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/wallet/withdraw', [WireController::class, 'storeWithdrawal'])->name('wallet.storeWithdrawal');
 
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
+
+    Route::get('/trade/{symbol}', [DashboardController::class, 'show'])->name('trade');
 });
 
 require __DIR__ . '/auth.php';

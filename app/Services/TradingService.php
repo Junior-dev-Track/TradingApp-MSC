@@ -10,7 +10,7 @@ class TradingService
     public function getHistoricalbars()
     {
         $params = [
-            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,FB,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
+            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
             'timeframe' => '1D',
             'start' => '2024-01-01T00:00:00Z',
             'limit' => 1000,

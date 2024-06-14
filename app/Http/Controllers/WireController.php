@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\Wire;
 use App\Models\Profile;
 use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
 
 class WireController extends Controller
 {
 
-    public function index()
+    public function index(): Response
     {
 
         $user = Auth::user();
         $profile = $user->profile;
         $profile_id = $profile->id;
         $wires = Wire::getUserWires($profile_id);
-        return Inertia::render('wallet/wires', ['wires' => $wires]);
+        return Inertia::render('Wallet/Wires', ['wires' => $wires]);
     }
 
-    public function storeDeposit(Request $request)
+    public function storeDeposit(Request $request): RedirectResponse
     {
         $request->validate([
             'amount' => 'required|numeric|min:0'
@@ -50,7 +52,7 @@ class WireController extends Controller
         }
     }
 
-    public function storeWithdrawal(Request $request)
+    public function storeWithdrawal(Request $request): RedirectResponse
     {
         $request->validate([
             'amount' => 'required|numeric|min:0'
