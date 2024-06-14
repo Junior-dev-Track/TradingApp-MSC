@@ -3,43 +3,65 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class TradingService
 {
     public function getHistoricalbars()
     {
+        $params = [
+            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,FB,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
+            'timeframe' => '1D',
+            'start' => '2024-01-01T00:00:00Z',
+            'limit' => 1000,
+            'adjustment' => 'raw',
+            'feed' => 'iex',
+            'sort' => 'asc'
+        ];
+
+        $all_data = $this->fetchData($params);
+
+        return response()->json($all_data);
+    }
+
+    private function fetchData($params)
+    {
         try {
-            $data = [];
-            $nextPageUrl = null;
+            $all_data = [];
+            $next_page_token = null;
 
             do {
-                // Fetch data with the pagination URL
-                $response = Http::withHeaders([
+                $response = Http::retry(3, 100)->withHeaders([
                     'APCA-API-KEY-ID' => config('services.alpaca.key'),
                     'APCA-API-SECRET-KEY' => config('services.alpaca.secret'),
-                    'Accept' => 'application/json',
-                ])->get($nextPageUrl ?: 'https://data.alpaca.markets/v2/stocks/bars', [
-                    'symbols' => 'AAPL',
-                    'timeframe' => '1Min',
-                    'start' => '2024-01-01T00:00:00Z',
-                    'limit' => 1000,
-                    'adjustment' => 'raw',
-                    'feed' => 'iex',
-                    'sort' => 'asc',
-                ]);
+                    'Accept' => 'application/json'
+                ])->timeout(60)->get('https://data.alpaca.markets/v2/stocks/bars', array_merge($params, ['page_token' => $next_page_token ?? null]));
 
-                $responseData = $response->json();
-                $data = array_merge($data, $responseData);
+                if ($response->failed()) {
+                    return response()->json(['error' => 'Failed to fetch data from API'], 500);
+                }
 
-                // Update the pagination URL for the next page
-                $nextPageUrl = isset($responseData['next_page_url']) ? $responseData['next_page_url'] : null;
-            } while ($nextPageUrl);
+                $data = $response->json();
 
-            return $data;
+                foreach ($data as $key => $value) {
+                    if ($key === 'next_page_token') {
+                        $next_page_token = $value;
+                    } elseif (is_array($value)) {
+                        foreach ($value as $symbol => $bars) {
+                            if (!isset($all_data[$symbol])) {
+                                $all_data[$symbol] = [];
+                            }
+                            $all_data[$symbol] = array_merge($all_data[$symbol], $bars);
+                        }
+                    } else {
+                        Log::warning('Unexpected data format received: ' . json_encode($data));
+                    }
+                }
+            } while ($next_page_token);
+
+            return $all_data;
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
