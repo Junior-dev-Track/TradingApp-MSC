@@ -7,7 +7,7 @@ import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';  // Impo
 // import TradingWallet from '@/Pages/Auth/TradingWallet'; // Import the TradingWallet component
 import { Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-import Icons from '@/Pages/Auth/Icons';
+ import Icons from '@/Pages/Auth/Icons'; // Comment out the import statement for Icons
 
 
 

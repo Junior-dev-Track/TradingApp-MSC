@@ -8,24 +8,24 @@ import { AiFillCalendar } from "react-icons/ai";
 
 const Icons = () => {
     return (
-        <div className="flex flex-col ml-8 space-y-4 text-gray-400 hover:text-gray-500 max-w-none">
+        <div className="flex flex-col ml-8 space-y-4 text-gray-400  max-w-none">
             <button className="flex items-center">
-                <AiFillAppstore className="w-8 h-8" />
+                <AiFillAppstore className="w-8 h-8 hover:text-gray-500" />
             </button>
             <button className="flex items-center ">
-                <AiOutlineFund className="w-8 h-8" />
+                <AiOutlineFund className="w-8 h-8 hover:text-gray-500" />
             </button>
             <button className="flex items-center">
-                <AiFillCalendar className="w-8 h-8" />
+                <AiFillCalendar className="w-8 h-8 hover:text-gray-500" />
             </button>
             <button className="flex items-center">
-                <AiFillCalendar className="w-8 h-8" />
+                <AiFillCalendar className="w-8 h-8 hover:text-gray-500" />
             </button>
             <button className="flex items-center ">
-                <AiFillCalendar className="w-8 h-8" />
+                <AiFillCalendar className="w-8 h-8 hover:text-gray-500" />
             </button>
             <button className="flex items-center ">
-                <AiFillCalendar className="w-8 h-8" />
+                <AiFillCalendar className="w-8 h-8 hover:text-gray-500" />
             </button>
         </div>
     );
