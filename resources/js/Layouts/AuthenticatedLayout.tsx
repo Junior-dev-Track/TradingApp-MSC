@@ -22,7 +22,7 @@ export default function Authenticated({
 
                         {/* Center navigation links */}
                         <div className='flex items-center space-x-20 text-white '>
-                            <NavLink   href={route('dashboard')} active={route().current('dashboard')}>
+                            <NavLink  className='ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' href={route('dashboard')} active={route().current('dashboard')}>
                                 Dashboard
                             </NavLink>
                             <NavLink className='ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4'href={route('profile.edit')} active={route().current('profile.edit')}>
