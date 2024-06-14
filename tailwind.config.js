@@ -15,7 +15,6 @@ export default {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
-
             colors: {
                 "dark-purple": "#0e0b1d",
                 'white': "#ffffff",
@@ -30,12 +29,6 @@ export default {
                 "deeper-night-blue": "#0a053f",
                 'red': "#ff0000",
                 'green': "#00ff00",
-            },
-            borderWidth: {
-                1: "1px",
-            },
-            gridTemplateRows: {
-
             },
         },
 
