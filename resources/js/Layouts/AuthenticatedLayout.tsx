@@ -11,7 +11,7 @@ export default function Authenticated({
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-dark-blue text-white">
+        <div className="min-h-screen bg-dark-blue ">
             <header>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -21,14 +21,14 @@ export default function Authenticated({
                         </Link>
 
                         {/* Center navigation links */}
-                        <div className='flex items-center space-x-20'>
-                            <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <div className='flex items-center space-x-20 text-white '>
+                            <NavLink  className='ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' href={route('dashboard')} active={route().current('dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink href={route('profile.edit')} active={route().current('profile.edit')}>
+                            <NavLink className='ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4'href={route('profile.edit')} active={route().current('profile.edit')}>
                                 Profile
                             </NavLink>
-                            <NavLink href={route('logout')} method="post" as="button" active={false}>
+                            <NavLink className='ml-5 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' href={route('logout')} method="post" as="button" active={false}>
                                 Log Out
                             </NavLink>
                         </div>

@@ -5,11 +5,9 @@ import { PageProps } from '@/types';
 import PortfolioSummary from '@/Pages/Auth/PortfolioSummary';  // Import the correct module
 import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';  // Import the correct module
 import HistoricalBars from './Trading/HistoricalBars';
-/**import TradingWallet from '@/Pages/Auth/TradingWallet'; // Import the TradingWallet component */
-
-
-
-
+import { Doughnut } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+import Icons from '@/Pages/Auth/Icons'; // Comment out the import statement for Icons
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -27,32 +25,10 @@ export default function Dashboard({ auth }: PageProps) {
                     <div>
                         <PortfolioSummary />
                     </div>
-                </section>
-
-                <section>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div className="">
-                        {/**<TradingWallet /> */}
-                        </div>
-                        <div className="">
-                            {/* Placeholder for another component */}
-                            <HistoricalBars />
-                        </div>
-                        <div className="">
-                            {/* Placeholder for another component */}
-                        </div>
-                        <div className="">
-                            {/* Placeholder for another component */}
-                        </div>
-                        <div className="">
-                            {/* Placeholder for another component */}
-                        </div>
-                        <div className="">
-                            {/* Placeholder for another component */}
-                        </div>
+                    <div>
+                    <Icons/>
                     </div>
                 </section>
-
             </AuthenticatedLayout>
         </>
     );
