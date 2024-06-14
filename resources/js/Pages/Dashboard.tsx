@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { PageProps } from '@/types';
 import PortfolioSummary from '@/Pages/Auth/PortfolioSummary';  // Import the correct module
 import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';  // Import the correct module
-import TradingWallet from '@/Pages/Auth/TradingWallet'; // Import the TradingWallet component
+/**import TradingWallet from '@/Pages/Auth/TradingWallet'; // Import the TradingWallet component */
 import { Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 
@@ -32,7 +32,7 @@ export default function Dashboard({ auth }: PageProps) {
                 <section>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div className="bg-gray-100 p-4 rounded-lg shadow">
-                        <TradingWallet />
+                        {/**<TradingWallet /> */}
                         </div>
                         <div className="bg-gray-100 p-4 rounded-lg shadow">
                             {/* Placeholder for another component */}
