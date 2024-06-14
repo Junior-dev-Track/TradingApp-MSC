@@ -1,3 +1,4 @@
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
@@ -9,6 +10,7 @@ import { Doughnut } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import Icons from '@/Pages/Auth/Icons'; // Comment out the import statement for Icons
 import TradingWallet from './Auth/TradingWallet';
+
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -30,6 +32,9 @@ export default function Dashboard({ auth }: PageProps) {
                     <Icons/>
                     <TradingWallet/>
                     </div>
+                </section>
+                <section>
+                    <HistoricalBars />
                 </section>
             </AuthenticatedLayout>
         </>
