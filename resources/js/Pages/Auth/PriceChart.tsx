@@ -4,7 +4,7 @@ import {
 } from 'recharts';
 
 interface BarData {
-  t: number;
+  t: number; // Assurez-vous que t est en millisecondes ou convertissez-le (*1000 si nécessaire)
   o: number;
   h: number;
   l: number;
@@ -18,11 +18,11 @@ interface PriceChartProps {
 
 const PriceChart: React.FC<PriceChartProps> = ({ data }) => {
   const formattedData = data.map(bar => ({
-    time: new Date(bar.t).toLocaleDateString(), // Conversion de l'horodatage en date lisible
-    open: bar.o,  // Prix d'ouverture
-    high: bar.h,  // Prix le plus haut
-    low: bar.l,   // Prix le plus bas
-    close: bar.c, // Prix de clôture
+    time: new Date(bar.t).toLocaleDateString(), // Assurez-vous que 't' est converti correctement
+    open: bar.o,
+    high: bar.h,
+    low: bar.l,
+    close: bar.c,
   }));
 
   return (
