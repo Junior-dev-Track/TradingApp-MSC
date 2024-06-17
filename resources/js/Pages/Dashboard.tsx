@@ -33,7 +33,7 @@ export default function Dashboard({ auth }: PageProps) {
                     <TradingWallet/>
                     </div>
                 </section>
-                <section>
+                 <section>
                     <HistoricalBars />
                 </section>
             </AuthenticatedLayout>
