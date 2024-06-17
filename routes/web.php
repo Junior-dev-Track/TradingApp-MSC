@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TradeController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WireController;
 use Illuminate\Foundation\Application;
@@ -40,9 +41,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
 
-    Route::get('/trade/{symbol}', [DashboardController::class, 'show'])->name('trade');
-    Route::post('/trade/{symbol}/buy', [DashboardController::class, 'storeBuy'])->name('trade.storeBuy');
-    Route::post('/trade/{symbol}/sell', [DashboardController::class, 'storeSell'])->name('trade.storeSell');
+    Route::get('/trade/{symbol}', [TradeController::class, 'show'])->name('trade');
+    Route::post('/trade/{symbol}/buy', [TradeController::class, 'store'])->name('trade.store');
+    Route::post('/trade/{symbol}/sell', [TradeController::class, 'update'])->name('trade.update');
 });
 
 require __DIR__ . '/auth.php';

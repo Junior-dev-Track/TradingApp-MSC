@@ -47,4 +47,9 @@ class Profile extends Model
 
         return $this->hasMany(Wire::class);
     }
+
+    public function trades()
+    {
+        return $this->hasMany(Trade::class);
+    }
 }

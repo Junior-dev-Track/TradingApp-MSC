@@ -10,7 +10,6 @@ class Trade extends Model
     use HasFactory;
 
     protected $fillable = [
-        'email',
         'profile_id',
         'symbol',
         'quantity',
@@ -18,4 +17,11 @@ class Trade extends Model
         'close_price',
         'open',
     ];
+
+
+
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
+    }
 }
