@@ -16,17 +16,17 @@ class WalletController extends Controller
     public function index(): Response
     {
         $user_id = Auth::id();
-        return Inertia::render('wallet/wallet', ['wallet' => Profile::getWallet($user_id), 'recentWires' => Wire::getRecentWires($user_id)]);
+        return Inertia::render('Wallet/Wallet', ['wallet' => Profile::getWallet($user_id), 'recentWires' => Wire::getRecentWires($user_id)]);
     }
 
     public function createDepositForm(): Response
     {
-        return Inertia::render('wallet/deposit');
+        return Inertia::render('Wallet/Deposit');
     }
 
-    public function createWithdrawForm()
+    public function createWithdrawForm(): Response
     {
 
-        return Inertia::render('wallet/withdraw');
+        return Inertia::render('Wallet/Withdraw');
     }
 }

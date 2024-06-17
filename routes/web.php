@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/wallet/withdraw', [WireController::class, 'storeWithdrawal'])->name('wallet.storeWithdrawal');
 
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
+
+    Route::get('/trade/{symbol}', [DashboardController::class, 'show'])->name('trade');
+    Route::post('/trade/{symbol}/buy', [DashboardController::class, 'storeBuy'])->name('trade.storeBuy');
+    Route::post('/trade/{symbol}/sell', [DashboardController::class, 'storeSell'])->name('trade.storeSell');
 });
 
 require __DIR__ . '/auth.php';

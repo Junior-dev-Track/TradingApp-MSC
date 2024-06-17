@@ -1,16 +1,14 @@
-
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
-import { PageProps } from '@/types';
-import PortfolioSummary from '@/Pages/Auth/PortfolioSummary';  // Import the correct module
-import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';  // Import the correct module
-import HistoricalBars from './Trading/HistoricalBars';
-import { Doughnut } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-import Icons from '@/Pages/Auth/Icons'; // Comment out the import statement for Icons
-import TradingWallet from './Auth/TradingWallet';
-
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import { PageProps } from "@/types";
+import PortfolioSummary from "@/Pages/Auth/PortfolioSummary"; // Import the correct module
+import PortfolioDistribution from "@/Pages/Auth/PortfolioDistribution"; // Import the correct module
+import HistoricalBars from "./Widgets/HistoricalBars";
+import { Doughnut } from "react-chartjs-2";
+import Chart from "chart.js/auto";
+import Icons from "@/Pages/Auth/Icons"; // Comment out the import statement for Icons
+import TradingWallet from "./Auth/TradingWallet";
 
 export default function Dashboard({ auth }: PageProps) {
     return (
@@ -28,12 +26,12 @@ export default function Dashboard({ auth }: PageProps) {
                     <div>
                         <PortfolioSummary />
                     </div>
-                    <div className='flex spacex-4 '>
-                    <Icons/>
-                    <TradingWallet/>
+                    <div className="flex spacex-4 ">
+                        <Icons />
+                        <TradingWallet />
                     </div>
                 </section>
-                <section>
+                 <section>
                     <HistoricalBars />
                 </section>
             </AuthenticatedLayout>
