@@ -22,13 +22,13 @@ export default function Authenticated({
 
                         {/* Center navigation links */}
                         <div className='flex items-center space-x-20 text-white'>
-                            <NavLink  className='hover:bg-dark-blue bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'  href={route('dashboard')} active={route().current('dashboard')}>
+                            <NavLink  className='bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'  href={route('dashboard')} active={route().current('dashboard')}>
                                 Dashboard
                             </NavLink>
-                            <NavLink className='hover:bg-dark-blue bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'href={route('profile.edit')} active={route().current('profile.edit')}>
+                            <NavLink className='bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'href={route('profile.edit')} active={route().current('profile.edit')}>
                                 Profile
                             </NavLink>
-                            <NavLink className='hover:bg-dark-blue bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white' href={route('logout')} method="post" as="button" active={false}>
+                            <NavLink className=' bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white' href={route('logout')} method="post" as="button" active={false}>
                                 Log Out
                             </NavLink> {/* classname hover bg dark blue ne fonctionne pas*/}
                         </div>
