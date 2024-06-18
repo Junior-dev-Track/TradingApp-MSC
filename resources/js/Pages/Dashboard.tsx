@@ -22,10 +22,10 @@ export default function Dashboard({ auth }: PageProps) {
                         <div className="grid grid-cols-3 grid-rows-2 gap-4">
                             {/* Main content widgets */}
                             {/* First Row */}
-                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1 ">
 
                             </div>
-                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-2">
                                 <TradingWallet />
                             </div>
                             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
