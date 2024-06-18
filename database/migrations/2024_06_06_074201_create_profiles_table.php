@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('address');
             $table->timestamps();
+
+            $table->index('user_id');
         });
     }
 

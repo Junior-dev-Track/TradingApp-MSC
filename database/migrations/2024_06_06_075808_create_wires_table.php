@@ -17,6 +17,8 @@ return new class extends Migration
             $table->decimal('amount');
             $table->boolean('withdrawal');
             $table->timestamps();
+
+            $table->index('profile_id');
         });
     }
 
