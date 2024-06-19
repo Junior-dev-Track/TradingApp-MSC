@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
 interface BarData {
@@ -12,14 +12,18 @@ interface BarData {
   v: number;
 }
 
-interface VolumeChartProps {
+interface CombinedChartProps {
   data: BarData[];
 }
 
-const VolumeChart: React.FC<VolumeChartProps> = ({ data }) => {
+const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
   const formattedData = data.map(bar => ({
-    time: new Date(bar.t).toLocaleDateString(), // Conversion de l'horodatage en date lisible
-    volume: bar.v,  // Volume des transactions
+    time: new Date(bar.t).toLocaleDateString(),
+    open: bar.o,
+    high: bar.h,
+    low: bar.l,
+    close: bar.c,
+    volume: bar.v,
   }));
 
   const formatNumber = (num: number) => {
@@ -34,16 +38,18 @@ const VolumeChart: React.FC<VolumeChartProps> = ({ data }) => {
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={formattedData}>
+      <ComposedChart data={formattedData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="time" />
-        <YAxis tickFormatter={formatNumber} />
+        <YAxis yAxisId="left" tickFormatter={formatNumber} />
+        <YAxis yAxisId="right" orientation="right" />
         <Tooltip formatter={(value: number) => formatNumber(value)} />
         <Legend />
-        <Bar dataKey="volume" fill="#82ca9d" />
-      </BarChart>
+        <Bar yAxisId="left" dataKey="volume" fill="#82ca9d" />
+        <Line yAxisId="right" type="monotone" dataKey="close" stroke="#8884d8" />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };
 
-export default VolumeChart;
+export default CombinedChart;
