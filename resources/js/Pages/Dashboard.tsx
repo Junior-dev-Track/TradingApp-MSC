@@ -16,7 +16,7 @@ export default function Dashboard({ auth }: PageProps) {
                 <Head title="Dashboard" />
 < PortfolioSummary />
                 <div className="flex"> {/* Ajustement pour un espace vide sur le côté gauche */}
-                    <div className=" ml-8 flex ml-8 min-h-screen"> {/* Container for Icons, centered */}
+                    <div className=" ml-8 flex min-h-screen"> {/* Container for Icons, centered */}
                         <Icons />
                     </div>
 
