@@ -1,11 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';
 import PortfolioSummary from './Auth/PortfolioSummary';
 import HistoricalBars from './Trading/HistoricalBars';
-import TradingWallet from './Auth/TradingWallet';
 import Icons from '@/Pages/Auth/Icons';
+import AlertsManager from './Auth/AlertsManager';
+import React, { useState } from 'react';
+import { BarData } from '@/types/types';
 
 export default function Dashboard({ auth }: PageProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -32,9 +33,7 @@ export default function Dashboard({ auth }: PageProps) {
   const sellAsset = (symbol: string) => {
     setPurchased(purchased.filter(asset => asset.symbol !== symbol));
   };
-﻿
-
-  return (
+return (
     <>
       <AuthenticatedLayout user={auth.user}>
         <Head title="Dashboard" />
@@ -67,8 +66,7 @@ export default function Dashboard({ auth }: PageProps) {
               </ul>
             </div>
               </div>
-﻿
-              <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+<div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
                 {/* Additional Widget */}
                 <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
               <h2 className="text-white text-lg">Assets</h2>
