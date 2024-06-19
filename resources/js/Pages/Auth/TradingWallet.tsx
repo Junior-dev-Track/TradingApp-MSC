@@ -2,7 +2,7 @@
 
 const TradingWallet = () => {
     return (
-        <div className="bg-white p-4 rounded-lg shadow ">
+        <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="text-xl font-bold mb-4">Trading Wallet</h2>
             <div className="flex items-center mb-4">
                 <div className="w-16  h-10 bg-dark-blue text-white text-center font-bold flex items-center justify-center rounded mr-2">
