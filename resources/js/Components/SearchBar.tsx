@@ -1,84 +1,35 @@
-// import React, { useState } from "react";
-//import { FaSearch } from "react-icons/fa";
-//import Api from "../components/Api.js";
+import React, { useState } from 'react';
 
-{/**const Search = () => {
-  const [searchQuery, setSearchQuery] = useState(""); // État pour stocker la requête de recherche
-  const [searchResults, setSearchResults] = useState([]); // État pour stocker les résultats de recherche
-  const api = new Api(); // Instance de votre classe API pour effectuer des recherches
+interface SearchBarProps {
+  onSearch: (symbol: string) => void;
+}
 
-  // Gérer les changements dans l'entrée de recherche
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value); // Mettre à jour la requête de recherche avec la valeur de l'entrée
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const [symbol, setSymbol] = useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSymbol(event.target.value);
   };
 
-  // Fonction pour effectuer une recherche lorsque l'utilisateur appuie sur Entrée ou clique sur le bouton de recherche
-const handleSearch = async (event) => {
-    event.preventDefault(); // Empêcher le comportement de soumission par défaut du formulaire
-    const response = await api.searchMovie(searchQuery, "en-US", 1, false); // Appel à l'API pour rechercher des films
-    setSearchResults(response.results); // Mettre à jour les résultats de recherche avec la réponse de l'API
-  };
-
-  // Gérer les événements de touche sur l'entrée de recherche
-  const handleInputKeyUp = async (event) => {
-    if (event.key === "Enter") { // Vérifier si la touche appuyée est "Enter"
-      await handleSearch(); // Exécuter la recherche
-    }
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onSearch(symbol.toUpperCase());
   };
 
   return (
-    <>
-      {/* Section pour la barre de recherche */}
-      {/**<section className="Container">
-        <div className="search-box">
-          <div className="container-box">
-            <form onSubmit={handleSearch}> {/* Ajoutez onSubmit ici */}
-             {/**  <div className="search">
-                <button type="submit"> {/* Changez ce bouton en type "submit" pour soumettre le formulaire */}
-                 {/**  <FaSearch />
-                </button>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  onChange={handleInputChange}
-                  value={searchQuery}
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      {/* Section pour afficher les résultats de recherche */}
-      {/**<div className="search-results">
-        {/* Mapper à travers les résultats de recherche et les afficher */}
-        {/**{searchResults.map((result) => (
-          <div className="search-result" key={result.id}>
-            {/* Afficher l'image du film */}
-           {/**  <img
-              src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
-              alt={result.title}
-            />
-            {/* Afficher les détails du film */}
-            {/**<div className="film-details">
-              <h3>{result.title}</h3>
-              {result.release_date && <p>Release Date: {result.release_date}</p>}
-              <p>Rating: {result.vote_average}</p>
-              {/* Ajoutez d'autres informations du film ici */}
-           /**  </div>
-          </div>
-        ))}
-      </div>
-    </>
+    <form onSubmit={handleSubmit} className="mb-4 text-dark-purple">
+      <input
+        type="text"
+        value={symbol}
+        onChange={handleChange}
+        placeholder="Enter company symbol"
+        className="p-2 border rounded"
+      />
+      <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
+        Search
+      </button>
+    </form>
   );
 };
 
-export default Search;**/
-
-
-
-
-
-
-
-
+export default SearchBar;
