@@ -49,7 +49,8 @@ const HistoricalBars = () => {
       {filteredData.length > 0 ? (
         <CombinedChart data={filteredData} />
       ) : (
-        <div>Aucune donnée historique disponible pour ce symbole.</div>
+        <div>No historical data available for this symbol.
+        </div>
       )}
     </div>
   );
