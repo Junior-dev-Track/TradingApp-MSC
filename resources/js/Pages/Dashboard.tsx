@@ -23,10 +23,10 @@ export default function Dashboard({ auth }: PageProps) {
                             {/* Main content widgets */}
                             {/* First Row */}
                             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
-
+                                <TradingWallet />
                             </div>
                             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
-                                <TradingWallet />
+
                             </div>
                             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
                                 {/* Additional Widget or Space for Expansion */}
