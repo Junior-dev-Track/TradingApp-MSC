@@ -17,11 +17,16 @@ return new class extends Migration
             $table->string('symbol');
             $table->integer('quantity');
             $table->decimal('open_price', 8, 2);
-            $table->decimal('close_price', 8, 2);
-            $table->dateTime('open_datetime');
-            $table->dateTime('close_datetime');
-            $table->boolean('open');
-            $table->timestamps();
+            $table->decimal('close_price', 8, 2)->nullable();
+            $table->timestamp('open_datetime')->useCurrent();
+            $table->timestamp('close_datetime')->nullable();
+            $table->boolean('open')->default(false);
+            $table->timestamp('updated_at')->useCurrent();
+
+            // Indexes
+            $table->index('profile_id');
+            $table->index('close_datetime');
+            $table->index('open');
         });
     }
 
