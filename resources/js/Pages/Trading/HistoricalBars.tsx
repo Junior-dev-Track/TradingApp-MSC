@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import { usePage } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
-import SearchBar from "@/Components/SearchBar"; // Assurez-vous que le chemin est correct
+import SearchBar from "@/Components/SearchBar";
+import { BarData } from '@/types/types';
 
-interface BarData {
-  symbol: string;
-  o: number;
-  h: number;
-  l: number;
-  c: number;
-  v: number;
-  date: string;
-  t: number;
+interface HistoricalBarsProps {
+  onAddFavorite: (symbol: string) => void;
+  onAddPurchase: (stock: BarData) => void;
 }
 
-const HistoricalBars = () => {
+const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
   const [filteredData, setFilteredData] = useState<BarData[]>([]);
 
@@ -31,7 +26,8 @@ const HistoricalBars = () => {
           l: entry.l,
           c: entry.c,
           v: entry.v,
-          t: entry.t
+          t: entry.t,
+          price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
         });
       });
     });
@@ -49,7 +45,8 @@ const HistoricalBars = () => {
       {filteredData.length > 0 ? (
         <CombinedChart data={filteredData} />
       ) : (
-        <div>Aucune donnée historique disponible pour ce symbole.</div>
+        <div>No historical data available for this symbol.
+        </div>
       )}
     </div>
   );
