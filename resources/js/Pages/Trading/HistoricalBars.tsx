@@ -20,20 +20,27 @@ const HistoricalBars = () => {
 
   // Convertir les données initiales
   const allData: BarData[] = [];
+
   if (barsData && barsData.original) {
     Object.keys(barsData.original).forEach(symbol => {
-      barsData.original[symbol].forEach((entry: any) => {
-        allData.push({
-          symbol: symbol,
-          date: new Date(entry.t * 1000).toLocaleDateString(),
-          o: entry.o,
-          h: entry.h,
-          l: entry.l,
-          c: entry.c,
-          v: entry.v,
-          t: entry.t
+      const data = barsData.original[symbol];
+
+      if (Array.isArray(data)) {
+        data.forEach((entry: any) => {
+          allData.push({
+            symbol: symbol,
+            date: new Date(entry.t * 1000).toLocaleDateString(),
+            o: entry.o,
+            h: entry.h,
+            l: entry.l,
+            c: entry.c,
+            v: entry.v,
+            t: entry.t
+          });
         });
-      });
+      } else {
+        console.error(`Expected array for ${symbol}, but got ${typeof data}`);
+      }
     });
   }
 
@@ -49,8 +56,7 @@ const HistoricalBars = () => {
       {filteredData.length > 0 ? (
         <CombinedChart data={filteredData} />
       ) : (
-        <div>No historical data available for this symbol.
-        </div>
+        <div>No historical data available for this symbol.</div>
       )}
     </div>
   );
