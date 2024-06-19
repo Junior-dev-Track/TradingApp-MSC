@@ -14,12 +14,12 @@ export default function Dashboard({ auth }: PageProps) {
                 <Head title="Dashboard" />
 < PortfolioSummary />
                 <div className="flex"> {/* Ajustement pour un espace vide sur le côté gauche */}
-                    <div className="w-1/5 flex items-center justify-center min-h-screen"> {/* Container for Icons, centered */}
+                    <div className="w-1/5 flex justify-center min-h-screen"> {/* Container for Icons, centered */}
                         <Icons />
                     </div>
 
-                    <div className="w-5/7 py-1 bg-gray-800 min-h-screen p-1">  {/* Adjusted global container size */}
-                        <div className="grid grid-cols-3 grid-rows-2 gap-4">
+                    <div className="w-5/7 py-1 bg-gray-800 min-h-screen p-1 w-9/12 mr-16">  {/* Adjusted global container size */}
+                        <div className="grid grid-cols-3 grid-rows-2 gap-4 h-1/3 ">
                             {/* Main content widgets */}
                             {/* First Row */}
                             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
@@ -33,7 +33,7 @@ export default function Dashboard({ auth }: PageProps) {
                             </div>
 
                             {/* Second Row */}
-                            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
+                            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-1/3">
                                 <HistoricalBars />
                             </div>
                         </div>

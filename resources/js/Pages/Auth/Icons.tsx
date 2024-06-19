@@ -8,7 +8,7 @@ import { AiFillCalendar } from "react-icons/ai";
 
 const Icons = () => {
     return (
-        <div className="flex flex-col ml-16 mt-8 space-y-4 text-gray-400 ">
+        <div className="flex flex-col mt-8 space-y-4 text-gray-400 ">
             <button className="flex items-center">
                 <AiFillAppstore className="w-7 h-7 hover:text-gray-500" />
             </button>
