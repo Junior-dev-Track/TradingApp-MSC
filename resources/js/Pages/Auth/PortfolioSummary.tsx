@@ -25,13 +25,13 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
         <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
         <div className='flex space-x-4 text-dark-blue'>
             <div className=" ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
-                <p>Total Balance: ${totalBalance.toLocaleString()}</p>
+                <p>Solde Total: ${totalBalance.toLocaleString()}</p>
             </div>
             <div className="p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
-                <p>Available Balance: ${availableBalance.toLocaleString()}</p>
+                <p>Solde Disponible: ${availableBalance.toLocaleString()}</p>
             </div>
             <div className="p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
-                <p>Invested Balance: ${investedBalance.toLocaleString()}</p>
+                <p>Solde Investi: ${investedBalance.toLocaleString()}</p>
             </div>
         </div>
     </div>

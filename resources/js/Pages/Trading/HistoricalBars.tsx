@@ -68,8 +68,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
           </div>
         </div>
       ) : (
-        <div>No historical data available for this symbol.
-        </div>
+        <div>Aucune donnée historique disponible pour ce symbole.</div>
       )}
     </div>
   );

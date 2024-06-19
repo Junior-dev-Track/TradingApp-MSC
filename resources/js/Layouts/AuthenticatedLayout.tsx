@@ -21,43 +21,27 @@ export default function Authenticated({
               <span className="text-white font-semibold text-lg">Trade</span>
             </Link>
 
-            {/* Center navigation links */}
-            <div className="flex items-center space-x-20 text-white">
-              <NavLink
-                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white"
-                href={route('dashboard')}
-                active={route().current('dashboard')}
-              >
-                Dashboard
-              </NavLink>
-              <NavLink
-                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white"
-                href={route('profile.edit')}
-                active={route().current('profile.edit')}
-              >
-                Profile
-              </NavLink>
-              <NavLink
-                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white"
-                href={route('logout')}
-                method="post"
-                as="button"
-                active={false}
-              >
-                Log Out
-              </NavLink>
-            </div>
+                        {/* Center navigation links */}
+                        <div className='flex items-center space-x-20 text-white'>
+                            <NavLink  className='bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'  href={route('dashboard')} active={route().current('dashboard')}>
+                                Dashboard
+                            </NavLink>
+                            <NavLink className='bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white'href={route('profile.edit')} active={route().current('profile.edit')}>
+                                Profile
+                            </NavLink>
+                            <NavLink className=' bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white' href={route('logout')} method="post" as="button" active={false}>
+                                Log Out
+                            </NavLink> {/* classname hover bg dark blue ne fonctionne pas*/}
+                        </div>
 
-            {/* Notification Icon with React Icon */}
-            <button className="text-gray-400 hover:text-gray-500">
-              <FaBell className="h-6 w-6" />
-            </button>
-          </div>
-        </nav>
-      </header>
-      <main>
-        {children}
-      </main>
-    </div>
-  );
+                        {/* Notification Icon with React Icon */}
+                        <button className="text-gray-400 hover:text-gray-500">
+                            <FaBell className="h-6 w-6" />
+                        </button>
+                    </div>
+                </nav>
+            </header>
+            <main>{children}</main>
+        </div>
+    );
 }
