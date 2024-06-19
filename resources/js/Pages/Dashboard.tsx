@@ -1,45 +1,62 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';
 import PortfolioSummary from './Auth/PortfolioSummary';
 import HistoricalBars from './Trading/HistoricalBars';
-import TradingWallet from './Auth/TradingWallet';
 import Icons from '@/Pages/Auth/Icons';
+import AlertsManager from './Auth/AlertsManager';
+import React, { useState } from 'react';
+import { BarData } from '@/types/types';
 
 export default function Dashboard({ auth }: PageProps) {
-    return (
-        <>
-            <AuthenticatedLayout user={auth.user}>
-                <Head title="Dashboard" />
-< PortfolioSummary />
-                <div className="flex"> {/* Ajustement pour un espace vide sur le côté gauche */}
-                    <div className=" ml-8 mt-20 flex  min-h-screen"> {/* Container for Icons, centered */}
-                        <Icons />
-                    </div>
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [purchased, setPurchased] = useState<BarData[]>([]);
 
-                    <div className="w-5/7 py-1 bg-gray-800 min-h-screen p-1 w-9/12 ml-20  h-3/5">  {/* Adjusted global container size */}
-                        <div className="grid grid-cols-3 grid-rows-2 gap-4 h-3/5">
-                            {/* Main content widgets */}
-                            {/* First Row */}
-                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1 ">
-                                 <TradingWallet />
-                            </div>
-                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+  const addFavorite = (symbol: string) => {
+    if (!favorites.includes(symbol)) {
+      setFavorites([...favorites, symbol]);
+      alert(`${symbol} has been added to favorites.`);
+    }
+  };
 
-                            </div>
-                            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
-                                {/* Additional Widget or Space for Expansion */}
-                            </div>
+  const addPurchase = (stock: BarData) => {
+    if (!purchased.some(p => p.symbol === stock.symbol)) {
+      setPurchased([...purchased, stock]);
+      alert(`${stock.symbol} has been purchased.`);
+    }
+  };
 
-                            {/* Second Row */}
-                            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-3/5">
-                                <HistoricalBars />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </AuthenticatedLayout>
-        </>
-    );
+  return (
+    <>
+      <AuthenticatedLayout user={auth.user}>
+        <Head title="Dashboard" />
+        <PortfolioSummary />
+        <div className="flex">
+          <div className="w-1/5 flex justify-center min-h-screen">
+            <Icons />
+          </div>
+          <div className="w-5/7 py-1 bg-gray-800 min-h-screen p-1 w-9/12 mr-16">
+            <div className="grid grid-cols-3 grid-rows-2 gap-4 h-1/3">
+              <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+                {/* TradingWallet */}
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+                {/* Additional Widget */}
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+                {/* Additional Widget */}
+              </div>
+              <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-1/3">
+                <HistoricalBars
+                  onAddFavorite={addFavorite}
+                  onAddPurchase={addPurchase}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <AlertsManager favorites={favorites} purchased={purchased} />
+      </AuthenticatedLayout>
+    </>
+  );
 }
