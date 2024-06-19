@@ -1,55 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePage } from "@inertiajs/react";
-import PriceChart from "@/Pages/Auth/PriceChart"; // Assurez-vous que le chemin est correct
-import VolumeChart from "@/Pages/Auth/VolumeChart"; // Assurez-vous que le chemin est correct
+import CombinedChart from "@/Pages/Auth/CombinedChart";
+import SearchBar from "@/Components/SearchBar";
+import { BarData } from '@/types/types';
 
-// Define the BarData type
-interface BarData {
-    symbol: string;
-
-    o: number;
-    h: number;
-    l: number;
-    c: number;
-    v: number;
-    date: string; // Add the 'date' property
-    t: number; // Add the 't' property
+interface HistoricalBarsProps {
+  onAddFavorite: (symbol: string) => void;
+  onAddPurchase: (stock: BarData) => void;
 }
 
-const HistoricalBars = () => {
-    const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
-    console.log("barsData:", barsData);
+const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
+  const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
+  const [filteredData, setFilteredData] = useState<BarData[]>([]);
 
-    // Transformons les données pour qu'elles soient utilisables dans les graphiques
-    const data: BarData[] = [];
-    if (barsData && (barsData as any).original) {
-        Object.keys(barsData.original).forEach(symbol => {
-            barsData.original[symbol].forEach((entry: any) => {
-                data.push({
-                    symbol: symbol,
-                    date: new Date(entry.t * 1000).toLocaleDateString(), // Assumant que 't' est un timestamp en secondes
-                    o: entry.o,
-                    h: entry.h,
-                    l: entry.l,
-                    c: entry.c,
-                    v: entry.v,
-                    t: entry.t // Add the 't' property
-                });
-            });
+  // Convertir les données initiales
+  const allData: BarData[] = [];
+  if (barsData && barsData.original) {
+    Object.keys(barsData.original).forEach(symbol => {
+      barsData.original[symbol].forEach((entry: any) => {
+        allData.push({
+          symbol: symbol,
+          date: new Date(entry.t * 1000).toLocaleDateString(),
+          o: entry.o,
+          h: entry.h,
+          l: entry.l,
+          c: entry.c,
+          v: entry.v,
+          t: entry.t,
+          price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
         });
-    }
+      });
+    });
+  }
 
-    if (data.length === 0) {
-        return <div className="text-white">Aucune donnée historique disponible.</div>;
-    }
+  const handleSearch = (symbol: string) => {
+    const data = allData.filter(entry => entry.symbol === symbol);
+    setFilteredData(data);
+  };
 
-    return (
-        <div className="text-white">
-            <h2>Historical Bars Data</h2>
-            <PriceChart data={data} />
-            <VolumeChart data={data} />
+  return (
+    <div className="text-white">
+      <h2>Historical Bars Data</h2>
+      <SearchBar onSearch={handleSearch} />
+      {filteredData.length > 0 ? (
+        <div>
+          <CombinedChart data={filteredData.map(entry => ({
+            t: entry.t!,
+            o: entry.o!,
+            h: entry.h!,
+            l: entry.l!,
+            c: entry.c!,
+            v: entry.v!
+          }))} />
+          <div className="mt-4">
+            <button
+              className="bg-blue-500 p-2 rounded mr-2"
+              onClick={() => onAddFavorite(filteredData[0].symbol)}
+            >
+              Add to Favorites
+            </button>
+            <button
+              className="bg-green-500 p-2 rounded"
+              onClick={() => onAddPurchase(filteredData[0])}
+            >
+              Buy
+            </button>
+          </div>
         </div>
-    );
+      ) : (
+        <div>Aucune donnée historique disponible pour ce symbole.</div>
+      )}
+    </div>
+  );
 };
 
 export default HistoricalBars;
