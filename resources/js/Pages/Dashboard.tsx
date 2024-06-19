@@ -35,7 +35,7 @@ export default function Dashboard({ auth }: PageProps) {
                             </div>
 
                             {/* Second Row */}
-                            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow ">
+                            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow  h-3/5">
                                 <HistoricalBars />
                             </div>
                         </div>
