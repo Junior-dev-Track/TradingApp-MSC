@@ -8,6 +8,7 @@ import AlertsManager from './Auth/AlertsManager';
 import React, { useState } from 'react';
 import { BarData } from '@/types/types';
 
+
 export default function Dashboard({ auth }: PageProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [purchased, setPurchased] = useState<BarData[]>([]);
