@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { usePage } from "@inertiajs/react";
-import PriceChart from "@/Pages/Auth/PriceChart";
-import VolumeChart from "@/Pages/Auth/VolumeChart";
+import CombinedChart from "@/Pages/Auth/CombinedChart";
 import SearchBar from "@/Components/SearchBar"; // Assurez-vous que le chemin est correct
 
 interface BarData {
@@ -48,10 +47,7 @@ const HistoricalBars = () => {
       <h2>Historical Bars Data</h2>
       <SearchBar onSearch={handleSearch} />
       {filteredData.length > 0 ? (
-        <>
-          <PriceChart data={filteredData} />
-          <VolumeChart data={filteredData} />
-        </>
+        <CombinedChart data={filteredData} />
       ) : (
         <div>Aucune donnée historique disponible pour ce symbole.</div>
       )}
