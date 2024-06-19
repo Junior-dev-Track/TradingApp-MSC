@@ -26,6 +26,14 @@ export default function Dashboard({ auth }: PageProps) {
     }
   };
 
+  const removeFavorite = (symbol: string) => {
+    setFavorites(favorites.filter(fav => fav !== symbol));
+  };
+
+  const sellAsset = (symbol: string) => {
+    setPurchased(purchased.filter(asset => asset.symbol !== symbol));
+  };
+
   return (
     <>
       <AuthenticatedLayout user={auth.user}>
@@ -42,9 +50,41 @@ export default function Dashboard({ auth }: PageProps) {
               </div>
               <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
                 {/* Additional Widget */}
+                <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
+              <h2 className="text-white text-lg">Favorites</h2>
+              <ul>
+                {favorites.map((symbol, index) => (
+                  <li key={index} className="text-red flex justify-between">
+                    {symbol}
+                    <button
+                      className="bg-red-500 p-2 rounded"
+                      onClick={() => removeFavorite(symbol)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
               </div>
               <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
                 {/* Additional Widget */}
+                <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
+              <h2 className="text-white text-lg">Assets</h2>
+              <ul>
+                {purchased.map((asset, index) => (
+                  <li key={index} className="text-white flex justify-between">
+                    {asset.symbol} - {asset.price}
+                    <button
+                      className="bg-red-500 p-2 rounded"
+                      onClick={() => sellAsset(asset.symbol)}
+                    >
+                      Sell
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
               </div>
               <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-1/3">
                 <HistoricalBars
@@ -53,6 +93,8 @@ export default function Dashboard({ auth }: PageProps) {
                 />
               </div>
             </div>
+
+
           </div>
         </div>
         <AlertsManager favorites={favorites} purchased={purchased} />

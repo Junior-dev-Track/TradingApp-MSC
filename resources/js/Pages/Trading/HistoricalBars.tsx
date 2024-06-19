@@ -16,20 +16,24 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
   // Convertir les données initiales
   const allData: BarData[] = [];
   if (barsData && barsData.original) {
-    Object.keys(barsData.original).forEach(symbol => {
-      barsData.original[symbol].forEach((entry: any) => {
-        allData.push({
-          symbol: symbol,
-          date: new Date(entry.t * 1000).toLocaleDateString(),
-          o: entry.o,
-          h: entry.h,
-          l: entry.l,
-          c: entry.c,
-          v: entry.v,
-          t: entry.t,
-          price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
+    const data = barsData.original;
+    Object.keys(data).forEach(symbol => {
+      const symbolData = data[symbol];
+      if (symbolData && Array.isArray(symbolData)) {
+        symbolData.forEach((entry: any) => {
+          allData.push({
+            symbol: symbol,
+            date: new Date(entry.t * 1000).toLocaleDateString(),
+            o: entry.o,
+            h: entry.h,
+            l: entry.l,
+            c: entry.c,
+            v: entry.v,
+            t: entry.t,
+            price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
+          });
         });
-      });
+      }
     });
   }
 

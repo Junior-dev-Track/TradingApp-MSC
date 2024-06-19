@@ -2,7 +2,6 @@ import React, { useState, PropsWithChildren, ReactNode } from 'react';
 import { Link } from '@inertiajs/react';
 import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
-import { FaBell } from 'react-icons/fa';
 import AlertsManager from '@/Pages/Auth/AlertsManager';
 
 export default function Authenticated({
@@ -10,6 +9,8 @@ export default function Authenticated({
   children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [purchased, setPurchased] = useState<{ symbol: string; price: number }[]>([]);
 
   return (
     <div className="min-h-screen bg-dark-blue">
@@ -49,9 +50,7 @@ export default function Authenticated({
             </div>
 
             {/* Notification Icon with React Icon */}
-            <button className="text-gray-400 hover:text-gray-500">
-              <FaBell className="h-6 w-6" />
-            </button>
+            <AlertsManager favorites={favorites} purchased={purchased} />
           </div>
         </nav>
       </header>
