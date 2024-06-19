@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { usePage } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
-import SearchBar from "@/Components/SearchBar";
-import { BarData } from '@/types/types';
+import SearchBar from "@/Components/SearchBar"; // Assurez-vous que le chemin est correct
 
-interface HistoricalBarsProps {
-  onAddFavorite: (symbol: string) => void;
-  onAddPurchase: (stock: BarData) => void;
+interface BarData {
+  symbol: string;
+  o: number;
+  h: number;
+  l: number;
+  c: number;
+  v: number;
+  date: string;
+  t: number;
 }
 
-const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
+const HistoricalBars = () => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
   const [filteredData, setFilteredData] = useState<BarData[]>([]);
 
@@ -26,8 +31,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
           l: entry.l,
           c: entry.c,
           v: entry.v,
-          t: entry.t,
-          price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
+          t: entry.t
         });
       });
     });
@@ -43,30 +47,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
       <h2>Historical Bars Data</h2>
       <SearchBar onSearch={handleSearch} />
       {filteredData.length > 0 ? (
-        <div>
-          <CombinedChart data={filteredData.map(entry => ({
-            t: entry.t!,
-            o: entry.o!,
-            h: entry.h!,
-            l: entry.l!,
-            c: entry.c!,
-            v: entry.v!
-          }))} />
-          <div className="mt-4">
-            <button
-              className="bg-blue-500 p-2 rounded mr-2"
-              onClick={() => onAddFavorite(filteredData[0].symbol)}
-            >
-              Add to Favorites
-            </button>
-            <button
-              className="bg-green-500 p-2 rounded"
-              onClick={() => onAddPurchase(filteredData[0])}
-            >
-              Buy
-            </button>
-          </div>
-        </div>
+        <CombinedChart data={filteredData} />
       ) : (
         <div>Aucune donnée historique disponible pour ce symbole.</div>
       )}
