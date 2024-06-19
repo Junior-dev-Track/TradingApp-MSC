@@ -43,7 +43,30 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
       <h2>Historical Bars Data</h2>
       <SearchBar onSearch={handleSearch} />
       {filteredData.length > 0 ? (
-        <CombinedChart data={filteredData} />
+        <div>
+          <CombinedChart data={filteredData.map(entry => ({
+            t: entry.t!,
+            o: entry.o!,
+            h: entry.h!,
+            l: entry.l!,
+            c: entry.c!,
+            v: entry.v!
+          }))} />
+          <div className="mt-4">
+            <button
+              className="bg-blue-500 p-2 rounded mr-2"
+              onClick={() => onAddFavorite(filteredData[0].symbol)}
+            >
+              Add to Favorites
+            </button>
+            <button
+              className="bg-green-500 p-2 rounded"
+              onClick={() => onAddPurchase(filteredData[0])}
+            >
+              Buy
+            </button>
+          </div>
+        </div>
       ) : (
         <div>No historical data available for this symbol.
         </div>
