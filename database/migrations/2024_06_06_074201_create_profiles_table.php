@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('address');
+            $table->string('phone');
+            $table->decimal('wallet', 8, 2)->default(0.00);
             $table->timestamps();
 
             $table->index('user_id');

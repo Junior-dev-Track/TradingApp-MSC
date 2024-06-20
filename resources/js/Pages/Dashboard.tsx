@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import PortfolioSummary from './Auth/PortfolioSummary';
 import HistoricalBars from './Trading/HistoricalBars';
+import TradingWallet from './Auth/TradingWallet';
 import Icons from '@/Pages/Auth/Icons';
 import AlertsManager from './Auth/AlertsManager';
 import React, { useState } from 'react';
