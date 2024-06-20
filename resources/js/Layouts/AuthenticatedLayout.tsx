@@ -36,12 +36,6 @@ export default function Authenticated({
                             </NavLink> {/* classname hover bg dark blue ne fonctionne pas*/}
                         </div>
 
-            {/* Notification Icon with React Icon */}
-            <button className="text-gray-400 hover:text-gray-500">
-              <FaBell className="h-6 w-6" />
-            </button>
-            {/* Notification Icon with React Icon */}
-            <AlertsManager favorites={favorites} purchased={purchased} />
           </div>
         </nav>
       </header>
