@@ -3,12 +3,12 @@ import { Link } from '@inertiajs/react';
 import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
 import AlertsManager from '@/Pages/Auth/AlertsManager';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 
 export default function Authenticated({
   user,
   children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [purchased, setPurchased] = useState<{ symbol: string; price: number }[]>([]);
 
@@ -17,12 +17,9 @@ export default function Authenticated({
       <header>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            {/* Logo and site name */}
             <Link href="/" className="flex items-center space-x-2">
               <span className="text-white font-semibold text-lg">Trade</span>
             </Link>
-
-            {/* Center navigation links */}
             <div className="flex items-center space-x-20 text-white">
               <NavLink
                 className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white"
@@ -48,9 +45,6 @@ export default function Authenticated({
                 Log Out
               </NavLink>
             </div>
-
-            {/* Notification Icon with React Icon */}
-            <AlertsManager favorites={favorites} purchased={purchased} />
           </div>
         </nav>
       </header>

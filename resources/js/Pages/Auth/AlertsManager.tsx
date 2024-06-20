@@ -38,13 +38,22 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({ favorites, purchased }) =
   }, [favorites, purchased]);
 
   const handleBellClick = () => {
-    Inertia.visit('/notifications', { data: { notifications } });
+    Inertia.visit('/notifications', {
+      data: { notifications }
+    });
   };
 
   return (
-    <button onClick={handleBellClick} className="text-gray-400 hover:text-gray-500">
-      <FaBell className="h-6 w-6" />
-    </button>
+    <div className="relative">
+      <button onClick={handleBellClick} className="text-gray-400 hover:text-gray-500">
+        <FaBell className="h-6 w-6" />
+        {notifications.length > 0 && (
+          <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0 right-0">
+            {notifications.length}
+          </span>
+        )}
+      </button>
+    </div>
   );
 };
 

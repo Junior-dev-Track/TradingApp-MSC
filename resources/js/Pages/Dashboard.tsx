@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { BarData } from '@/types/types';
 
 
+
 export default function Dashboard({ auth }: PageProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [purchased, setPurchased] = useState<BarData[]>([]);
@@ -100,6 +101,7 @@ export default function Dashboard({ auth }: PageProps) {
         </div>
         <AlertsManager favorites={favorites} purchased={purchased} />
       </AuthenticatedLayout>
+
     </>
   );
 }
