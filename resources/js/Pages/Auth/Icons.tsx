@@ -29,7 +29,7 @@ const Icons = () => {
 
     return (
         <div className="flex flex-col mt-8 space-y-4 text-gray-400">
-            <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="App Store" />
+            <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
             <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
             <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
             <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />

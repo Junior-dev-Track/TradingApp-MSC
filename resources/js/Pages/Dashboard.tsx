@@ -53,17 +53,17 @@ export default function Dashboard({ auth }: PageProps) {
       <Head title="Dashboard" />
       <PortfolioSummary />
       <div className="flex">
-        <div className="w-1/5 flex justify-center min-h-screen">
+        <div className="w-1/6 flex justify-center min-h-screen">
           <Icons />
         </div>
-        <div className="w-5/7 py-1 bg-gray-800 min-h-screen p-1 w-9/12 mr-16">
+        <div className="">
           <div className="grid grid-cols-3 grid-rows-2 gap-4 h-1/3">
-            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-1">
               {/* TradingWallet */}
             </div>
             <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
               {/* Additional Widget */}
-              <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
+              <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
                   {favorites.map((symbol, index) => (
@@ -80,7 +80,7 @@ export default function Dashboard({ auth }: PageProps) {
                 </ul>
               </div>
             </div>
-            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-1">
               {/* Additional Widget */}
               <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Assets</h2>
