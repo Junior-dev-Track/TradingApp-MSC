@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaBell } from 'react-icons/fa';
+import { Inertia } from '@inertiajs/inertia';
 
 interface Stock {
   symbol: string;
@@ -36,17 +37,14 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({ favorites, purchased }) =
     return () => clearInterval(interval);
   }, [favorites, purchased]);
 
+  const handleBellClick = () => {
+    Inertia.visit('/notifications', { data: { notifications } });
+  };
+
   return (
-    <div>
-      <div className="notifications mt-4">
-        <h2>Notifications</h2>
-        {notifications.map((notification, index) => (
-          <div key={index} className="p-2 mb-2 bg-yellow-200 rounded">
-            {notification}
-          </div>
-        ))}
-      </div>
-    </div>
+    <button onClick={handleBellClick} className="text-gray-400 hover:text-gray-500">
+      <FaBell className="h-6 w-6" />
+    </button>
   );
 };
 
