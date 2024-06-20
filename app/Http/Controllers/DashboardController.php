@@ -17,6 +17,8 @@ class DashboardController extends Controller
     {
         $this->tradingService = $tradingService;
     }
+
+
     public function index()
     {
         $barsData = $this->tradingService->getHistoricalBars();
