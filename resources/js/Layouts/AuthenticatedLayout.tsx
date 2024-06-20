@@ -1,14 +1,16 @@
-import { useState, PropsWithChildren, ReactNode } from "react";
-import { Link } from "@inertiajs/react";
-import NavLink from "@/Components/NavLink";
-import { User } from "@/types";
-import { FaBell } from 'react-icons/fa'; // Importation de l'icône de notification
+import React, { useState, PropsWithChildren, ReactNode } from 'react';
+import { Link } from '@inertiajs/react';
+import NavLink from '@/Components/NavLink';
+import { User } from '@/types';
+import AlertsManager from '@/Pages/Auth/AlertsManager';
 
 export default function Authenticated({
     user,
     children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [purchased, setPurchased] = useState<{ symbol: string; price: number }[]>([]);
 
     return (
         <div className="min-h-screen bg-dark-blue ">
@@ -33,15 +35,15 @@ export default function Authenticated({
                             </NavLink> {/* classname hover bg dark blue ne fonctionne pas*/}
                         </div>
 
-                        {/* Notification Icon with React Icon */}
-                        <button className="text-gray-400 hover:text-gray-500">
-                            <FaBell className="h-6 w-6"/>
-                        </button>
-                    </div>
-                </nav>
-            </header>
-            <main>{children}</main>
-        </div>
-    );
+            {/* Notification Icon with React Icon */}
+            <AlertsManager favorites={favorites} purchased={purchased} />
+          </div>
+        </nav>
+      </header>
+      <main>
+        {children}
+      </main>
+    </div>
+  );
 }
 

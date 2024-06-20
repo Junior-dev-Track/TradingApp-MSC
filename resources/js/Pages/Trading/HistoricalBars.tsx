@@ -22,11 +22,11 @@ const HistoricalBars = () => {
   const allData: BarData[] = [];
 
   if (barsData && barsData.original) {
-    Object.keys(barsData.original).forEach(symbol => {
-      const data = barsData.original[symbol];
-
-      if (Array.isArray(data)) {
-        data.forEach((entry: any) => {
+    const data = barsData.original;
+    Object.keys(data).forEach(symbol => {
+      const symbolData = data[symbol];
+      if (symbolData && Array.isArray(symbolData)) {
+        symbolData.forEach((entry: any) => {
           allData.push({
             symbol: symbol,
             date: new Date(entry.t * 1000).toLocaleDateString(),
@@ -35,11 +35,10 @@ const HistoricalBars = () => {
             l: entry.l,
             c: entry.c,
             v: entry.v,
-            t: entry.t
+            t: entry.t,
+            price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
           });
         });
-      } else {
-        console.error(`Expected array for ${symbol}, but got ${typeof data}`);
       }
     });
   }
