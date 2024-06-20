@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { usePage } from "@inertiajs/react";
-import CombinedChart from "@/Pages/Auth/CombinedChart";
-import SearchBar from "@/Components/SearchBar";
+import React, { useState, useEffect } from 'react';
+import { usePage } from '@inertiajs/react';
+import CombinedChart from '@/Pages/Auth/CombinedChart';
+import SearchBar from '@/Components/SearchBar';
 import { BarData } from '@/types/types';
 
 interface HistoricalBarsProps {
@@ -9,12 +9,12 @@ interface HistoricalBarsProps {
   onAddPurchase: (stock: BarData) => void;
 }
 
-
-
 const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
-  const [filteredData, setFilteredData] = useState<BarData[]>([]);
-  console.log(barsData);
+  const [filteredData, setFilteredData] = useState<BarData[]>(() => {
+    const savedData = localStorage.getItem('filteredData');
+    return savedData ? JSON.parse(savedData) : [];
+  });
 
   // Convertir les données initiales
   const allData: BarData[] = [];
@@ -44,6 +44,10 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
     const data = allData.filter(entry => entry.symbol === symbol);
     setFilteredData(data);
   };
+
+  useEffect(() => {
+    localStorage.setItem('filteredData', JSON.stringify(filteredData));
+  }, [filteredData]);
 
   return (
     <div className="text-white">
