@@ -9,9 +9,12 @@ interface HistoricalBarsProps {
   onAddPurchase: (stock: BarData) => void;
 }
 
+
+
 const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
   const [filteredData, setFilteredData] = useState<BarData[]>([]);
+  console.log(barsData);
 
   // Convertir les données initiales
   const allData: BarData[] = [];
