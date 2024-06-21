@@ -51,17 +51,20 @@ export default function Dashboard({ auth }: PageProps) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Dashboard" />
-      <PortfolioSummary />
+      <div className='mb-10 mt-10'>
+        <PortfolioSummary />
+      </div>
+
       <div className="flex">
-        <div className="w-1/6 flex justify-center min-h-screen">
+        <div className="w-1/6 flex justify-center">
           <Icons />
         </div>
-        <div className="">
-          <div className="grid grid-cols-3 grid-rows-2 gap-4 h-1/3">
-            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-1">
+        <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
+          <div className="grid grid-cols-3 grid-rows-2 gap-4">
+            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-3">
               {/* TradingWallet */}
             </div>
-            <div className="bg-gray-700 p-4 rounded-lg shadow col-span-1">
+            <div className="bg-gray-700 p-10 rounded-lg shadow col-span-2">
               {/* Additional Widget */}
               <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Favorites</h2>
@@ -99,7 +102,7 @@ export default function Dashboard({ auth }: PageProps) {
                 </ul>
               </div>
             </div>
-            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-1/3">
+            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
               <HistoricalBars
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
