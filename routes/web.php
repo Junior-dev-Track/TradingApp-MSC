@@ -47,8 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
 
     Route::get('/trade/{symbol}', [TradeController::class, 'show'])->name('trade');
-    Route::post('/trade/{symbol}/buy', [TradeController::class, 'store'])->name('trade.store');
-    Route::post('/trade/{symbol}/sell', [TradeController::class, 'update'])->name('trade.update');
+    Route::post('/trade/{symbol}/buy', [TradeController::class, 'createOrAdd'])->name('trade.buy');
+    Route::post('/trade/{symbol}/sell', [TradeController::class, 'sellSomeOrSellAll'])->name('trade.sell');
 });
 
 require __DIR__ . '/auth.php';

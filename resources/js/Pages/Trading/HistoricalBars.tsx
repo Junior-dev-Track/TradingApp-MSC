@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { usePage } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
-import SearchBar from "@/Components/SearchBar"; // Assurez-vous que le chemin est correct
+import SearchBar from "@/Components/SearchBar";
+import { BarData } from '@/types/types';
 
-interface BarData {
-  symbol: string;
-  o: number;
-  h: number;
-  l: number;
-  c: number;
-  v: number;
-  date: string;
-  t: number;
+interface HistoricalBarsProps {
+  onAddFavorite: (symbol: string) => void;
+  onAddPurchase: (stock: BarData) => void;
 }
 
-const HistoricalBars = () => {
+
+
+const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
   const [filteredData, setFilteredData] = useState<BarData[]>([]);
+  console.log(barsData);
 
   // Convertir les données initiales
   const allData: BarData[] = [];

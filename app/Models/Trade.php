@@ -18,7 +18,14 @@ class Trade extends Model
         'open',
     ];
 
+    protected $hidden = [
+        'profile_id',
+    ];
 
+    public static function getOpenWires($profileId, $symbol)
+    {
+        return self::where('profile_id', $profileId)->where('symbol', $symbol)->where('open', true)->get();
+    }
 
     public function profile()
     {

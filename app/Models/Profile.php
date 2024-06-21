@@ -27,6 +27,7 @@ class Profile extends Model
      * @var array
      */
     protected $hidden = [
+        'user_id',
         'first_name',
         'last_name',
         'address',
@@ -51,5 +52,10 @@ class Profile extends Model
     public function trades()
     {
         return $this->hasMany(Trade::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

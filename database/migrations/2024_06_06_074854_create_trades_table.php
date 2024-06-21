@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('close_price', 8, 2)->nullable();
             $table->timestamp('open_datetime')->useCurrent();
             $table->timestamp('close_datetime')->nullable();
-            $table->boolean('open')->default(false);
+            $table->boolean('open')->default(true);
             $table->timestamp('updated_at')->useCurrent();
 
             // Indexes

@@ -2,6 +2,7 @@ import React, { useState, PropsWithChildren, ReactNode } from 'react';
 import { Link } from '@inertiajs/react';
 import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
+import { FaBell } from 'react-icons/fa';
 import AlertsManager from '@/Pages/Auth/AlertsManager';
 
 export default function Authenticated({

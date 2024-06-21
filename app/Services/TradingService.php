@@ -24,6 +24,22 @@ class TradingService
         return response()->json($all_data);
     }
 
+    public function getHistoricalbarsBySymbol($symbol)
+    {
+        $params = [
+            'symbols' => $symbol,
+            'timeframe' => '1Min',
+            'limit' => 1000,
+            'adjustment' => 'raw',
+            'feed' => 'iex',
+            'sort' => 'asc'
+        ];
+
+        $symbol_data = $this->fetchData($params);
+
+        return response()->json($symbol_data);
+    }
+
     private function fetchData($params)
     {
         try {

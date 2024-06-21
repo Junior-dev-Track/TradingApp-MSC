@@ -11,7 +11,7 @@ class NotificationsController extends Controller
     {
         $notifications = $request->input('notifications', []);
 
-        return Inertia::render('Notifications', [
+        return Inertia::render('Auth/Notifications', [
             'notifications' => $notifications,
         ]);
     }

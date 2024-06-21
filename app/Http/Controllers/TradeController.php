@@ -3,55 +3,149 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+
 use App\Models\Trade;
-use Illuminate\Http\RedirectResponse;
+
+use App\Services\TradingService;
+
+use Inertia\Inertia;
+use Inertia\Response;
 
 class TradeController extends Controller
 {
-    public function store(Request $request, $symbol): RedirectResponse
+    protected $tradingService;
+
+    public function __construct(TradingService $tradingService)
     {
+        $this->tradingService = $tradingService;
+    }
+
+    public function show($symbol): Response
+    {
+        return Inertia::render('Trade/Trade', [
+            'symbol' => $symbol
+        ]);
+    }
+
+    public function createOrAdd(Request $request, $symbol): RedirectResponse
+    {
+        $user = Auth::user();
+        $profile = $user->profile;
+        $openPrice = $this->tradingService->getHistoricalbarsBySymbol($symbol);
+
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
             'open_price' => 'required|numeric',
-            'open_datetime' => 'required|date',
-            'open' => 'required|boolean',
         ];
 
-        $customMessages = [
-            'quantity.min' => 'The quantity must be at least :min.',
-        ];
+        $validator = Validator::make($request->all(), $rules);
 
-        $request->validate($rules, $customMessages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        $symbolRules = [
-            'symbol' => 'required|string|max:10',
-        ];
+        $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
 
-        $symbolData = ['symbol' => $symbol];
-        Validator::make($symbolData, $symbolRules)->validate();
+        if ($existingOpenTrade->count() == 0) {
+            if ($request->input('quantity') * $openPrice > $profile->wallet) {
+                return redirect()->back()->with('error', 'Insufficient funds');
+            }
 
-        $user = Auth::user();
-        $profile = $user->profile;
-        $profile_id = $profile->id;
+            $this->create($request, $openPrice, $profile, $symbol);
+        } else {
+            if (($request->input('quantity') * $openPrice) > ($profile->wallet)) {
+                return redirect()->back()->with('error', 'Insufficient funds');
+            }
 
-        Trade::create([
-            'profile_id' => $profile_id,
-            'symbol' => $symbol,
-            'quantity' => $request->input('quantity'),
-            'open_price' => $openPrice,
-            'open_datetime' => $openDatetime,
-            'open' => true
-        ]);
-
+            $this->add($request, $openPrice, $existingOpenTrade, $profile);
+        }
 
         return redirect()->back()->with('success', 'Trade created successfully');
     }
 
-    public function update(Request $request): RedirectResponse
+    public function sellSomeOrSellAll(Request $request, $symbol): RedirectResponse
     {
-        $rules = ['close_price' => 'nullable|numeric', 'close_datetime' => 'nullable|date',];
-        $request->validate($rules);
+        $user = Auth::user();
+        $profile = $user->profile;
+        $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
+        $openPrice = $this->tradingService->getHistoricalbarsBySymbol($symbol);
+
+        $rules = [
+            'quantity' => 'required|numeric|min:0.000000001',
+            'open_price' => 'required|numeric',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->input('quantity') > $existingOpenTrade->quantity) {
+            return redirect()->back()->with('error', 'You cannot sell more than you have');
+        }
+
+        if ($request->input('quantity') == $existingOpenTrade->quantity) {
+            $this->sellAll($request, $openPrice, $existingOpenTrade, $profile);
+        } else {
+            $this->sellSome($request, $openPrice, $existingOpenTrade, $profile);
+        }
+
+        return redirect()->back()->with('success', 'Trade sold successfully');
+    }
+
+    protected function create(Request $request, $openPrice, $profile, $symbol): void
+    {
+        Trade::create([
+            'profile_id' => $profile->id,
+            'symbol' => $symbol,
+            'quantity' => $request->input('quantity'),
+            'open_price' => $request->input('open_price'),
+        ]);
+
+        $profile->update([
+            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
+        ]);
+    }
+
+    protected function add(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    {
+        $newQuantity = $existingOpenTrade->quantity + $request->input('quantity');
+
+        $existingOpenTrade->update(['quantity' => $newQuantity]);
+
+        $profile->update([
+            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
+        ]);
+    }
+
+    protected function sellAll(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    {
+        $existingOpenTrade->update([
+            'close_price' => $request->input('open_price'),
+            'close_datetime' => now(),
+            'open' => false,
+        ]);
+
+        $profile->update([
+            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
+        ]);
+    }
+
+    protected function sellSome(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    {
+        $newQuantity = $existingOpenTrade->quantity - $request->input('quantity');
+
+        $existingOpenTrade->update([
+            'quantity' => $newQuantity,
+        ]);
+
+        $profile->update([
+            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
+        ]);
     }
 }
