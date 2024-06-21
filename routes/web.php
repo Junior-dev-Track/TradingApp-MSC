@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
 
-    Route::get('/historical-bars', [APIFetch::class, 'getHistoricalbars']);
+
 
     Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
     Route::get('/wallet/deposit', [WalletController::class, 'createDepositForm'])->name('wallet.createDepositForm');

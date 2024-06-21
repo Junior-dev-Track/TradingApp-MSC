@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
-import PortfolioSummary from './Auth/PortfolioSummary';
-import HistoricalBars from './Trading/HistoricalBars';
-import Icons from '@/Pages/Auth/Icons';
-import AlertsManager from './Auth/AlertsManager';
-import { BarData } from '@/types/types';
+import React, { useState, useEffect } from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import { PageProps } from "@/types";
+import PortfolioSummary from "./Auth/PortfolioSummary";
+import HistoricalBars from "./Trading/HistoricalBars";
+import Icons from "@/Pages/Auth/Icons";
+import AlertsManager from "./Auth/AlertsManager";
+import { BarData } from "@/types/types";
 
 export default function Dashboard({ auth }: PageProps) {
-  const [favorites, setFavorites] = useState<string[]>(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
-  const [purchased, setPurchased] = useState<BarData[]>(() => {
-    const savedPurchased = localStorage.getItem('purchased');
-    return savedPurchased ? JSON.parse(savedPurchased) : [];
-  });
+    const [favorites, setFavorites] = useState<string[]>(() => {
+        const savedFavorites = localStorage.getItem("favorites");
+        return savedFavorites ? JSON.parse(savedFavorites) : [];
+    });
+    const [purchased, setPurchased] = useState<BarData[]>(() => {
+        const savedPurchased = localStorage.getItem("purchased");
+        return savedPurchased ? JSON.parse(savedPurchased) : [];
+    });
 
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+    }, [favorites]);
 
-  useEffect(() => {
-    localStorage.setItem('purchased', JSON.stringify(purchased));
-  }, [purchased]);
+    useEffect(() => {
+        localStorage.setItem("purchased", JSON.stringify(purchased));
+    }, [purchased]);
 
-  const addFavorite = (symbol: string) => {
-    if (!favorites.includes(symbol)) {
-      setFavorites([...favorites, symbol]);
-      alert(`${symbol} has been added to favorites.`);
-    }
-  };
+    const addFavorite = (symbol: string) => {
+        if (!favorites.includes(symbol)) {
+            setFavorites([...favorites, symbol]);
+            alert(`${symbol} has been added to favorites.`);
+        }
+    };
 
-  const addPurchase = (stock: BarData) => {
-    if (!purchased.some(p => p.symbol === stock.symbol)) {
-      setPurchased([...purchased, stock]);
-      alert(`${stock.symbol} has been purchased.`);
-    }
-  };
+    const addPurchase = (stock: BarData) => {
+        if (!purchased.some((p) => p.symbol === stock.symbol)) {
+            setPurchased([...purchased, stock]);
+            alert(`${stock.symbol} has been purchased.`);
+        }
+    };
 
-  const removeFavorite = (symbol: string) => {
-    setFavorites(favorites.filter(fav => fav !== symbol));
-  };
+    const removeFavorite = (symbol: string) => {
+        setFavorites(favorites.filter((fav) => fav !== symbol));
+    };
 
-  const sellAsset = (symbol: string) => {
-    setPurchased(purchased.filter(asset => asset.symbol !== symbol));
-  };
+    const sellAsset = (symbol: string) => {
+        setPurchased(purchased.filter((asset) => asset.symbol !== symbol));
+    };
 
-  return (
-    <AuthenticatedLayout user={auth.user}>
-      <Head title="Dashboard" />
-      <div className='mb-10 mt-10'>
-        <PortfolioSummary />
-      </div>
+    return (
+        <AuthenticatedLayout user={auth.user}>
+            <Head title="Dashboard" />
+            <div className="mb-10 mt-10">
+                <PortfolioSummary />
+            </div>
 
       <div className="flex">
         <div className="w-1/6 flex justify-center">
