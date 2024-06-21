@@ -6,6 +6,7 @@ use App\Http\Controllers\TradeController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WireController;
 use App\Http\Controllers\NotificationsController; // Add this line
+use App\Services\APIFetch;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -37,8 +38,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications');
 
-
-    Route::get('/historical-bars', [TradingService::class, 'getHistoricalbars']);
+    Route::get('/historical-bars', [APIFetch::class, 'getHistoricalbars']);
 
     Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
     Route::get('/wallet/deposit', [WalletController::class, 'createDepositForm'])->name('wallet.createDepositForm');

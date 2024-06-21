@@ -7,21 +7,21 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-use App\Services\TradingService;
+use App\Services\APIFetch;
 
 class DashboardController extends Controller
 {
-    protected $tradingService;
+    protected $apiFetch;
 
-    public function __construct(TradingService $tradingService)
+    public function __construct(APIFetch $apiFetch)
     {
-        $this->tradingService = $tradingService;
+        $this->apiFetch = $apiFetch;
     }
 
 
     public function index()
     {
-        $barsData = $this->tradingService->getHistoricalBars();
+        $barsData = $this->apiFetch->getHistoricalBars();
 
         return Inertia::render('Dashboard', ['barsData' => $barsData]);
     }
