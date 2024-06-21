@@ -4,12 +4,12 @@ import NavLink from '@/Components/NavLink';
 import { User } from '@/types';
 import { FaBell } from 'react-icons/fa';
 import AlertsManager from '@/Pages/Auth/AlertsManager';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 
 export default function Authenticated({
     user,
     children,
 }: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-  const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [purchased, setPurchased] = useState<{ symbol: string; price: number }[]>([]);
 
