@@ -35,6 +35,14 @@ export default function Authenticated({
                             >
                                 Dashboard
                             </NavLink>
+                            {/* CREER UNE ROUTE (CYRILLE)
+                            <NavLink
+                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
+                                href={route("guide")}
+                                active={route().current("guide")}
+                            >
+                                Guide
+                            </NavLink> */}
                             <NavLink
                                 className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
                                 href={route("profile.edit")}
@@ -60,3 +68,4 @@ export default function Authenticated({
         </div>
     );
 }
+
