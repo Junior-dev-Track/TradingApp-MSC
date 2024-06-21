@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Trade;
 
-use App\Services\TradingService;
+use App\Services\APIFetch;
 
 use Inertia\Inertia;
 use Inertia\Response;
 
 class TradeController extends Controller
 {
-    protected $tradingService;
+    protected $apiFetch;
 
-    public function __construct(TradingService $tradingService)
+    public function __construct(APIFetch $apiFetch)
     {
-        $this->tradingService = $tradingService;
+        $this->apiFetch = $apiFetch;
     }
 
     public function show($symbol): Response
@@ -35,7 +35,7 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $openPrice = $this->tradingService->getHistoricalbarsBySymbol($symbol);
+        $openPrice = $this->apiFetch->getHistoricalbarsBySymbol($symbol);
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
@@ -72,7 +72,7 @@ class TradeController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
         $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
-        $openPrice = $this->tradingService->getHistoricalbarsBySymbol($symbol);
+        $openPrice = $this->apiFetch->getHistoricalbarsBySymbol($symbol);
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
