@@ -55,64 +55,63 @@ export default function Dashboard({ auth }: PageProps) {
                 <PortfolioSummary />
             </div>
 
-      <div className="flex">
-        <div className="w-1/6 flex justify-center">
-          <Icons />
-        </div>
-        <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
-          <div className="grid grid-cols-3 grid-rows-2 gap-4">
-            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-3">
-
-              <div className="">
-                <h2 className="text-white text-lg">Assets</h2>
-                <ul>
-                  {purchased.map((asset, index) => (
-                    <li key={index} className="text-white flex justify-between">
-                      {asset.symbol} - {asset.price}
-                      <button
-                        className="bg-red-500 p-2 rounded"
-                        onClick={() => sellAsset(asset.symbol)}
-                      >
-                        Sell
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="flex">
+                <div className="w-1/6 flex justify-center">
+                    <Icons />
+                </div>
+                <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                            {/* TradingWallet */}
+                        </div>
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                            {/* Additional Widget */}
+                            <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
+                                <h2 className="text-white text-lg">Favorites</h2>
+                                <ul>
+                                    {favorites.map((symbol, index) => (
+                                        <li key={index} className="text-red flex justify-between">
+                                            {symbol}
+                                            <button
+                                                className="bg-red-500 p-2 rounded"
+                                                onClick={() => removeFavorite(symbol)}
+                                            >
+                                                Remove
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                            {/* Additional Widget */}
+                            <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
+                                <h2 className="text-white text-lg">Assets</h2>
+                                <ul>
+                                    {purchased.map((asset, index) => (
+                                        <li key={index} className="text-white flex justify-between">
+                                            {asset.symbol} - {asset.price}
+                                            <button
+                                                className="bg-red-500 p-2 rounded"
+                                                onClick={() => sellAsset(asset.symbol)}
+                                            >
+                                                Sell
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
+                            <HistoricalBars
+                                onAddFavorite={addFavorite}
+                                onAddPurchase={addPurchase}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-2">
-              {/* Additional Widget */}
-              <div className="">
-                <h2 className="text-white text-lg">Favorites</h2>
-                <ul>
-                  {favorites.map((symbol, index) => (
-                    <li key={index} className="text-red flex justify-between">
-                      {symbol}
-                      <button
-                        className="bg-red-500 p-2 rounded"
-                        onClick={() => removeFavorite(symbol)}
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow col-span-1">
-              {/* Additional Widget */}
- {/* TradingWallet */}
-            </div>
-            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
-              <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <AlertsManager favorites={favorites} purchased={purchased} />
-    </AuthenticatedLayout>
-  );
+            <AlertsManager favorites={favorites} purchased={purchased} />
+        </AuthenticatedLayout>
+    );
 }
