@@ -20,7 +20,7 @@ export default function Authenticated({
             <header>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <Link href="/" className="flex items-center space-x-2">
+                        <Link href={route("dashboard")}  className="flex items-center space-x-2">
                             <span className="text-white font-semibold text-lg">
                                 Trade
                             </span>
