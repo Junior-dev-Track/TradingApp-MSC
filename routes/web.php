@@ -5,13 +5,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TradeController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WireController;
-use App\Http\Controllers\NotificationsController; // Add this line
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\GuideController;
+
 use App\Services\APIFetch;
+use App\Services\TradingService;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
 use Inertia\Inertia;
-use App\Services\TradingService;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,9 +52,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
 
+
     Route::get('/trade/{symbol}', [TradeController::class, 'show'])->name('trade');
     Route::post('/trade/{symbol}/buy', [TradeController::class, 'createOrAdd'])->name('trade.buy');
     Route::post('/trade/{symbol}/sell', [TradeController::class, 'sellSomeOrSellAll'])->name('trade.sell');
+
+    Route::get('/guide', [GuideController::class, 'index'])->name('guide');
 });
+
 
 require __DIR__ . '/auth.php';
