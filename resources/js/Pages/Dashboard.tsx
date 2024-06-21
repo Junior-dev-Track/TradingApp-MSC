@@ -1,11 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import PortfolioDistribution from '@/Pages/Auth/PortfolioDistribution';
 import PortfolioSummary from './Auth/PortfolioSummary';
 import HistoricalBars from './Trading/HistoricalBars';
 import TradingWallet from './Auth/TradingWallet';
 import Icons from '@/Pages/Auth/Icons';
+import AlertsManager from './Auth/AlertsManager';
+import React, { useState } from 'react';
+import { BarData } from '@/types/types';
 
 export default function Dashboard({ auth }: PageProps) {
   const [favorites, setFavorites] = useState<string[]>([]);
