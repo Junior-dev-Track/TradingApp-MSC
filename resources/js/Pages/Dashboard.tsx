@@ -102,7 +102,7 @@ export default function Dashboard({ auth }: PageProps) {
                 </ul>
               </div>
             </div>
-            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow h-1/3">
+            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
               <HistoricalBars
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}

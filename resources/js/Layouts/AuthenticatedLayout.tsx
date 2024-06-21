@@ -35,9 +35,6 @@ export default function Authenticated({
                                 Log Out
                             </NavLink> {/* classname hover bg dark blue ne fonctionne pas*/}
                         </div>
-
-            {/* Notification Icon with React Icon */}
-            <AlertsManager favorites={favorites} purchased={purchased} />
           </div>
         </nav>
       </header>

@@ -18,13 +18,12 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
 
   // Convertir les données initiales
   const allData: BarData[] = [];
-
   if (barsData && barsData.original) {
-    Object.keys(barsData.original).forEach(symbol => {
-      const data = barsData.original[symbol];
-
-      if (Array.isArray(data)) {
-        data.forEach((entry: any) => {
+    const data = barsData.original;
+    Object.keys(data).forEach(symbol => {
+      const symbolData = data[symbol];
+      if (symbolData && Array.isArray(symbolData)) {
+        symbolData.forEach((entry: any) => {
           allData.push({
             symbol: symbol,
             date: new Date(entry.t * 1000).toLocaleDateString(),
@@ -33,13 +32,10 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
             l: entry.l,
             c: entry.c,
             v: entry.v,
-
-            t: entry.t
+            t: entry.t,
+            price: entry.c // Utilisez le prix de clôture comme prix pour l'achat
           });
         });
-      } else {
-        console.error(`Expected array for ${symbol}, but got ${typeof data}`);
-
       }
     });
   }
@@ -52,15 +48,37 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
   useEffect(() => {
     localStorage.setItem('filteredData', JSON.stringify(filteredData));
   }, [filteredData]);
-
-  return (
+return (
     <div className="text-white">
       <h2>Historical Bars Data</h2>
       <SearchBar onSearch={handleSearch} />
       {filteredData.length > 0 ? (
-        <CombinedChart data={filteredData} />
+        <div>
+          <CombinedChart data={filteredData.map(entry => ({
+            t: entry.t!,
+            o: entry.o!,
+            h: entry.h!,
+            l: entry.l!,
+            c: entry.c!,
+            v: entry.v!
+          }))} />
+          <div className="mt-4">
+            <button
+              className="bg-blue-500 p-2 rounded mr-2"
+              onClick={() => onAddFavorite(filteredData[0].symbol)}
+            >
+              Add to Favorites
+            </button>
+            <button
+              className="bg-green-500 p-2 rounded"
+              onClick={() => onAddPurchase(filteredData[0])}
+            >
+              Buy
+            </button>
+          </div>
+        </div>
       ) : (
-        <div>No historical data available for this symbol.</div>
+        <div>Aucune donnée historique disponible pour ce symbole.</div>
       )}
     </div>
   );
