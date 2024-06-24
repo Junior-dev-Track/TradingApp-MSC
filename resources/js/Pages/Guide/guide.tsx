@@ -101,6 +101,58 @@ const Guide: React.FC = () => {
                     </ul>
                 </>
             )
+        },         {
+            question: "What is day trading?",
+            answer: (
+                <p>Day trading is a style where the trader primarily holds positions for the day, aiming to avoid movements or analyses made
+                     by other traders after the markets close. It is an advanced style practiced by experts or traders with an intermediate
+                     level. It is not suitable for beginners. The potential gains are significant, but the losses can be equally substantial
+                     if not mastered. The stress level is also high. Day trading requires great concentration and a lot of time to trade,
+                     which can amount to several hours a day or even the entire day (until the markets close).</p>
+            )
+        },
+        {
+            question: "What is swing trading?",
+            answer: (
+                <p>Swing trading is a trading style where the operator, known as a swing trader, attempts to generate short to medium-term
+                    gains in the stock market or other financial instruments. The holding period for financial products ranges from a few
+                    days to several weeks, thus termed short to medium-term investment. Swing traders primarily use technical analysis to
+                    identify opportunities. They may also use fundamental analysis to complement trend and price pattern analysis, which they
+                     predominantly analyze through technical analysis. Economic and political announcements can also be utilized for swing
+                     trading.</p>
+            )
+        },
+        {
+            question: "What equipment is needed for trading?",
+            answer: (
+                <p>Trading equipment is an important factor for the trader's working comfort. As seen in Hollywood movies about trading, the
+                    trader is often surrounded by specific equipment, characterized mainly by multiple screens. Indeed, there is a lot of
+                    data to consider for proper trading, and analyzing it on a single screen is highly time-consuming, impacting the trader's
+                     performance. Inadequate equipment will frustrate the market operator, who will constantly juggle numerous tabs on their
+                      browser or software to find the necessary trading information, potentially missing opportunities. For more information,
+                       follow this article: What equipment is needed for trading?</p>
+            )
+        },
+        {
+            question: "What software is used for trading?",
+            answer: (
+                <p>To trade, you need software, an application, or a website. It can be called various names, but it remains an access
+                    interface to financial markets, connecting to access stock prices and graphical analysis interfaces that allow viewing
+                    prices by adding indicators and signals. These help the trader position themselves effectively in the stock markets by
+                    buying or selling a financial instrument: stock, bond, warrant, etc. For more information, follow this article: Complete
+                    guide to trading software in 2024.</p>
+            )
+        },
+        {
+            question: "What is leverage in trading?",
+            answer: (
+                <p>Leverage can be summarized as a multiplier effect that increases exposure. For example, you can replace €10 with €100
+                    and thus buy €100 worth of shares with only €10 in the account. In case of a gain, the operation is very profitable,
+                    but conversely, if there is a loss, the cost can be steep. Where does the missing money come from to position yourself
+                    in the markets? The online broker will place the remaining money instead. In case of loss, the lost money will be owed
+                    to the broker. The practice is considered dangerous because it can exceed the initial deposit amount, thereby creating
+                    debt.</p>
+            )
         },
         {
             question: "What is a limit order?",
@@ -115,7 +167,8 @@ const Guide: React.FC = () => {
             answer: (
                     <p>
                     A stop-loss is an automatic order that limits the potential losses of an open position. It is placed at a specific price
-                    level, and if the market reaches this level, the stop-loss order is executed, closing the position to limit the losses.</p>
+                    level, and if the market reaches this level, the stop-loss order is executed, closing the position to limit the losses.
+                    </p>
             )
         },
         {
@@ -154,7 +207,9 @@ const Guide: React.FC = () => {
                 <section className="mb-8">
                     <div className="border border-gray-800 rounded shadow-lg p-6">
                         <h2 className="text-2xl font-semibold mb-4">Conclusion</h2>
-                        <p>Trading can be an exciting and potentially lucrative activity, but it carries risks. By following this guide, you will be better prepared to navigate the world of trading. Use our platform responsibly, and remember that practice is essential to becoming a competent trader. Good luck and happy trading!</p>
+                        <p>Trading can be an exciting and potentially lucrative activity, but it carries risks. By following this guide, you
+                             will be better prepared to navigate the world of trading. Use our platform responsibly, and remember that
+                             practice is essential to becoming a competent trader. Good luck and happy trading!</p>
                     </div>
                 </section>
 
