@@ -7,9 +7,10 @@ import { BarData } from '@/types/types';
 interface HistoricalBarsProps {
   onAddFavorite: (symbol: string) => void;
   onAddPurchase: (stock: BarData) => void;
+  onSearch: (symbol: string) => void;
 }
 
-const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase }) => {
+const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPurchase, onSearch }) => {
   const { barsData }: { barsData: { original: any } } = usePage().props as unknown as { barsData: { original: any } };
   const [filteredData, setFilteredData] = useState<BarData[]>(() => {
     const savedData = localStorage.getItem('filteredData');
@@ -43,6 +44,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
   const handleSearch = (symbol: string) => {
     const data = allData.filter(entry => entry.symbol === symbol);
     setFilteredData(data);
+    onSearch(symbol); // Mettre à jour le symbole de recherche dans le composant parent
   };
 
   useEffect(() => {
@@ -50,10 +52,10 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({ onAddFavorite, onAddPur
   }, [filteredData]);
 return (
     <div className="text-white">
-      <h2>Historical Bars Data</h2>
       <SearchBar onSearch={handleSearch} />
       {filteredData.length > 0 ? (
         <div>
+          <h2>{filteredData[0].symbol}</h2>
           <CombinedChart data={filteredData.map(entry => ({
             t: entry.t!,
             o: entry.o!,
