@@ -20,7 +20,7 @@ export default function Authenticated({
             <header>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <Link href="/" className="flex items-center space-x-2">
+                        <Link href={route("dashboard")}  className="flex items-center space-x-2">
                             <span className="text-white font-semibold text-lg">
                                 Trade
                             </span>
@@ -29,28 +29,28 @@ export default function Authenticated({
                         {/* Center navigation links */}
                         <div className="flex items-center space-x-20 text-white">
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
+                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
                                 href={route("dashboard")}
                                 active={route().current("dashboard")}
                             >
                                 Dashboard
                             </NavLink>
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
+                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300  hover:text-zinc-300"
                                 href={route("guide")}
                                 active={route().current("guide")}
                             >
                                 Guide
                             </NavLink>
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
+                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white  active:text-zinc-300 hover:text-zinc-300"
                                 href={route("profile.edit")}
                                 active={route().current("profile.edit")}
                             >
                                 Profile
                             </NavLink>
                             <NavLink
-                                className=" bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white"
+                                className=" bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
                                 href={route("logout")}
                                 method="post"
                                 as="button"

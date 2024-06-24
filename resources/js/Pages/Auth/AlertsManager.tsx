@@ -16,7 +16,10 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
     favorites,
     purchased,
 }) => {
-    const [notifications, setNotifications] = useState<string[]>([]);
+    const [notifications, setNotifications] = useState<string[]>(() => {
+        const savedNotifications = localStorage.getItem("notifications");
+        return savedNotifications ? JSON.parse(savedNotifications) : [];
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -33,14 +36,18 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
 
                 if (Math.abs(currentPrice - stock.price) / stock.price > 0.05) {
                     // 5% change
-                    setNotifications((notifications) => [
-                        ...notifications,
-                        `Alert: ${
-                            stock.symbol
-                        } price changed significantly. New price: ${currentPrice.toFixed(
-                            2
-                        )}`,
-                    ]);
+                    setNotifications((notifications) => {
+                        const newNotifications = [
+                            ...notifications,
+                            `Alert: ${
+                                stock.symbol
+                            } price changed significantly. New price: ${currentPrice.toFixed(
+                                2
+                            )}`,
+                        ];
+                        localStorage.setItem("notifications", JSON.stringify(newNotifications));
+                        return newNotifications;
+                    });
                 }
             });
         }, 5000); // Check every 5 seconds
@@ -53,10 +60,10 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
             <Link href={`/notifications`} preserveState>
                 {" "}
                 {/* AJOUTER DONNEES A PASSER */}
-                <button className="text-gray-400 hover:text-gray-500">
+                <button className="flex flex-col text-gray-400 hover:text-gray-500  ">
                     <FaBell className="h-6 w-6" />
                     {notifications.length > 0 && (
-                        <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0 right-0">
+                        <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0">
                             {notifications.length}
                         </span>
                     )}
