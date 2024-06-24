@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Trade;
 
 use App\Services\APIFetch;
+use App\Services\TradeBuySell;
 
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,10 +19,12 @@ use Inertia\Response;
 class TradeController extends Controller
 {
     protected $apiFetch;
+    protected $tradeBuySell;
 
-    public function __construct(APIFetch $apiFetch)
+    public function __construct(APIFetch $apiFetch, TradeBuySell $tradeBuySell)
     {
         $this->apiFetch = $apiFetch;
+        $this->tradeBuySell = $tradeBuySell;
     }
 
     public function show($symbol): Response
@@ -55,13 +58,13 @@ class TradeController extends Controller
                 return redirect()->back()->with('error', 'Insufficient funds');
             }
 
-            $this->create($request, $openPrice, $profile, $symbol);
+            $this->tradeBuySell->create($request, $openPrice, $profile, $symbol);
         } else {
             if (($request->input('quantity') * $openPrice) > ($profile->wallet)) {
                 return redirect()->back()->with('error', 'Insufficient funds');
             }
 
-            $this->add($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->add($request, $openPrice, $existingOpenTrade, $profile);
         }
 
         return redirect()->back()->with('success', 'Trade created successfully');
@@ -90,62 +93,11 @@ class TradeController extends Controller
         }
 
         if ($request->input('quantity') == $existingOpenTrade->quantity) {
-            $this->sellAll($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->sellAll($request, $openPrice, $existingOpenTrade, $profile);
         } else {
-            $this->sellSome($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->sellSome($request, $openPrice, $existingOpenTrade, $profile);
         }
 
         return redirect()->back()->with('success', 'Trade sold successfully');
-    }
-
-    protected function create(Request $request, $openPrice, $profile, $symbol): void
-    {
-        Trade::create([
-            'profile_id' => $profile->id,
-            'symbol' => $symbol,
-            'quantity' => $request->input('quantity'),
-            'open_price' => $request->input('open_price'),
-        ]);
-
-        $profile->update([
-            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
-        ]);
-    }
-
-    protected function add(Request $request, $openPrice, $existingOpenTrade, $profile): void
-    {
-        $newQuantity = $existingOpenTrade->quantity + $request->input('quantity');
-
-        $existingOpenTrade->update(['quantity' => $newQuantity]);
-
-        $profile->update([
-            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
-        ]);
-    }
-
-    protected function sellAll(Request $request, $openPrice, $existingOpenTrade, $profile): void
-    {
-        $existingOpenTrade->update([
-            'close_price' => $request->input('open_price'),
-            'close_datetime' => now(),
-            'open' => false,
-        ]);
-
-        $profile->update([
-            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
-        ]);
-    }
-
-    protected function sellSome(Request $request, $openPrice, $existingOpenTrade, $profile): void
-    {
-        $newQuantity = $existingOpenTrade->quantity - $request->input('quantity');
-
-        $existingOpenTrade->update([
-            'quantity' => $newQuantity,
-        ]);
-
-        $profile->update([
-            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
-        ]);
     }
 }
