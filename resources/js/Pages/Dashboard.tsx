@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { PageProps } from "@/types";
 import PortfolioSummary from "./Auth/PortfolioSummary";
-import HistoricalBars from "./Trading/HistoricalBars";
 import Icons from "@/Pages/Auth/Icons";
 import AlertsManager from "./Auth/AlertsManager";
+import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
+
+interface PageProps {
+    auth: any; // Replace 'any' with the appropriate type for 'auth'
+}
 
 export default function Dashboard({ auth }: PageProps) {
     const [favorites, setFavorites] = useState<string[]>(() => {
@@ -17,6 +20,7 @@ export default function Dashboard({ auth }: PageProps) {
         const savedPurchased = localStorage.getItem("purchased");
         return savedPurchased ? JSON.parse(savedPurchased) : [];
     });
+    const [searchSymbol, setSearchSymbol] = useState<string>("");
 
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -48,6 +52,10 @@ export default function Dashboard({ auth }: PageProps) {
         setPurchased(purchased.filter((asset) => asset.symbol !== symbol));
     };
 
+    const handleSearchChange = (symbol: string) => {
+        setSearchSymbol(symbol);
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
@@ -61,10 +69,10 @@ export default function Dashboard({ auth }: PageProps) {
                 </div>
                 <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-1">
                             {/* TradingWallet */}
                         </div>
-                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-2">
                             {/* Additional Widget */}
                             <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
                                 <h2 className="text-white text-lg">Favorites</h2>
@@ -83,7 +91,7 @@ export default function Dashboard({ auth }: PageProps) {
                                 </ul>
                             </div>
                         </div>
-                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto">
+                        <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-3">
                             {/* Additional Widget */}
                             <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
                                 <h2 className="text-white text-lg">Assets</h2>
@@ -106,6 +114,7 @@ export default function Dashboard({ auth }: PageProps) {
                             <HistoricalBars
                                 onAddFavorite={addFavorite}
                                 onAddPurchase={addPurchase}
+                                onSearch={(symbol: string) => handleSearchChange(symbol)}
                             />
                         </div>
                     </div>

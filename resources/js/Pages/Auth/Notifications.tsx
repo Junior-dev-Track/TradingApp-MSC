@@ -1,31 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
-import { Head } from "@inertiajs/react";
-import { PageProps } from "@/types";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-interface NotificationsProps {
-    notifications: string[];
+interface AuthData {
+    user: {
+        // Define the properties of the 'user' object here
+        // For example:
+        id: number;
+        name: string;
+        // ...
+    };
+    // Add other properties of the 'auth' object here if needed
 }
 
-const Notifications: React.FC<NotificationsProps> = () => {
-    const { notifications, auth } = usePage().props as {
-        notifications: string[];
-        errors: any;
-        auth: any;
-    };
+interface User {
+    // Define the properties of the 'User' object here
+    // For example:
+    id: number;
+    name: string;
+    first_name: string;
+    last_name: string;
+    address: string;
+    email: string;
+    email_verified_at: string;
+    // ...
+}
+
+const Notifications: React.FC = () => {
+    const [notifications, setNotifications] = useState<string[]>(() => {
+        const savedNotifications = localStorage.getItem("notifications");
+        return savedNotifications ? JSON.parse(savedNotifications) : [];
+    });
+
+    const auth = usePage().props.auth as AuthData & { user: User };
 
     return (
         <AuthenticatedLayout user={auth.user}>
             <div className="p-4">
-                <h2 className="text-dark-blue text-lg">Notifications</h2>
+                <h2 className="text-white text-lg">Notifications</h2>
                 <div className="mt-4">
                     {notifications.length > 0 ? (
                         <ul>
                             {notifications.map((notification, index) => (
                                 <li
                                     key={index}
-                                    className="text-dark-blue p-2 bg-gray-800 rounded mb-2"
+                                    className="text-white p-2 bg-gray-800 rounded mb-2"
                                 >
                                     {notification}
                                 </li>
