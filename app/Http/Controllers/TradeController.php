@@ -46,7 +46,7 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $closePrice = $this->apiFetch->getHistoricalbarsBySymbol($symbol);
+        $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
