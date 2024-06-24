@@ -1,10 +1,37 @@
 import React from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
+
+interface AuthData {
+    user: {
+        // Define the properties of the 'user' object here
+        // For example:
+        id: number;
+        name: string;
+        // ...
+    };
+    // Add other properties of the 'auth' object here if needed
+}
+interface User {
+    // Define the properties of the 'User' object here
+    // For example:
+    id: number;
+    name: string;
+    first_name: string;
+    last_name: string;
+    address: string;
+    email: string;
+    email_verified_at: string;
+    // ...
+}
 
 const Guide: React.FC = () => {
+
+    const auth = usePage().props.auth as AuthData & { user: User };
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Comprehensive Beginner's Guide to Trading" />
             <div className="p-10 font-sans text-gray-200 w-5/6 m-auto">
 
