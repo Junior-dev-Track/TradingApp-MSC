@@ -5,9 +5,11 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Http\JsonResponse;
+
 class APIFetch
 {
-    public function getHistoricalbars()
+    public function getHistoricalbars(): JsonResponse
     {
         $params = [
             'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
@@ -24,7 +26,7 @@ class APIFetch
         return response()->json($all_data);
     }
 
-    public function getHistoricalbarsBySymbol($symbol)
+    public function getHistoricalbarsBySymbol($symbol): JsonResponse
     {
         $params = [
             'symbols' => $symbol,
@@ -38,6 +40,24 @@ class APIFetch
         $symbol_data = $this->fetchData($params);
 
         return response()->json($symbol_data);
+    }
+
+    public function getSpecificClosePrice($symbol): JsonResponse
+    {
+        $params = [
+            'symbols' => $symbol,
+            'timeframe' => '1Min',
+            'start' => date('Y-m-d\TH:i:sP'),
+            'limit' => 1000,
+            'adjustment' => 'raw',
+            'feed' => 'iex',
+            'sort' => 'desc'
+        ];
+
+        $symbol_data = $this->fetchData($params);
+        $response = response()->json($symbol_data);
+        $close_price = $response[0]['close'];
+        return $close_price;
     }
 
     private function fetchData($params)

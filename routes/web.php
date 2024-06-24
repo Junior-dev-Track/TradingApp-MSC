@@ -53,7 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
 
 
-    Route::get('/trade/{symbol}', [TradeController::class, 'show'])->name('trade');
+    Route::get('/trade/{symbol}/buy', [TradeController::class, 'show'])->name('trade.showBuy');
+    Route::get('/trade/{symbol}/sell', [TradeController::class, 'show'])->name('trade.showSell');
     Route::post('/trade/{symbol}/buy', [TradeController::class, 'createOrAdd'])->name('trade.buy');
     Route::post('/trade/{symbol}/sell', [TradeController::class, 'sellSomeOrSellAll'])->name('trade.sell');
 
