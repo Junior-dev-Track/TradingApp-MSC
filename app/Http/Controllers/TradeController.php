@@ -27,9 +27,17 @@ class TradeController extends Controller
         $this->tradeBuySell = $tradeBuySell;
     }
 
-    public function show($symbol): Response
+    public function showBuy($symbol): Response
     {
-        return Inertia::render('Trade/Trade', [
+
+        return Inertia::render('Trade/Buy', [
+            'symbol' => $symbol
+        ]);
+    }
+
+    public function showSell($symbol): Response
+    {
+        return Inertia::render('Trade/Sell', [
             'symbol' => $symbol
         ]);
     }
@@ -38,7 +46,7 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $openPrice = $this->apiFetch->getHistoricalbarsBySymbol($symbol);
+        $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
@@ -54,17 +62,17 @@ class TradeController extends Controller
         $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
 
         if ($existingOpenTrade->count() == 0) {
-            if ($request->input('quantity') * $openPrice > $profile->wallet) {
+            if ($request->input('quantity') * $closePrice > $profile->wallet) {
                 return redirect()->back()->with('error', 'Insufficient funds');
             }
 
-            $this->tradeBuySell->create($request, $openPrice, $profile, $symbol);
+            $this->tradeBuySell->create($request, $closePrice, $profile, $symbol);
         } else {
-            if (($request->input('quantity') * $openPrice) > ($profile->wallet)) {
+            if (($request->input('quantity') * $closePrice) > ($profile->wallet)) {
                 return redirect()->back()->with('error', 'Insufficient funds');
             }
 
-            $this->tradeBuySell->add($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->add($request, $closePrice, $existingOpenTrade, $profile);
         }
 
         return redirect()->back()->with('success', 'Trade created successfully');
@@ -75,7 +83,7 @@ class TradeController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
         $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
-        $openPrice = $this->apiFetch->getHistoricalbarsBySymbol($symbol);
+        $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
@@ -93,9 +101,9 @@ class TradeController extends Controller
         }
 
         if ($request->input('quantity') == $existingOpenTrade->quantity) {
-            $this->tradeBuySell->sellAll($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->sellAll($request, $closePrice, $existingOpenTrade, $profile);
         } else {
-            $this->tradeBuySell->sellSome($request, $openPrice, $existingOpenTrade, $profile);
+            $this->tradeBuySell->sellSome($request, $closePrice, $existingOpenTrade, $profile);
         }
 
         return redirect()->back()->with('success', 'Trade sold successfully');
