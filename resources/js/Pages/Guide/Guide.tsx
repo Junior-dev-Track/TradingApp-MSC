@@ -35,7 +35,7 @@ const Guide: React.FC = () => {
             answer: (
                 <>
                     <p>Trading involves buying and selling financial assets to make a profit. These assets can include stocks, currencies (forex), commodities, cryptocurrencies, and more. The goal is to profit from the price fluctuations of these assets.</p>
-                    <h3 className="text-lg font-semibold mt-4 mb-2">1.1 Types of Markets</h3>
+                    <h3 className="text-lg font-semibold mt-4 mb-2">Types of Markets</h3>
                     <ul className="list-disc list-inside">
                         <li><strong>Stock Market</strong>: Buying and selling shares of publicly traded companies.</li>
                         <li><strong>Forex (FX)</strong>: Trading currencies, such as exchanging euros for US dollars.</li>
@@ -129,8 +129,7 @@ const Guide: React.FC = () => {
                     trader is often surrounded by specific equipment, characterized mainly by multiple screens. Indeed, there is a lot of
                     data to consider for proper trading, and analyzing it on a single screen is highly time-consuming, impacting the trader's
                      performance. Inadequate equipment will frustrate the market operator, who will constantly juggle numerous tabs on their
-                      browser or software to find the necessary trading information, potentially missing opportunities. For more information,
-                       follow this article: What equipment is needed for trading?</p>
+                      browser or software to find the necessary trading information, potentially missing opportunities.</p>
             )
         },
         {
@@ -139,8 +138,7 @@ const Guide: React.FC = () => {
                 <p>To trade, you need software, an application, or a website. It can be called various names, but it remains an access
                     interface to financial markets, connecting to access stock prices and graphical analysis interfaces that allow viewing
                     prices by adding indicators and signals. These help the trader position themselves effectively in the stock markets by
-                    buying or selling a financial instrument: stock, bond, warrant, etc. For more information, follow this article: Complete
-                    guide to trading software in 2024.</p>
+                    buying or selling a financial instrument: stock, bond, warrant, etc.</p>
             )
         },
         {
