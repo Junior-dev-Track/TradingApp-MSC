@@ -9,32 +9,32 @@ use App\Models\Trade;
 class TradeBuySell
 {
 
-    public function create(Request $request, $openPrice, $profile, $symbol): void
+    public function create(Request $request, $closePrice, $profile, $symbol): void
     {
         Trade::create([
             'profile_id' => $profile->id,
             'symbol' => $symbol,
             'quantity' => $request->input('quantity'),
-            'open_price' => $request->input('open_price'),
+            'open_price' => $closePrice,
         ]);
 
         $profile->update([
-            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
+            'wallet' => $profile->wallet - $request->input('quantity') * $closePrice,
         ]);
     }
 
-    public function add(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    public function add(Request $request, $closePrice, $existingOpenTrade, $profile): void
     {
         $newQuantity = $existingOpenTrade->quantity + $request->input('quantity');
 
         $existingOpenTrade->update(['quantity' => $newQuantity]);
 
         $profile->update([
-            'wallet' => $profile->wallet - $request->input('quantity') * $openPrice,
+            'wallet' => $profile->wallet - $request->input('quantity') * $closePrice,
         ]);
     }
 
-    public function sellSome(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    public function sellSome(Request $request, $closePrice, $existingOpenTrade, $profile): void
     {
         $newQuantity = $existingOpenTrade->quantity - $request->input('quantity');
 
@@ -43,20 +43,20 @@ class TradeBuySell
         ]);
 
         $profile->update([
-            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
+            'wallet' => $profile->wallet + $request->input('quantity') * $closePrice,
         ]);
     }
 
-    public function sellAll(Request $request, $openPrice, $existingOpenTrade, $profile): void
+    public function sellAll(Request $request, $closePrice, $existingOpenTrade, $profile): void
     {
         $existingOpenTrade->update([
-            'close_price' => $request->input('open_price'),
+            'close_price' => $closePrice,
             'close_datetime' => now(),
             'open' => false,
         ]);
 
         $profile->update([
-            'wallet' => $profile->wallet + $request->input('quantity') * $openPrice,
+            'wallet' => $profile->wallet + $request->input('quantity') * $closePrice,
         ]);
     }
 }

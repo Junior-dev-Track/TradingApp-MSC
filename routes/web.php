@@ -8,10 +8,6 @@ use App\Http\Controllers\WireController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\GuideController;
 
-use App\Services\APIFetch;
-use App\Services\TradingService;
-
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
 use Inertia\Inertia;

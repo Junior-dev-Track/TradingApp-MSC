@@ -55,9 +55,16 @@ class APIFetch
         ];
 
         $symbol_data = $this->fetchData($params);
-        $response = response()->json($symbol_data);
-        $close_price = $response[0]['close'];
-        return $close_price;
+
+        if (count($symbol_data) > 0 && isset($symbol_data[0]['close'])) {
+            $closePrice = $symbol_data[0]['close'];
+        } else {
+            $closePrice = null;
+        }
+
+        return response()->json([
+            'closePrice' => $closePrice
+        ]);
     }
 
     private function fetchData($params)
