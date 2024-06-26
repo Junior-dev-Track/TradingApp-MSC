@@ -9,7 +9,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 export default function Authenticated({
     user,
     children,
-}: PropsWithChildren<{ user: User; header?: ReactNode }>) {
+}: PropsWithChildren<{ user?: User; header?: ReactNode }>) {
     const [favorites, setFavorites] = useState<string[]>([]);
     const [purchased, setPurchased] = useState<
         { symbol: string; price: number }[]
@@ -20,7 +20,7 @@ export default function Authenticated({
             <header>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <Link href={route("dashboard")}  className="flex items-center space-x-2">
+                        <Link href={route("dashboard")} className="flex items-center space-x-2">
                             <span className="text-white font-semibold text-lg">
                                 Trade
                             </span>
@@ -67,3 +67,4 @@ export default function Authenticated({
         </div>
     );
 }
+
