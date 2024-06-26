@@ -3,6 +3,8 @@ import { usePage } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
 import SearchBar from "@/Components/SearchBar";
 import { BarData } from "@/types/types";
+import { router } from "@inertiajs/react";
+import { MdOutlineRefresh } from "react-icons/md";
 
 interface HistoricalBarsProps {
     onAddFavorite: (symbol: string) => void;
@@ -53,12 +55,21 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         onSearch(symbol); // Mettre à jour le symbole de recherche dans le composant parent
     };
 
+    const handleRefresh = () => {
+        router.reload({ only: ["barsData"] });
+    };
+
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);
     return (
         <div className="text-white">
-            <SearchBar onSearch={handleSearch} />
+            <div className="flex justify-between mr-10">
+                <SearchBar onSearch={handleSearch} />
+                <button onClick={handleRefresh}>
+                    <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-5" />
+                </button>
+            </div>
             {filteredData.length > 0 ? (
                 <div>
                     <h2>{filteredData[0].symbol}</h2>
@@ -93,19 +104,19 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
               onClick={() => onAddFavorite(filteredData[0].symbol)}
             > */}
 
-            <button
-              className="bg-green-500 p-2 rounded"
-              onClick={() => onAddPurchase(filteredData[0])}
-            >
-              Buy
-            </button>
-          </div>
+                        <button
+                            className="bg-green-500 p-2 rounded"
+                            onClick={() => onAddPurchase(filteredData[0])}
+                        >
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div>Aucune donnée historique disponible pour ce symbole.</div>
+            )}
         </div>
-      ) : (
-        <div>Aucune donnée historique disponible pour ce symbole.</div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default HistoricalBars;
