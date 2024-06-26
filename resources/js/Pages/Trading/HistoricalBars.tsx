@@ -82,7 +82,7 @@ return (
               group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"
               onClick={() => onAddFavorite(filteredData[0].symbol)}
             > */}
-            
+
             <button
               className="bg-green-500 p-2 rounded"
               onClick={() => onAddPurchase(filteredData[0])}

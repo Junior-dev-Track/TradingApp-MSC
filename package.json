@@ -29,6 +29,7 @@
         "apexcharts": "^3.49.1",
         "bootstrap-icons": "^1.11.3",
         "chart.js": "^4.4.3",
+        "inertia": "^0.0.7",
         "patch-package": "^8.0.0",
         "postinstall-postinstall": "^2.1.0",
         "react-apexcharts": "^1.4.1",
