@@ -106,20 +106,6 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
       )}
     </div>
   );
-
-                        <button
-                            className="bg-green-500 p-2 rounded"
-                            onClick={() => onAddPurchase(filteredData[0])}
-                        >
-                            Buy
-                        </button>
-                    </div>
-                </div>
-            ) : (
-                <div>Aucune donnée historique disponible pour ce symbole.</div>
-            )}
-        </div>
-    );
 };
 
 export default HistoricalBars;
