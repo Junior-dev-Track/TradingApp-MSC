@@ -2,6 +2,9 @@ import React from 'react';
 import { AiFillAppstore } from "react-icons/ai";
 import { AiOutlineFund } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
+import { Link } from '@inertiajs/react';
+import HistoricalBars from '../Trading/HistoricalBars';
+
 
 
 
@@ -30,7 +33,9 @@ const Icons = () => {
 
     return (
         <div className="flex flex-col mt-8 space-y-4 text-gray-400">
+            <Link href=''>
             <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
+            </Link>
             <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
             <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
             <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />

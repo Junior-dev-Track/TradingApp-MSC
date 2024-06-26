@@ -98,7 +98,7 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
 
 
-  const formattedData = filteredData.map(bar => ({
+  const formattedData = data.map(bar => ({
     time: new Date(bar.t).toLocaleDateString(),
     open: bar.o,
     high: bar.h,
