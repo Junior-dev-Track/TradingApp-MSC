@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 interface AuthData {
-    user: {
-        // Define the properties of the 'user' object here
-        // For example:
-        id: number;
-        name: string;
-        // ...
-    };
+    user: User;
     // Add other properties of the 'auth' object here if needed
 }
-
 interface User {
     // Define the properties of the 'User' object here
     // For example:
@@ -32,7 +26,23 @@ const Notifications: React.FC = () => {
         return savedNotifications ? JSON.parse(savedNotifications) : [];
     });
 
-    const auth = usePage().props.auth as AuthData & { user: User };
+    const auth = usePage().props.auth as AuthData;
+
+    useEffect(() => {
+        // Update notifications when localStorage changes
+        const handleStorageChange = () => {
+            const savedNotifications = localStorage.getItem("notifications");
+            setNotifications(savedNotifications ? JSON.parse(savedNotifications) : []);
+        };
+
+        // Listen to changes in localStorage
+        window.addEventListener("storage", handleStorageChange);
+
+        // Clean up listener on unmount
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, []);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -51,7 +61,7 @@ const Notifications: React.FC = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p className="text-red">No notifications available.</p>
+                        <p className="text-red-500">No notifications available.</p>
                     )}
                 </div>
             </div>
