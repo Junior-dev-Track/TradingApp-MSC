@@ -1,14 +1,17 @@
+// Dashboard.tsx
+
 import React, { useState, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PortfolioSummary from "./Auth/PortfolioSummary";
 import Icons from "@/Pages/Auth/Icons";
-import AlertsManager from "./Auth/AlertsManager";
+import AlertsManager from "@/Pages/Auth/AlertsManager"; // Import the AlertsManager component
+
 import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 
 interface PageProps {
-    auth: any; // Replace 'any' with the appropriate type for 'auth'
+    auth: any; // Remplacez 'any' par le type approprié pour 'auth'
 }
 
 export default function Dashboard({ auth }: PageProps) {
@@ -120,7 +123,19 @@ export default function Dashboard({ auth }: PageProps) {
                     </div>
                 </div>
             </div>
-            <AlertsManager favorites={favorites} purchased={purchased} />
+            {/* Intégration d'AlertsManager avec les props favorites et purchased */}
+            <AlertsManager
+                executeOrder={false}
+                priceAlerts={[]}
+                marketNews={false}
+                accountStatus={false}
+                marketMovements={false}
+                dividends={false}
+                accountSecurity={false}
+                supportMessages={false}
+                assetMovements={false}
+                deadlines={false}
+            />
         </AuthenticatedLayout>
     );
 }
