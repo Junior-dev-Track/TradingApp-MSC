@@ -78,14 +78,21 @@ export default function Dashboard({ auth }: PageProps) {
                         <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-2">
                             {/* Additional Widget */}
                             <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
-                                <h2 className="text-white text-lg">Favorites</h2>
+                                <h2 className="text-white text-lg">
+                                    Favorites
+                                </h2>
                                 <ul>
                                     {favorites.map((symbol, index) => (
-                                        <li key={index} className="text-red flex justify-between">
+                                        <li
+                                            key={index}
+                                            className="text-red flex justify-between"
+                                        >
                                             {symbol}
                                             <button
                                                 className="bg-red-500 p-2 rounded"
-                                                onClick={() => removeFavorite(symbol)}
+                                                onClick={() =>
+                                                    removeFavorite(symbol)
+                                                }
                                             >
                                                 Remove
                                             </button>
@@ -100,11 +107,16 @@ export default function Dashboard({ auth }: PageProps) {
                                 <h2 className="text-white text-lg">Assets</h2>
                                 <ul>
                                     {purchased.map((asset, index) => (
-                                        <li key={index} className="text-white flex justify-between">
+                                        <li
+                                            key={index}
+                                            className="text-white flex justify-between"
+                                        >
                                             {asset.symbol} - {asset.price}
                                             <button
                                                 className="bg-red-500 p-2 rounded"
-                                                onClick={() => sellAsset(asset.symbol)}
+                                                onClick={() =>
+                                                    sellAsset(asset.symbol)
+                                                }
                                             >
                                                 Sell
                                             </button>
@@ -117,7 +129,9 @@ export default function Dashboard({ auth }: PageProps) {
                             <HistoricalBars
                                 onAddFavorite={addFavorite}
                                 onAddPurchase={addPurchase}
-                                onSearch={(symbol: string) => handleSearchChange(symbol)}
+                                onSearch={(symbol: string) =>
+                                    handleSearchChange(symbol)
+                                }
                             />
                         </div>
                     </div>
