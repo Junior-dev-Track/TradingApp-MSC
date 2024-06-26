@@ -85,12 +85,14 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
   const filterByYear = () => {
     const today = new Date();
-    const startOfYear = new Date(today.getFullYear(), 0, 1); // 1st January of the current year
-    const endOfYear = new Date(today.getFullYear(), 11, 31, 23, 59, 59); // Last day of December of the current year
+    const startOfPeriod = new Date(today);
+    startOfPeriod.setDate(today.getDate() - 365); // Subtracting 365 days
+
+    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Yesterday
 
     const filtered = data.filter(item => {
       const itemDate = new Date(item.t);
-      return itemDate >= startOfYear && itemDate <= endOfYear;
+      return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
     });
 
     setFilteredData(filtered);
