@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
+import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
+
+
+
 
 interface AuthData {
     user: {
@@ -32,6 +36,7 @@ const Guide: React.FC = () => {
     const faqItems = [
         {
             question: "What is Trading?",
+
             answer: (
                 <>
                     <p>Trading involves buying and selling financial assets to make a profit. These assets can include stocks, currencies (forex), commodities, cryptocurrencies, and more. The goal is to profit from the price fluctuations of these assets.</p>
@@ -44,7 +49,8 @@ const Guide: React.FC = () => {
                         <li><strong>Indices</strong>: Trading baskets of stocks that represent a section of the market, such as the S&P 500.</li>
                     </ul>
                 </>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "Basic Trading Concepts",
@@ -68,7 +74,8 @@ const Guide: React.FC = () => {
                         <li><strong>Long-Term Investing</strong>: Holding assets for months or years.</li>
                     </ul>
                 </>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "Risk Management",
@@ -81,7 +88,8 @@ const Guide: React.FC = () => {
                     <h3 className="text-lg font-semibold mt-4 mb-2">Position Sizing</h3>
                     <p>Only invest a small portion of your total capital on a single trade. A common rule is to risk only 1-2% of your capital per trade.</p>
                 </>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "Using Our Trading Platform",
@@ -100,7 +108,8 @@ const Guide: React.FC = () => {
                         <li>Adjust your strategies based on the results obtained.</li>
                     </ul>
                 </>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },         {
             question: "What is day trading?",
             answer: (
@@ -109,7 +118,8 @@ const Guide: React.FC = () => {
                      level. It is not suitable for beginners. The potential gains are significant, but the losses can be equally substantial
                      if not mastered. The stress level is also high. Day trading requires great concentration and a lot of time to trade,
                      which can amount to several hours a day or even the entire day (until the markets close).</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What is swing trading?",
@@ -120,7 +130,8 @@ const Guide: React.FC = () => {
                     identify opportunities. They may also use fundamental analysis to complement trend and price pattern analysis, which they
                      predominantly analyze through technical analysis. Economic and political announcements can also be utilized for swing
                      trading.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What equipment is needed for trading?",
@@ -130,7 +141,8 @@ const Guide: React.FC = () => {
                     data to consider for proper trading, and analyzing it on a single screen is highly time-consuming, impacting the trader's
                      performance. Inadequate equipment will frustrate the market operator, who will constantly juggle numerous tabs on their
                       browser or software to find the necessary trading information, potentially missing opportunities.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What software is used for trading?",
@@ -139,7 +151,8 @@ const Guide: React.FC = () => {
                     interface to financial markets, connecting to access stock prices and graphical analysis interfaces that allow viewing
                     prices by adding indicators and signals. These help the trader position themselves effectively in the stock markets by
                     buying or selling a financial instrument: stock, bond, warrant, etc.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What is leverage in trading?",
@@ -150,7 +163,8 @@ const Guide: React.FC = () => {
                     in the markets? The online broker will place the remaining money instead. In case of loss, the lost money will be owed
                     to the broker. The practice is considered dangerous because it can exceed the initial deposit amount, thereby creating
                     debt.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What is a limit order?",
@@ -158,7 +172,8 @@ const Guide: React.FC = () => {
                     <p>A limit order is a type of order that allows a trader to buy or sell an asset at a specific price or better.
                         When a limit order is placed, it remains active until the market reaches the specified price, and the order is then
                         executed automatically.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What is a stop loss?",
@@ -167,7 +182,8 @@ const Guide: React.FC = () => {
                     A stop-loss is an automatic order that limits the potential losses of an open position. It is placed at a specific price
                     level, and if the market reaches this level, the stop-loss order is executed, closing the position to limit the losses.
                     </p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         },
         {
             question: "What is take-profit?",
@@ -176,9 +192,11 @@ const Guide: React.FC = () => {
                     A take-profit is an automatic order that closes an open position when the market reaches a predetermined price level,
                     thereby locking in the profits. This allows the trader to exit the position with a gain before the market changes
                     direction.</p>
-            )
+            ),
+            toggleIcon: <FaChevronDown />
         }
     ];
+    const getToggleIcon = (isVisible: boolean, initialIcon: any): any => isVisible? <FaChevronUp /> : initialIcon;
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -193,7 +211,10 @@ const Guide: React.FC = () => {
                     <section key={index} className="mb-6">
                         <div className="border border-gray-800 rounded shadow-lg p-6">
                             <div onClick={() => toggleQuestion(index)} className="cursor-pointer">
-                                <h2 className="text-xl font-semibold mb-2">{item.question}</h2>
+                                <h2 className="text-xl font-semibold mb-2 flex justify-between items-center">
+                                {item.question}
+                                {getToggleIcon(visibleQuestions.includes(index), item.toggleIcon)}
+                                </h2>
                             </div>
                             {visibleQuestions.includes(index) && (
                                 <div>{item.answer}</div>
