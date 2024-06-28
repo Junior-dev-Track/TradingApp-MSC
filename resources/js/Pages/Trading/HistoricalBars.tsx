@@ -156,7 +156,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                                 Confirm
                             </button>
                             <button
-                                className="bg-red-500 text-white p-2 rounded"
+                                className="bg-red-500 text-dark-purple p-2 rounded"
                                 onClick={handleCancelPurchase}
                             >
                                 Cancel
