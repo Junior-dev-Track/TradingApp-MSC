@@ -10,5 +10,5 @@ export interface BarData {
     price: number;
     quantity?: number;
     totalPrice?: number | undefined;
-    errors?: string[];
+    csrf?: string;
   }

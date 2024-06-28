@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { usePage } from "@inertiajs/react";
+import { usePage, useForm } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
 import SearchBar from "@/Components/SearchBar";
 import { BarData } from "@/types/types";
 import { router } from "@inertiajs/react";
 import { MdOutlineRefresh } from "react-icons/md";
-import { ErrorBag } from "@inertiajs/inertia";
 
 interface HistoricalBarsProps {
     onAddFavorite: (symbol: string) => void;
@@ -25,7 +24,14 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         return savedData ? JSON.parse(savedData) : [];
     });
     const [showPopup, setShowPopup] = useState(false);
-    const [quantity, setQuantity] = useState(1);
+
+    const { data, setData, post, processing, errors } = useForm({
+        symbol: '',
+        quantity: 1,
+        price: 0,
+        totalPrice: 0,
+        csrf: '' // Add csrf property
+    });
 
     // Convertir les données initiales
     const allData: BarData[] = [];
@@ -62,14 +68,31 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     };
 
     const handleBuyClick = () => {
-        setShowPopup(true);
+        if (filteredData.length > 0) {
+            setData({
+                symbol: filteredData[0].symbol,
+                quantity: 1,
+                price: filteredData[0].price,
+                totalPrice: filteredData[0].price,
+                csrf: '' // Add csrf property
+            });
+            setShowPopup(true);
+        }
     };
 
     const handleConfirmPurchase = () => {
-        if (filteredData.length > 0) {
-            onAddPurchase(filteredData[0], quantity);
-        }
-        setShowPopup(false);
+        post('/trade/{symbol}/buy', {
+            headers: {
+                'X-CSRF-TOKEN': data.csrf,
+            },
+            onSuccess: () => {
+                onAddPurchase(filteredData[0], data.quantity);
+                setShowPopup(false);
+            },
+            onError: () => {
+                setShowPopup(false);
+            },
+        });
     };
 
     const handleCancelPurchase = () => {
@@ -79,15 +102,14 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
         if (!isNaN(value) && value > 0) {
-            setQuantity(value);
+            setData('quantity', value);
+            setData('totalPrice', value * data.price);
         }
     };
 
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);
-
-    const totalPrice = filteredData.length > 0 ? (filteredData[0].price * quantity).toFixed(2) : 0;
 
     return (
         <div className="text-white">
@@ -139,19 +161,20 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                             <label className="text-black">Quantity:</label>
                             <input
                                 type="number"
-                                value={quantity}
+                                value={data.quantity}
                                 onChange={handleQuantityChange}
                                 className="ml-2 p-1 border rounded text-dark-purple"
                                 min="1"
                             />
                         </div>
                         <div className="mt-2 text-black">
-                            Total Price: ${totalPrice}
+                            Total Price: ${data.totalPrice.toFixed(2)}
                         </div>
                         <div className="mt-4">
                             <button
                                 className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
                                 onClick={handleConfirmPurchase}
+                                disabled={processing}
                             >
                                 Confirm
                             </button>
