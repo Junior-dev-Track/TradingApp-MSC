@@ -89,6 +89,13 @@ export default function Dashboard({ auth }: PageProps = {}) {
           <Icons />
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
+        <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow mb-4">
+              <HistoricalBars
+                onAddFavorite={addFavorite}
+                onAddPurchase={addPurchase}
+                onSearch={(symbol: string) => handleSearchChange(symbol)}
+              />
+            </div>
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-1">
               {/* TradingWallet */}
@@ -131,13 +138,7 @@ export default function Dashboard({ auth }: PageProps = {}) {
                 </ul>
               </div>
             </div>
-            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
-              <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-                onSearch={(symbol: string) => handleSearchChange(symbol)}
-              />
-            </div>
+
           </div>
         </div>
       </div>
