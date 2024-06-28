@@ -8,4 +8,7 @@ export interface BarData {
     date?: string;
     t?: number | undefined;
     price: number;
+    quantity?: number;
+    totalPrice?: number | undefined;
+    errors?: string[];
   }

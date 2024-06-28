@@ -5,10 +5,11 @@ import SearchBar from "@/Components/SearchBar";
 import { BarData } from "@/types/types";
 import { router } from "@inertiajs/react";
 import { MdOutlineRefresh } from "react-icons/md";
+import { ErrorBag } from "@inertiajs/inertia";
 
 interface HistoricalBarsProps {
     onAddFavorite: (symbol: string) => void;
-    onAddPurchase: (stock: BarData) => void;
+    onAddPurchase: (stock: BarData, quantity: number) => void;
     onSearch: (symbol: string) => void;
 }
 
@@ -23,10 +24,11 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         const savedData = localStorage.getItem("filteredData");
         return savedData ? JSON.parse(savedData) : [];
     });
+    const [showPopup, setShowPopup] = useState(false);
+    const [quantity, setQuantity] = useState(1);
 
     // Convertir les données initiales
     const allData: BarData[] = [];
-    console.log(barsData);
     if (barsData && barsData.original) {
         const data = barsData.original;
         Object.keys(data).forEach((symbol) => {
@@ -59,9 +61,34 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         router.reload({ only: ["barsData"] });
     };
 
+    const handleBuyClick = () => {
+        setShowPopup(true);
+    };
+
+    const handleConfirmPurchase = () => {
+        if (filteredData.length > 0) {
+            onAddPurchase(filteredData[0], quantity);
+        }
+        setShowPopup(false);
+    };
+
+    const handleCancelPurchase = () => {
+        setShowPopup(false);
+    };
+
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value, 10);
+        if (!isNaN(value) && value > 0) {
+            setQuantity(value);
+        }
+    };
+
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);
+
+    const totalPrice = filteredData.length > 0 ? (filteredData[0].price * quantity).toFixed(2) : 0;
+
     return (
         <div className="text-white">
             <div className="flex justify-between mr-10">
@@ -92,21 +119,9 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                         >
                             Add to Favorites
                         </button>
-
-                        {/* STYLE BOUTON HOVER
-        <div className="mt-4 w-20
-          bg-blue-950 text-blue-500 border border-blue-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md
-          hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
-            <button
-              className=" p-2 rounded mr-2
-              bg-blue-500 shadow-blue-500 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50
-              group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"
-              onClick={() => onAddFavorite(filteredData[0].symbol)}
-            > */}
-
                         <button
                             className="bg-green-500 p-2 rounded"
-                            onClick={() => onAddPurchase(filteredData[0])}
+                            onClick={handleBuyClick}
                         >
                             Buy
                         </button>
@@ -114,6 +129,41 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 </div>
             ) : (
                 <div>Aucune donnée historique disponible pour ce symbole.</div>
+            )}
+
+            {showPopup && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-4 rounded shadow-lg">
+                        <h2 className="text-black">Confirm Purchase</h2>
+                        <div className="mt-2">
+                            <label className="text-black">Quantity:</label>
+                            <input
+                                type="number"
+                                value={quantity}
+                                onChange={handleQuantityChange}
+                                className="ml-2 p-1 border rounded text-dark-purple"
+                                min="1"
+                            />
+                        </div>
+                        <div className="mt-2 text-black">
+                            Total Price: ${totalPrice}
+                        </div>
+                        <div className="mt-4">
+                            <button
+                                className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
+                                onClick={handleConfirmPurchase}
+                            >
+                                Confirm
+                            </button>
+                            <button
+                                className="bg-red-500 text-white p-2 rounded"
+                                onClick={handleCancelPurchase}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );
