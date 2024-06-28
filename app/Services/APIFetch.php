@@ -21,7 +21,7 @@ class APIFetch
             'sort' => 'asc'
         ];
 
-        $all_data = $this->fetchData($params);
+        $all_data = $this->fetchData($params, 'bars');
 
         return response()->json($all_data);
     }
@@ -37,7 +37,7 @@ class APIFetch
             'sort' => 'asc'
         ];
 
-        $symbol_data = $this->fetchData($params);
+        $symbol_data = $this->fetchData($params, 'bars');
 
         return response()->json($symbol_data);
     }
@@ -54,7 +54,7 @@ class APIFetch
             'sort' => 'desc'
         ];
 
-        $symbol_data = $this->fetchData($params);
+        $symbol_data = $this->fetchData($params, 'barsLatest');
 
         if (count($symbol_data) > 0 && isset($symbol_data[0]['close'])) {
             $closePrice = $symbol_data[0]['close'];
@@ -67,8 +67,29 @@ class APIFetch
         ]);
     }
 
-    private function fetchData($params)
+    public function getLastestBars(): JsonResponse
     {
+        $params = [
+            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
+            'feed' => 'iex'
+        ];
+
+        $all_data = $this->fetchData($params, 'barsLatest');
+
+        return response()->json($all_data);
+    }
+
+    private function fetchData($params, $type)
+    {
+        $url = '';
+
+        switch ($type) {
+            case 'bars':
+                $url = 'https://data.alpaca.markets/v2/stocks/bars';
+            case 'barsLatest':
+                $url = 'https://data.alpaca.markets/v2/stocks/bars/latest';
+        }
+
         try {
             $all_data = [];
             $next_page_token = null;
@@ -78,7 +99,7 @@ class APIFetch
                     'APCA-API-KEY-ID' => config('services.alpaca.key'),
                     'APCA-API-SECRET-KEY' => config('services.alpaca.secret'),
                     'Accept' => 'application/json'
-                ])->timeout(60)->get('https://data.alpaca.markets/v2/stocks/bars', array_merge($params, ['page_token' => $next_page_token ?? null]));
+                ])->timeout(60)->get($url, array_merge($params, ['page_token' => $next_page_token ?? null]));
 
                 if ($response->failed()) {
                     return response()->json(['error' => 'Failed to fetch data from API'], 500);
