@@ -59,7 +59,7 @@ class TradeController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
+        $existingOpenTrade = Trade::getOpenTrades($profile->id, $symbol);
 
         if ($existingOpenTrade->count() == 0) {
             if ($request->input('quantity') * $closePrice > $profile->wallet) {
@@ -82,7 +82,7 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $existingOpenTrade = Trade::getOpenWires($profile->id, $symbol);
+        $existingOpenTrade = Trade::getOpenTrades($profile->id, $symbol);
         $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
         $rules = [
