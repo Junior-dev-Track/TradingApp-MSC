@@ -27,6 +27,15 @@ class Trade extends Model
         return self::where('profile_id', $profileId)->where('symbol', $symbol)->where('open', true)->get();
     }
 
+    public static function getOpenWiresWithQuantitySum($profileId, $symbol)
+    {
+        $openWires = self::getOpenWires($profileId, $symbol);
+        $quantitySum = $openWires->sum('quantity');
+
+        return $quantitySum;
+    }
+
+
     public function profile()
     {
         return $this->belongsTo(Profile::class);

@@ -25,9 +25,10 @@ class DashboardController extends Controller
     public function index()
     {
         $barsData = $this->apiFetch->getHistoricalBars();
+        $barsLatestData = $this->apiFetch->getLastestBars();
         $user_id = Auth::id();
         $wallet = Profile::getWallet($user_id);
 
-        return Inertia::render('Dashboard', ['barsData' => $barsData, 'wallet' => $wallet]);
+        return Inertia::render('Dashboard', ['barsData' => $barsData, 'barsLatestData' => $barsLatestData, 'wallet' => $wallet]);
     }
 }
