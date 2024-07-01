@@ -46,11 +46,11 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
+        $closePrice = $request->input('price');
 
         $rules = [
             'quantity' => 'required|numeric|min:0.000000001',
-            'open_price' => 'required|numeric',
+            'price' => 'required|numeric',
         ];
 
         $validator = Validator::make($request->all(), $rules);

@@ -42,29 +42,18 @@ class APIFetch
         return response()->json($symbol_data);
     }
 
-    public function getSpecificClosePrice($symbol): JsonResponse
+    public function getSpecificClosePrice($symbol): float
     {
         $params = [
             'symbols' => $symbol,
-            'timeframe' => '1Min',
-            'start' => date('Y-m-d\TH:i:sP'),
-            'limit' => 1000,
-            'adjustment' => 'raw',
             'feed' => 'iex',
-            'sort' => 'desc'
         ];
 
-        $symbol_data = $this->fetchData($params, 'barsLatest');
+        $response = $this->fetchData($params, 'barsLatest');
 
-        if (count($symbol_data) > 0 && isset($symbol_data[0]['close'])) {
-            $closePrice = $symbol_data[0]['close'];
-        } else {
-            $closePrice = null;
-        }
+        $closePrice = $response['bars'][$symbol]['c'] ?? null;
 
-        return response()->json([
-            'closePrice' => $closePrice
-        ]);
+        return $closePrice;
     }
 
     public function getLastestBars(): JsonResponse
@@ -86,8 +75,10 @@ class APIFetch
         switch ($type) {
             case 'bars':
                 $url = 'https://data.alpaca.markets/v2/stocks/bars';
+                break;
             case 'barsLatest':
                 $url = 'https://data.alpaca.markets/v2/stocks/bars/latest';
+                break;
         }
 
         try {

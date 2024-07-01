@@ -29,9 +29,10 @@ class Trade extends Model
         'profile_id',
     ];
 
-    public function __construct(APIFetch $apiFetch)
+    public $timestamps = false;
+
+    public function __construct()
     {
-        $this->apiFetch = $apiFetch;
     }
 
     public static function getOpenTrades($profileId, $symbol)

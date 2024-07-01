@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { usePage, useForm } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import CombinedChart from "@/Pages/Auth/CombinedChart";
 import SearchBar from "@/Components/SearchBar";
 import { BarData } from "@/types/types";
@@ -19,19 +19,20 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 }) => {
     const { barsData }: { barsData: { original: any } } = usePage()
         .props as unknown as { barsData: { original: any } };
+
     const [filteredData, setFilteredData] = useState<BarData[]>(() => {
         const savedData = localStorage.getItem("filteredData");
         return savedData ? JSON.parse(savedData) : [];
     });
     const [showPopup, setShowPopup] = useState(false);
-
-    const { data, setData, post, processing, errors } = useForm({
-        symbol: '',
+    const [formData, setFormData] = useState({
+        symbol: "",
         quantity: 1,
         price: 0,
         totalPrice: 0,
-        csrf: '' // Add csrf property
     });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<string[]>([]);
 
     // Convertir les données initiales
     const allData: BarData[] = [];
@@ -69,30 +70,39 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 
     const handleBuyClick = () => {
         if (filteredData.length > 0) {
-            setData({
+            setFormData({
                 symbol: filteredData[0].symbol,
                 quantity: 1,
                 price: filteredData[0].price,
                 totalPrice: filteredData[0].price,
-                csrf: '' // Add csrf property
             });
             setShowPopup(true);
         }
     };
 
-    const handleConfirmPurchase = () => {
-        post('/trade/{symbol}/buy', {
-            headers: {
-                'X-CSRF-TOKEN': data.csrf,
-            },
-            onSuccess: () => {
-                onAddPurchase(filteredData[0], data.quantity);
-                setShowPopup(false);
-            },
-            onError: () => {
-                setShowPopup(false);
-            },
-        });
+    const handleConfirmPurchase = async () => {
+        try {
+            setProcessing(true);
+            const response = router.post(`/trade/${formData.symbol}/buy`, {
+                quantity: formData.quantity,
+                price: formData.price,
+                // Include any additional data required for the purchase
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            // Handle success response
+            onAddPurchase(filteredData[0], formData.quantity);
+            setShowPopup(false);
+            setProcessing(false);
+        } catch (error) {
+            console.error("An error occurred during purchase:", error);
+            setErrors(["An error occurred during purchase. Please try again."]);
+            setShowPopup(false);
+            setProcessing(false);
+        }
     };
 
     const handleCancelPurchase = () => {
@@ -100,12 +110,16 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     };
 
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
+        const value = parseFloat(e.target.value);
         if (!isNaN(value) && value > 0) {
-            setData('quantity', value);
-            setData('totalPrice', value * data.price);
+            setFormData({
+                ...formData,
+                quantity: value,
+                totalPrice: value * formData.price,
+            });
         }
     };
+
 
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
@@ -161,16 +175,16 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                             <label className="text-black">Quantity:</label>
                             <input
                                 type="number"
-                                value={data.quantity}
+                                value={formData.quantity}
                                 onChange={handleQuantityChange}
                                 className="ml-2 p-1 border rounded text-dark-purple"
                                 min="1"
                             />
                         </div>
                         <div className="mt-2 text-black">
-                            Total Price: ${data.totalPrice.toFixed(2)}
+                            Total Price: ${formData.totalPrice.toFixed(2)}
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-4 flex justify-end">
                             <button
                                 className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
                                 onClick={handleConfirmPurchase}
