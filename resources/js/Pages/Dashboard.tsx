@@ -163,6 +163,14 @@ export default function Dashboard({ auth }: PageProps = {}) {
               />
             </div>
             <div
+              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
+              ref={availableFundsRef}
+            >
+              {/* TradingWallet */}
+              <h2 className="text-white text-lg">Available Funds</h2>
+              <div className="text-white">${availableFunds.toFixed(2)}</div>
+            </div>
+            <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-2 ${activeSection === 'favorites' ? 'border-4 border-blue-500' : ''}`}
               ref={favoritesRef}
             >
@@ -184,14 +192,7 @@ export default function Dashboard({ auth }: PageProps = {}) {
                 </ul>
               </div>
             </div>
-            <div
-              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
-              ref={availableFundsRef}
-            >
-              {/* TradingWallet */}
-              <h2 className="text-white text-lg">Available Funds</h2>
-              <div className="text-white">${availableFunds.toFixed(2)}</div>
-            </div>
+
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-3 ${activeSection === 'assets' ? 'border-4 border-blue-500' : ''}`}
               ref={assetsRef}
