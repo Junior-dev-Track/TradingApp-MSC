@@ -11,15 +11,17 @@ class TradeBuySell
 
     public function create(Request $request, $closePrice, $profile, $symbol): void
     {
-        Trade::create([
+        $trade = Trade::create([
             'profile_id' => $profile->id,
             'symbol' => $symbol,
             'quantity' => $request->input('quantity'),
             'open_price' => $closePrice,
         ]);
 
+        $trade->update(['updated_at' => now()]);
+
         $profile->update([
-            'wallet' => $profile->wallet - $request->input('quantity') * $closePrice,
+            'wallet' => $profile->wallet - ($request->input('quantity') * $closePrice),
         ]);
     }
 
