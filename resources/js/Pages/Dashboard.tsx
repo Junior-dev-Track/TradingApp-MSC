@@ -113,12 +113,20 @@ export default function Dashboard({ auth }: PageProps = {}) {
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-1">
+          <div className="col-span-3 bg-gray-700 p-3 h-15 rounded-lg shadow">
+              <HistoricalBars
+
+                onAddFavorite={addFavorite}
+                onAddPurchase={addPurchase}
+                onSearch={(symbol: string) => handleSearchChange(symbol)}
+              />
+            </div>
+            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-1">
               {/* TradingWallet */}
               <h2 className="text-white text-lg">Available Funds</h2>
               <div className="text-white">${availableFunds.toFixed(2)}</div>
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-2">
+            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-2">
               {/* Additional Widget */}
               <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Favorites</h2>
@@ -137,7 +145,7 @@ export default function Dashboard({ auth }: PageProps = {}) {
                 </ul>
               </div>
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-64 overflow-y-auto col-span-3">
+            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-3">
               {/* Additional Widget */}
               <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Assets</h2>
@@ -156,13 +164,7 @@ export default function Dashboard({ auth }: PageProps = {}) {
                 </ul>
               </div>
             </div>
-            <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow">
-              <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-                onSearch={(symbol: string) => handleSearchChange(symbol)}
-              />
-            </div>
+
           </div>
         </div>
       </div>

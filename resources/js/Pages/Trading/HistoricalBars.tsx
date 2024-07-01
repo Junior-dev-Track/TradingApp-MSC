@@ -83,13 +83,13 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     const handleConfirmPurchase = async () => {
         try {
             setProcessing(true);
-            const response = router.post(`/trade/${formData.symbol}/buy`, {
+            const response: any = await router.post(`/trade/${formData.symbol}/buy`, {
                 quantity: formData.quantity,
                 price: formData.price,
                 // Include any additional data required for the purchase
             });
 
-            if (!response.ok) {
+            if (response instanceof Error) {
                 throw new Error("Network response was not ok");
             }
 
