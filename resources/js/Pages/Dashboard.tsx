@@ -245,20 +245,7 @@ useEffect(() => {
           </div>
         </div>
       </div>
-      {/* Intégration d'AlertsManager avec les props favorites et purchased */}
-      <AlertsManager
-        executeOrder={false}
-        priceAlerts={[]}
-        marketNews={false}
-        accountStatus={false}
-        marketMovements={false}
-        dividends={false}
-        accountSecurity={false}
-        supportMessages={false}
-        assetMovements={false}
-        deadlines={false}
-      />
-      {/* Affichage du composant Notifications */}
+     
     </AuthenticatedLayout>
   );
 }
