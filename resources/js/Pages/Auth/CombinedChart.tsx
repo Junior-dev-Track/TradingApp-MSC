@@ -16,6 +16,8 @@ interface CombinedChartProps {
   data: BarData[];
 }
 
+
+
 const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
   // State for filter selection
@@ -116,6 +118,10 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
       return num.toString();
     }
   };
+  const [chartHeight, setChartHeight] = useState(250); // Hauteur initiale
+
+// Vous pouvez ajuster setChartHeight en fonction des conditions ou des actions de l'utilisateur
+
 
   const renderTooltipContent = ({ payload, label }: any) => {
     if (payload && payload.length) {
@@ -147,7 +153,8 @@ return (
     <button className=' text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => { setFilterSelection('year'); filterByYear(); }}>Year</button>
 
     </div>
-      <ResponsiveContainer width="100%" height={400}>
+
+      <ResponsiveContainer width="100%" height={chartHeight}>
         <ComposedChart data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />
