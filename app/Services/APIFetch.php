@@ -11,10 +11,15 @@ class APIFetch
 {
     public function getHistoricalbars(): JsonResponse
     {
+        $startTime = time() - 365 * 24 * 60 * 60;
+        $startDate = date('Y-m-d', $startTime);
+
+
+
         $params = [
             'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
             'timeframe' => '1D',
-            'start' => '2024-01-01T00:00:00Z',
+            'start' => $startDate,
             'limit' => 1000,
             'adjustment' => 'raw',
             'feed' => 'iex',
@@ -24,22 +29,6 @@ class APIFetch
         $all_data = $this->fetchData($params, 'bars');
 
         return response()->json($all_data);
-    }
-
-    public function getHistoricalbarsBySymbol($symbol): JsonResponse
-    {
-        $params = [
-            'symbols' => $symbol,
-            'timeframe' => '1Min',
-            'limit' => 1000,
-            'adjustment' => 'raw',
-            'feed' => 'iex',
-            'sort' => 'asc'
-        ];
-
-        $symbol_data = $this->fetchData($params, 'bars');
-
-        return response()->json($symbol_data);
     }
 
     public function getSpecificClosePrice($symbol): float
