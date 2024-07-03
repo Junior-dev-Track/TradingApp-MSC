@@ -142,13 +142,11 @@ useEffect(() => {
   updateNetGainLoss();
 }, [purchased, availableFunds]);
 
-
-
-
-
     function removeFavorite(symbol: string): void {
-        throw new Error("Function not implemented.");
-    }
+        setFavorites(favorites => favorites.filter(fav => fav !== symbol));
+        addNotification(`${symbol} has been removed from favorites.`);
+      }
+
 
   return (
     <AuthenticatedLayout user={auth?.user}>
@@ -172,19 +170,23 @@ useEffect(() => {
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
           <div className="grid grid-cols-3 gap-4">
+
             <div
-              className={`col-span-3 bg-gray-700 p-3 h-15 rounded-lg shadow ${activeSection === 'historicalBars' ? 'border-4 border-blue-500' : ''}`}
+              className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${activeSection === 'historicalBars' ? 'border-4 border-blue-500' : ''}`}
               ref={historicalBarsRef}
+              style={{ height: '500px' }} // Ajustez selon vos besoins
             >
               <HistoricalBars
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
                 onSearch={(symbol: string) => handleSearchChange(symbol)}
+
               />
             </div>
             <div
-  className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-hidden col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
+  className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
   ref={availableFundsRef}
+  style={{ maxHeight: '350px' }}
 >
   <h2 className="text-white text-lg">Available Funds</h2>
   <div className="text-white">${availableFunds.toFixed(2)}</div>
@@ -194,12 +196,12 @@ useEffect(() => {
 </div>
 
             <div
-              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-2 ${activeSection === 'favorites' ? 'border-4 border-blue-500' : ''}`}
+              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${activeSection === 'favorites' ? 'border-4 border-blue-500' : ''}`}
               ref={favoritesRef}
-              style={{ maxHeight: '300px' }}
+              style={{ maxHeight: '150px', overflowY: 'scroll' }}
             >
               {/* Additional Widget */}
-              <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
+              <div className="">
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
                   {favorites.map((symbol, index) => (
@@ -218,46 +220,32 @@ useEffect(() => {
             </div>
 
             <div
-              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-3 ${activeSection === 'assets' ? 'border-4 border-blue-500' : ''}`}
-              ref={assetsRef}
-              style={{ maxHeight: '300px' }}
-            >
-              {/* Additional Widget */}
-              <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
-                <h2 className="text-white text-lg">Assets</h2>
-                <ul>
-                  {purchased.map((asset, index) => (
-                    <li key={index} className="text-white flex justify-between">
-                      {asset.symbol} - {asset.quantity} shares @ ${asset.price.toFixed(2)} each - Total: ${(asset.totalPrice || 0).toFixed(2)}
-                      <button
-                        className="bg-red-500 p-2 rounded"
-                        onClick={() => sellAsset(asset.symbol)}
-                      >
-                        Sell
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+  className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 ${activeSection === 'assets' ? 'border-4 border-blue-500' : ''}`}
+  ref={assetsRef}
+  style={{ maxHeight: '150px', overflowY: 'scroll' }}  // Assurez-vous que `overflowY: 'scroll'` est ajouté ici
+>
+  <div className="scrollbar">
+    <h2 className="text-white text-lg">Assets</h2>
+    <ul>
+      {purchased.map((asset, index) => (
+        <li key={index} className="text-white flex justify-between">
+          {asset.symbol} - {asset.quantity} shares @ ${asset.price.toFixed(2)} each - Total: ${(asset.totalPrice || 0).toFixed(2)}
+          <button
+            className="bg-red-500 p-2 rounded"
+            onClick={() => sellAsset(asset.symbol)}
+          >
+            Sell
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
 
           </div>
         </div>
       </div>
-      {/* Intégration d'AlertsManager avec les props favorites et purchased */}
-      <AlertsManager
-        executeOrder={false}
-        priceAlerts={[]}
-        marketNews={false}
-        accountStatus={false}
-        marketMovements={false}
-        dividends={false}
-        accountSecurity={false}
-        supportMessages={false}
-        assetMovements={false}
-        deadlines={false}
-      />
-      {/* Affichage du composant Notifications */}
+     
     </AuthenticatedLayout>
   );
 }
