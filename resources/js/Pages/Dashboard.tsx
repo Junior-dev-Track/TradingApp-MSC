@@ -189,6 +189,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     const currentTotalValue = purchased.reduce((acc, item) => acc + (currentPrices[item.symbol] ?? item.price) * (item.quantity ?? 0), 0);
     const initialFunds = 1000; // Assumons que le fonds initial est de 1000
     const currentNetGainLoss = currentTotalValue - totalInvested;
+    console.log(netGainLoss);
     setNetGainLoss(currentNetGainLoss);
   };
 
@@ -245,10 +246,14 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             >
               <h2 className="text-white text-lg">Available Funds</h2>
               <div className="text-white">${availableFunds.toFixed(2)}</div>
-              <div className={`text-${netGainLoss >= 0 ? "text-green" : "text-red"}-500 text-md`}>
+              {/* <div className={`text-${netGainLoss >= 0 ? "text-green" : "text-red"}-500 text-md`}>
+                {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
+              </div> */}
+               <div className="text-white">
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
+
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
                 activeSection === "favorites" ? "border-2 border-white"  : ""
@@ -260,10 +265,10 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
                   {favorites.map((symbol, index) => (
-                    <li key={index} className="text-red flex justify-between">
+                    <li key={index} className="text-white flex justify-between">
                       {symbol}
                       <button
-                        className="bg-red-500 p-2 rounded"
+                        className="bg-darker-blue p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
                         Remove
