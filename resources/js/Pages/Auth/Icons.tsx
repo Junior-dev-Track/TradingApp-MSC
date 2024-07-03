@@ -1,7 +1,8 @@
 import React from 'react';
-import { AiFillAppstore } from "react-icons/ai";
+import { AiFillBank } from "react-icons/ai";
 import { AiOutlineFund } from "react-icons/ai";
-import { AiFillCalendar } from "react-icons/ai";
+import { AiFillPushpin } from "react-icons/ai";
+import { AiOutlineDollarCircle } from "react-icons/ai";
 
 interface IconsProps {
   onAppStoreClick: () => void;
@@ -36,16 +37,18 @@ const Icons: React.FC<IconsProps> = ({ onAppStoreClick, onFundClick, onAssetsCli
   return (
     <div className="flex flex-col mt-8 space-y-4 text-gray-400">
       <button onClick={onAppStoreClick}>
-        <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
-      </button>
-      <button onClick={onFundClick}>
         <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
       </button>
+      <button onClick={onFundClick}>
+      <IconWithTooltip icon={<AiOutlineDollarCircle className="w-7 h-7 hover:text-gray-500" />} name="Assets" />
+
+      </button>
       <button onClick={onFavoritesClick}>
-        <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Favorites" />
+        <IconWithTooltip icon={<AiFillPushpin className="w-7 h-7 hover:text-gray-500" />} name="Favorites" />
       </button>
       <button onClick={onAssetsClick}>
-        <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Assets" />
+      <IconWithTooltip icon={<AiFillBank className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
+
       </button>
 
     </div>
