@@ -35,17 +35,9 @@ class Trade extends Model
     }
 
 
-    public static function getOpenTradesWithQuantitySum($profileId, $symbol)
+    public static function getOpenTrades($profileId)
     {
-        $openTrades = self::getOpenTradeBySymbol($profileId, $symbol);
-
-        $totalAsset = 0;
-        foreach ($openTrades as $trade) {
-        }
-
-        $quantitySum = $openTrades->sum('quantity');
-
-        return $quantitySum;
+        return self::where('profile_id', $profileId)->where('open', true)->get();
     }
 
 

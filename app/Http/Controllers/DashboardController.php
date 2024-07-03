@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Profile;
+use App\Models\Trade;
 
 use App\Services\APIFetch;
 
@@ -28,7 +29,13 @@ class DashboardController extends Controller
         $barsLatestData = $this->apiFetch->getLastestBars();
         $user_id = Auth::id();
         $wallet = Profile::getWallet($user_id);
+        $openTrades = Trade::getOpenTrades($user_id);
 
-        return Inertia::render('Dashboard', ['barsData' => $barsData, 'barsLatestData' => $barsLatestData, 'wallet' => $wallet]);
+        $totalAssets = 0;
+        foreach ($openTrades as $openTrade) {
+            $totalAssets += $openTrade->quantity * $this->apiFetch->getSpecificClosePrice($openTrade->symbol);
+        }
+
+        return Inertia::render('Dashboard', ['barsData' => $barsData, 'barsLatestData' => $barsLatestData, 'wallet' => $wallet, 'openTrades' => $openTrades, 'totalAssets' => $totalAssets]);
     }
 }
