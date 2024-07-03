@@ -17,6 +17,15 @@ interface PageProps {
   onAddSell: (stock: BarData, quantity: number) => void;
 }
 
+interface Bar {
+    c: number; // Close price
+    // Ajoutez d'autres propriétés si nécessaire
+}
+
+interface ApiResponse {
+    [symbol: string]: Bar[];
+}
+
 export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: () => {} }) {
   const [favorites, setFavorites] = useState<string[]>(() => {
     const savedFavorites = localStorage.getItem("favorites");
@@ -39,6 +48,43 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     totalPrice: 0,
   });
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateCurrentPrices();
+    }, 5000); // Update prices every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  const updateCurrentPrices = async () => {
+    try {
+      const response = await fetch('/api/current-prices');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: ApiResponse = await response.json();
+      const formattedData = Object.fromEntries(
+        Object.entries(data).map(([symbol, bars]) => [symbol, bars[0].c])
+      );
+      console.log('Formatted data:', formattedData); // Ajoutez cette ligne pour déboguer
+      setCurrentPrices(formattedData);
+      updateNetGainLoss(formattedData);
+    } catch (error) {
+      console.error('Error fetching current prices:', error);
+    }
+  };
+
+  const updateNetGainLoss = (prices: { [x: string]: number; }) => {
+    console.log('Prices:', prices); // Ajoutez cette ligne pour déboguer
+    const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
+    const currentTotalValue = purchased.reduce((acc, item) => {
+      const currentPrice = prices[item.symbol] ?? item.price;
+      return acc + currentPrice * (item.quantity ?? 0);
+    }, 0);
+    const currentNetGainLoss = currentTotalValue - totalInvested;
+    console.log('Net gain/loss:', currentNetGainLoss); // Ajoutez cette ligne pour déboguer
+    setNetGainLoss(currentNetGainLoss);
+  };
+
   const handleBuyClick = () => {
     // Logic for buy click (if needed)
   };
@@ -56,15 +102,34 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       }
 
       // Update state after successful sale
-      const updatedPurchased = purchased.filter(asset => asset.symbol !== formData.symbol);
-      setPurchased(updatedPurchased);
-      const fundsFromSale = formData.price * formData.quantity;
-      setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
-      setTotalBalance(prevBalance => prevBalance + fundsFromSale);
-      addNotification(`${formData.quantity} shares of ${formData.symbol} have been sold.`);
-      updateNetGainLoss();
-      setShowPopup(false);
-      setProcessing(false);
+      const assetToSell = purchased.find(asset => asset.symbol === formData.symbol);
+      if (assetToSell) {
+        const purchasePrice = assetToSell.price;
+        const salePrice = formData.price;
+        const gainOrLoss = (salePrice - purchasePrice) * formData.quantity;
+
+        const remainingQuantity = (assetToSell.quantity ?? 0) - formData.quantity;
+
+        // Update the asset quantity or remove it if all shares are sold
+        if (remainingQuantity > 0) {
+          setPurchased(purchased.map(asset =>
+            asset.symbol === formData.symbol
+              ? { ...asset, quantity: remainingQuantity, totalPrice: remainingQuantity * asset.price }
+              : asset
+          ));
+        } else {
+          setPurchased(purchased.filter(asset => asset.symbol !== formData.symbol));
+        }
+
+        const fundsFromSale = salePrice * formData.quantity;
+        setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
+        setTotalBalance(prevBalance => prevBalance + fundsFromSale);
+        addNotification(`${formData.quantity} shares of ${formData.symbol} have been sold.`);
+
+        updateNetGainLoss(currentPrices);
+        setShowPopup(false);
+        setProcessing(false);
+      }
     } catch (error) {
       console.error("An error occurred during sale:", error);
       setShowPopup(false);
@@ -122,8 +187,8 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       setAvailableFunds((prevFunds) => prevFunds - totalPrice);
       setTotalBalance((prevBalance) => prevBalance - totalPrice);
       addNotification(`${quantity} shares of ${stock.symbol} have been purchased.`);
-      updateNetGainLoss();
       setCurrentPrices(prevPrices => ({ ...prevPrices, [stock.symbol]: stock.price }));
+      updateNetGainLoss(currentPrices);
     } else {
       addNotification(`Insufficient funds to purchase ${quantity} shares of ${stock.symbol}.`);
     }
@@ -184,16 +249,8 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
 
   const [netGainLoss, setNetGainLoss] = useState(0);
 
-  const updateNetGainLoss = () => {
-    const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
-    const currentTotalValue = purchased.reduce((acc, item) => acc + (currentPrices[item.symbol] ?? item.price) * (item.quantity ?? 0), 0);
-    const initialFunds = 1000; // Assumons que le fonds initial est de 1000
-    const currentNetGainLoss = currentTotalValue - totalInvested;
-    setNetGainLoss(currentNetGainLoss);
-  };
-
   useEffect(() => {
-    updateNetGainLoss();
+    updateNetGainLoss(currentPrices);
   }, [purchased, currentPrices]);
 
   function removeFavorite(symbol: string): void {
@@ -222,13 +279,6 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           />
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
-        <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow mb-4">
-              <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-                onSearch={(symbol: string) => handleSearchChange(symbol)}
-              />
-            </div>
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
@@ -248,11 +298,11 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
               }`}
               ref={availableFundsRef}
-              style={{ height: "150px" }}
+              style={{ height: "100px" }}
             >
               <h2 className="text-white text-lg">Available Funds</h2>
               <div className="text-white">${availableFunds.toFixed(2)}</div>
-              <div className={`text-${netGainLoss >= 0 ? "text-green" : "text-red"}-500 text-md`}>
+              <div className={`text-${netGainLoss >= 0 ? "green" : "red"}-500 text-md`}>
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
@@ -261,7 +311,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "favorites" ? "border-4 border-blue-500" : ""
               }`}
               ref={favoritesRef}
-              style={{ height: "150px", maxHeight: "150px", overflowY: "scroll" }}
+              style={{ maxHeight: "150px", overflowY: "scroll" }}
             >
               <div className="">
                 <h2 className="text-white text-lg">Favorites</h2>
@@ -285,23 +335,32 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "assets" ? "border-4 border-blue-500" : ""
               }`}
               ref={assetsRef}
-              style={{ height: "100px", maxHeight: "100px", overflowY: "scroll" }}
+              style={{ maxHeight: "150px", overflowY: "scroll" }}
             >
               <div className="scrollbar">
                 <h2 className="text-white text-lg">Assets</h2>
                 <ul>
-                  {purchased.map((asset, index) => (
-                    <li key={index} className="text-white flex justify-between">
-                      {asset.symbol} - {asset.quantity} - Shares ${asset.price.toFixed(2)} each -
-                      Total: ${(asset.totalPrice || 0).toFixed(2)}
-                      <button
-                        className="bg-red-500 p-2 rounded"
-                        onClick={() => sellAsset(asset.symbol)}
-                      >
-                        Sell
-                      </button>
-                    </li>
-                  ))}
+                  {purchased.map((asset, index) => {
+                    const currentPrice = currentPrices[asset.symbol] ?? asset.price;
+                    const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
+                    return (
+                      <li key={index} className="text-white flex justify-between items-center">
+                        <span>{asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each</span>
+                        <span>
+                          Total: ${(asset.totalPrice || 0).toFixed(2)}
+                        </span>
+                        <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
+                          {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
+                        </span>
+                        <button
+                          className="bg-red-500 p-2 rounded"
+                          onClick={() => sellAsset(asset.symbol)}
+                        >
+                          Sell
+                        </button>
+                      </li>
+                    );
+                  })}
                   {showPopup && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                       <div className="bg-white p-4 rounded shadow-lg">
