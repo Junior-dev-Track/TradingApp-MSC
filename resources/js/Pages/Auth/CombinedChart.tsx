@@ -153,7 +153,7 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
   return (
     <animated.div style={props}>
-      <div>
+      <div className='text-right '>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>

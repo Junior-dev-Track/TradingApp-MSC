@@ -134,7 +134,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 </button>
             </div>
             {filteredData.length > 0 ? (
-                <div>
+                <div className="">
                     <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">{filteredData[0].symbol}</span>
                     <CombinedChart
                         data={filteredData.map((entry) => ({
