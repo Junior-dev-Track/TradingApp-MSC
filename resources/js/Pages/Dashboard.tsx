@@ -225,7 +225,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
-                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
+                activeSection === "historicalBars" ? "border-2 border-white"  : ""
               }`}
               ref={historicalBarsRef}
               style={{ height: "500px" }} // Ajustez selon vos besoins
@@ -238,7 +238,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
-                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
+                activeSection === "availableFunds" ? "border-2 border-white" : ""
               }`}
               ref={availableFundsRef}
               style={{ height: "150px" }}
@@ -251,7 +251,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                activeSection === "favorites" ? "border-4 border-blue-500" : ""
+                activeSection === "favorites" ? "border-2 border-white"  : ""
               }`}
               ref={favoritesRef}
               style={{ height: "150px", maxHeight: "150px", overflowY: "scroll" }}
@@ -275,7 +275,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
-                activeSection === "assets" ? "border-4 border-blue-500" : ""
+                activeSection === "assets" ? "border-2 border-white"  : ""
               }`}
               ref={assetsRef}
               style={{ height: "100px", maxHeight: "100px", overflowY: "scroll" }}
