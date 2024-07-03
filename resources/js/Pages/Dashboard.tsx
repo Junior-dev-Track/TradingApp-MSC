@@ -222,6 +222,13 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           />
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
+        <div className="col-span-3 bg-gray-700 p-4 rounded-lg shadow mb-4">
+              <HistoricalBars
+                onAddFavorite={addFavorite}
+                onAddPurchase={addPurchase}
+                onSearch={(symbol: string) => handleSearchChange(symbol)}
+              />
+            </div>
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
