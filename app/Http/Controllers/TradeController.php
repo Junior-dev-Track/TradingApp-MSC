@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 use App\Models\Trade;
 
@@ -46,32 +45,19 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $closePrice = $request->input('price');
+        $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
-        $rules = [
-            'quantity' => 'required|numeric|min:0.000000001',
-            'price' => 'required|numeric',
-        ];
+        $existingOpenTrade = Trade::getOpenTradeBySymbol($profile->id, $symbol);
 
-        $validator = Validator::make($request->all(), $rules);
+        $totalPrice = $request->input('quantity') * $closePrice;
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        if ($totalPrice > $profile->wallet) {
+            return redirect()->back()->with('error', 'Insufficient funds');
         }
 
-        $existingOpenTrade = Trade::getOpenTrades($profile->id, $symbol);
-
-        if ($existingOpenTrade->count() == 0) {
-            if ($request->input('quantity') * $closePrice > $profile->wallet) {
-                return redirect()->back()->with('error', 'Insufficient funds');
-            }
-
+        if (empty($existingOpenTrade)) {
             $this->tradeBuySell->create($request, $closePrice, $profile, $symbol);
         } else {
-            if (($request->input('quantity') * $closePrice) > ($profile->wallet)) {
-                return redirect()->back()->with('error', 'Insufficient funds');
-            }
-
             $this->tradeBuySell->add($request, $closePrice, $existingOpenTrade, $profile);
         }
 
@@ -82,25 +68,18 @@ class TradeController extends Controller
     {
         $user = Auth::user();
         $profile = $user->profile;
-        $existingOpenTrade = Trade::getOpenTrades($profile->id, $symbol);
+        $existingOpenTrade = Trade::getOpenTradeBySymbol($profile->id, $symbol);
         $closePrice = $this->apiFetch->getSpecificClosePrice($symbol);
 
-        $rules = [
-            'quantity' => 'required|numeric|min:0.000000001',
-            'open_price' => 'required|numeric',
-        ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $quantity = $request->input('quantity');
+        $existingQuantity = $existingOpenTrade->quantity;
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        if ($request->input('quantity') > $existingOpenTrade->quantity) {
+        if ($quantity > $existingQuantity) {
             return redirect()->back()->with('error', 'You cannot sell more than you have');
         }
 
-        if ($request->input('quantity') == $existingOpenTrade->quantity) {
+        if ($quantity === $existingQuantity) {
             $this->tradeBuySell->sellAll($request, $closePrice, $existingOpenTrade, $profile);
         } else {
             $this->tradeBuySell->sellSome($request, $closePrice, $existingOpenTrade, $profile);

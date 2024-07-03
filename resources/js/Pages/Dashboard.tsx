@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PortfolioSummary from "./Auth/PortfolioSummary";
@@ -64,37 +64,91 @@ export default function Dashboard({ auth }: PageProps = {}) {
 
   const addPurchase = (stock: BarData, quantity: number) => {
     const totalPrice = stock.price * quantity;
-
     if (availableFunds >= totalPrice) {
       const newStock = { ...stock, quantity, totalPrice };
       setPurchased([...purchased, newStock]);
-      setAvailableFunds((prevFunds) => prevFunds - totalPrice);
-      setTotalBalance((prevBalance) => prevBalance - totalPrice);
+      setAvailableFunds(prevFunds => prevFunds - totalPrice);
+      setTotalBalance(prevBalance => prevBalance - totalPrice);
       addNotification(`${quantity} shares of ${stock.symbol} have been purchased.`);
+      updateNetGainLoss();
     } else {
       addNotification(`Insufficient funds to purchase ${quantity} shares of ${stock.symbol}.`);
     }
   };
 
-  const removeFavorite = (symbol: string) => {
-    setFavorites(favorites.filter((fav) => fav !== symbol));
-  };
-
   const sellAsset = (symbol: string) => {
-    const assetToSell = purchased.find((asset) => asset.symbol === symbol);
+    const assetToSell = purchased.find(asset => asset.symbol === symbol);
     if (assetToSell) {
-      setAvailableFunds((prevFunds) => prevFunds + (assetToSell.totalPrice || 0));
-      setTotalBalance((prevBalance) => prevBalance + (assetToSell.totalPrice || 0));
-      setPurchased(purchased.filter((asset) => asset.symbol !== symbol));
+      setAvailableFunds(prevFunds => prevFunds + (assetToSell.totalPrice || 0));
+      setTotalBalance(prevBalance => prevBalance + (assetToSell.totalPrice || 0));
+      setPurchased(purchased.filter(asset => asset.symbol !== symbol));
       addNotification(`${assetToSell.symbol} has been sold.`);
+      updateNetGainLoss();
     }
   };
+
 
   const handleSearchChange = (symbol: string) => {
     // Mettre à jour la recherche ici si nécessaire
   };
 
+
   const investedBalance = purchased.reduce((acc, asset) => acc + (asset.totalPrice || 0), 0);
+
+  const historicalBarsRef = useRef<HTMLDivElement>(null);
+  const availableFundsRef = useRef<HTMLDivElement>(null);
+  const assetsRef = useRef<HTMLDivElement>(null);
+  const favoritesRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  const scrollToHistoricalBars = () => {
+    setActiveSection('historicalBars');
+    if (historicalBarsRef.current) {
+      historicalBarsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToAvailableFunds = () => {
+    setActiveSection('availableFunds');
+    if (availableFundsRef.current) {
+      availableFundsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToAssets = () => {
+    setActiveSection('assets');
+    if (assetsRef.current) {
+      assetsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToFavorites = () => {
+    setActiveSection('favorites');
+    if (favoritesRef.current) {
+      favoritesRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  // État pour suivre le gain ou la perte nette
+const [netGainLoss, setNetGainLoss] = useState(0);
+
+const updateNetGainLoss = () => {
+  const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
+  const initialFunds = 1000; // Assumons que le fonds initial est de 1000
+  const currentNetGainLoss = availableFunds + totalInvested - initialFunds;
+  setNetGainLoss(currentNetGainLoss);
+};
+
+useEffect(() => {
+  updateNetGainLoss();
+}, [purchased, availableFunds]);
+
+
+
+
+
+    function removeFavorite(symbol: string): void {
+        throw new Error("Function not implemented.");
+    }
 
   return (
     <AuthenticatedLayout user={auth?.user}>
@@ -109,24 +163,41 @@ export default function Dashboard({ auth }: PageProps = {}) {
 
       <div className="flex">
         <div className="w-1/6 flex justify-center">
-          <Icons />
+          <Icons
+            onAppStoreClick={scrollToHistoricalBars}
+            onFundClick={scrollToAvailableFunds}
+            onAssetsClick={scrollToAssets}
+            onFavoritesClick={scrollToFavorites}
+          />
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
           <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-3 bg-gray-700 p-3 h-15 rounded-lg shadow">
+            <div
+              className={`col-span-3 bg-gray-700 p-3 h-15 rounded-lg shadow ${activeSection === 'historicalBars' ? 'border-4 border-blue-500' : ''}`}
+              ref={historicalBarsRef}
+            >
               <HistoricalBars
-
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
                 onSearch={(symbol: string) => handleSearchChange(symbol)}
               />
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-1">
-              {/* TradingWallet */}
-              <h2 className="text-white text-lg">Available Funds</h2>
-              <div className="text-white">${availableFunds.toFixed(2)}</div>
-            </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-2">
+            <div
+  className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-hidden col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
+  ref={availableFundsRef}
+>
+  <h2 className="text-white text-lg">Available Funds</h2>
+  <div className="text-white">${availableFunds.toFixed(2)}</div>
+  <div className={`text-${netGainLoss >= 0 ? 'green' : 'red'}-500 text-md`}>
+    {netGainLoss >= 0 ? 'Profit' : 'Loss'}: ${Math.abs(netGainLoss).toFixed(2)}
+  </div>
+</div>
+
+            <div
+              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-2 ${activeSection === 'favorites' ? 'border-4 border-blue-500' : ''}`}
+              ref={favoritesRef}
+              style={{ maxHeight: '300px' }}
+            >
               {/* Additional Widget */}
               <div className="bg-gray-800 p-3 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Favorites</h2>
@@ -145,7 +216,12 @@ export default function Dashboard({ auth }: PageProps = {}) {
                 </ul>
               </div>
             </div>
-            <div className="bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-3">
+
+            <div
+              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-auto col-span-3 ${activeSection === 'assets' ? 'border-4 border-blue-500' : ''}`}
+              ref={assetsRef}
+              style={{ maxHeight: '300px' }}
+            >
               {/* Additional Widget */}
               <div className="bg-gray-800 p-4 rounded-lg shadow mt-4">
                 <h2 className="text-white text-lg">Assets</h2>
@@ -181,9 +257,7 @@ export default function Dashboard({ auth }: PageProps = {}) {
         assetMovements={false}
         deadlines={false}
       />
-
       {/* Affichage du composant Notifications */}
-
     </AuthenticatedLayout>
   );
 }

@@ -2,47 +2,54 @@ import React from 'react';
 import { AiFillAppstore } from "react-icons/ai";
 import { AiOutlineFund } from "react-icons/ai";
 import { AiFillCalendar } from "react-icons/ai";
-import { Link } from '@inertiajs/react';
-import HistoricalBars from '../Trading/HistoricalBars';
 
+interface IconsProps {
+  onAppStoreClick: () => void;
+  onFundClick: () => void;
+  onAssetsClick: () => void;
+  onFavoritesClick: () => void;
+}
 
-
-
-const Icons = () => {
-    const IconWithTooltip = ({ icon, name }: { icon: React.ReactNode, name: string }) => {
-        const [showTooltip, setShowTooltip] = React.useState(false);
-
-        return (
-            <div className="relative flex items-center">
-                <button
-                    className="flex items-center"
-                    onMouseEnter={() => setShowTooltip(true)}
-                    onMouseLeave={() => setShowTooltip(false)}
-                >
-                    {icon}
-                </button>
-                {showTooltip && (
-                    <div className="absolute left-full ml-2 bg-white p-2 rounded shadow-lg">
-                        <span>{name}</span>
-                        <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-full w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-white"></div>
-                    </div>
-                )}
-            </div>
-        );
-    };
+const Icons: React.FC<IconsProps> = ({ onAppStoreClick, onFundClick, onAssetsClick, onFavoritesClick }) => {
+  const IconWithTooltip = ({ icon, name }: { icon: React.ReactNode, name: string }) => {
+    const [showTooltip, setShowTooltip] = React.useState(false);
 
     return (
-        <div className="flex flex-col mt-8 space-y-4 text-gray-400">
-            <Link href=''>
-            <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
-            </Link>
-            <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
-            <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
-            <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
-            <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
-            <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Calendar" />
-        </div>
+      <div className="relative flex items-center">
+        <button
+          className="flex items-center"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          {icon}
+        </button>
+        {showTooltip && (
+          <div className="absolute left-full ml-2 bg-white p-2 rounded shadow-lg">
+            <span>{name}</span>
+            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-full w-0 h-0 border-t-8 border-b-8 border-r-8 border-transparent border-r-white"></div>
+          </div>
+        )}
+      </div>
     );
+  };
+
+  return (
+    <div className="flex flex-col mt-8 space-y-4 text-gray-400">
+      <button onClick={onAppStoreClick}>
+        <IconWithTooltip icon={<AiFillAppstore className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
+      </button>
+      <button onClick={onFundClick}>
+        <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
+      </button>
+      <button onClick={onFavoritesClick}>
+        <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Favorites" />
+      </button>
+      <button onClick={onAssetsClick}>
+        <IconWithTooltip icon={<AiFillCalendar className="w-7 h-7 hover:text-gray-500" />} name="Assets" />
+      </button>
+
+    </div>
+  );
 };
 
 export default Icons;

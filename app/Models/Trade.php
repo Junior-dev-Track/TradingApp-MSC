@@ -10,11 +10,8 @@ use App\Services\APIFetch;
 class Trade extends Model
 {
     use HasFactory;
+
     protected $apiFetch;
-
-
-
-
 
     protected $fillable = [
         'profile_id',
@@ -31,26 +28,16 @@ class Trade extends Model
 
     public $timestamps = false;
 
-    public function __construct()
+
+    public static function getOpenTradeBySymbol($profileId, $symbol)
     {
+        return self::where('profile_id', $profileId)->where('symbol', $symbol)->where('open', true)->first();
     }
 
-    public static function getOpenTrades($profileId, $symbol)
+
+    public static function getOpenTrades($profileId)
     {
-        return self::where('profile_id', $profileId)->where('symbol', $symbol)->where('open', true)->get();
-    }
-
-    public static function getOpenTradesWithQuantitySum($profileId, $symbol)
-    {
-        $openTrades = self::getOpenTrades($profileId, $symbol);
-
-        $totalAsset = 0;
-        foreach ($openTrades as $trade) {
-        }
-
-        $quantitySum = $openTrades->sum('quantity');
-
-        return $quantitySum;
+        return self::where('profile_id', $profileId)->where('open', true)->get();
     }
 
 

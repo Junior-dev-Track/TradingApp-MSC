@@ -51,7 +51,7 @@ class APIFetch
 
         $response = $this->fetchData($params, 'barsLatest');
 
-        $closePrice = $response['bars'][$symbol]['c'] ?? null;
+        $closePrice = $response[$symbol]['c'] ?? null;
 
         return $closePrice;
     }
