@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, MouseEvent } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import PortfolioSummary from "./Auth/PortfolioSummary";
 import Icons from "@/Pages/Auth/Icons";
 import AlertsManager from "@/Pages/Auth/AlertsManager";
@@ -8,14 +8,16 @@ import Notifications from "@/Pages/Auth/Notifications";
 import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
+import { MdOutlineRefresh } from "react-icons/md";
 
 interface PageProps {
   auth?: {
     user?: User; // Marquer la propriété 'user' comme optionnelle
   };
+  onAddSell: (stock: BarData, quantity: number) => void;
 }
 
-export default function Dashboard({ auth }: PageProps = {}) {
+export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: () => {} }) {
   const [favorites, setFavorites] = useState<string[]>(() => {
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -24,33 +26,83 @@ export default function Dashboard({ auth }: PageProps = {}) {
     const savedPurchased = localStorage.getItem("purchased");
     return savedPurchased ? JSON.parse(savedPurchased) : [];
   });
+  const [currentPrices, setCurrentPrices] = useState<{ [symbol: string]: number }>({});
 
-  // Simuler l'état de l'argent disponible
   const [availableFunds, setAvailableFunds] = useState<number>(1000);
   const [totalBalance, setTotalBalance] = useState<number>(1000);
+  const [showPopup, setShowPopup] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [formData, setFormData] = useState({
+    symbol: "",
+    quantity: 1,
+    price: 0,
+    totalPrice: 0,
+  });
 
-  // State pour les notifications
+  const handleBuyClick = () => {
+    // Logic for buy click (if needed)
+  };
+
+  const handleConfirmSell = async () => {
+    try {
+      setProcessing(true);
+      const response: any = await router.post(`/trade/${formData.symbol}/sell`, {
+        quantity: formData.quantity,
+        price: formData.price,
+      });
+
+      if (response instanceof Error) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Update state after successful sale
+      const updatedPurchased = purchased.filter(asset => asset.symbol !== formData.symbol);
+      setPurchased(updatedPurchased);
+      const fundsFromSale = formData.price * formData.quantity;
+      setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
+      setTotalBalance(prevBalance => prevBalance + fundsFromSale);
+      addNotification(`${formData.quantity} shares of ${formData.symbol} have been sold.`);
+      updateNetGainLoss();
+      setShowPopup(false);
+      setProcessing(false);
+    } catch (error) {
+      console.error("An error occurred during sale:", error);
+      setShowPopup(false);
+      setProcessing(false);
+    }
+  };
+
+  const handleCancelSell = (event: MouseEvent<HTMLButtonElement>) => {
+    setShowPopup(false);
+  };
+
+  const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const quantity = parseInt(event.target.value, 10);
+    const price = formData.price !== undefined ? formData.price : 0; // Ensure price is defined
+    setFormData((prevData) => ({
+      ...prevData,
+      quantity,
+      totalPrice: quantity * price,
+    }));
+  };
+
   const [notifications, setNotifications] = useState<string[]>(() => {
     const savedNotifications = localStorage.getItem("notifications");
     return savedNotifications ? JSON.parse(savedNotifications) : [];
   });
 
-  // Effet pour sauvegarder les favoris dans localStorage
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // Effet pour sauvegarder les achats dans localStorage
   useEffect(() => {
     localStorage.setItem("purchased", JSON.stringify(purchased));
   }, [purchased]);
 
-  // Effet pour sauvegarder les notifications dans localStorage
   useEffect(() => {
     localStorage.setItem("notifications", JSON.stringify(notifications));
   }, [notifications]);
 
-  // Fonction pour ajouter une notification
   const addNotification = (message: string) => {
     setNotifications((prevNotifications) => [...prevNotifications, message]);
   };
@@ -67,31 +119,32 @@ export default function Dashboard({ auth }: PageProps = {}) {
     if (availableFunds >= totalPrice) {
       const newStock = { ...stock, quantity, totalPrice };
       setPurchased([...purchased, newStock]);
-      setAvailableFunds(prevFunds => prevFunds - totalPrice);
-      setTotalBalance(prevBalance => prevBalance - totalPrice);
+      setAvailableFunds((prevFunds) => prevFunds - totalPrice);
+      setTotalBalance((prevBalance) => prevBalance - totalPrice);
       addNotification(`${quantity} shares of ${stock.symbol} have been purchased.`);
       updateNetGainLoss();
+      setCurrentPrices(prevPrices => ({ ...prevPrices, [stock.symbol]: stock.price }));
     } else {
       addNotification(`Insufficient funds to purchase ${quantity} shares of ${stock.symbol}.`);
     }
   };
 
   const sellAsset = (symbol: string) => {
-    const assetToSell = purchased.find(asset => asset.symbol === symbol);
+    const assetToSell = purchased.find((asset) => asset.symbol === symbol);
     if (assetToSell) {
-      setAvailableFunds(prevFunds => prevFunds + (assetToSell.totalPrice || 0));
-      setTotalBalance(prevBalance => prevBalance + (assetToSell.totalPrice || 0));
-      setPurchased(purchased.filter(asset => asset.symbol !== symbol));
-      addNotification(`${assetToSell.symbol} has been sold.`);
-      updateNetGainLoss();
+      setFormData({
+        symbol: assetToSell.symbol,
+        quantity: assetToSell.quantity ?? 0, // Utilisation de ?? pour fournir une valeur par défaut
+        price: assetToSell.price,
+        totalPrice: assetToSell.totalPrice || 0,
+      });
+      setShowPopup(true);
     }
   };
-
 
   const handleSearchChange = (symbol: string) => {
     // Mettre à jour la recherche ici si nécessaire
   };
-
 
   const investedBalance = purchased.reduce((acc, asset) => acc + (asset.totalPrice || 0), 0);
 
@@ -102,51 +155,51 @@ export default function Dashboard({ auth }: PageProps = {}) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   const scrollToHistoricalBars = () => {
-    setActiveSection('historicalBars');
+    setActiveSection("historicalBars");
     if (historicalBarsRef.current) {
-      historicalBarsRef.current.scrollIntoView({ behavior: 'smooth' });
+      historicalBarsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const scrollToAvailableFunds = () => {
-    setActiveSection('availableFunds');
+    setActiveSection("availableFunds");
     if (availableFundsRef.current) {
-      availableFundsRef.current.scrollIntoView({ behavior: 'smooth' });
+      availableFundsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const scrollToAssets = () => {
-    setActiveSection('assets');
+    setActiveSection("assets");
     if (assetsRef.current) {
-      assetsRef.current.scrollIntoView({ behavior: 'smooth' });
+      assetsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const scrollToFavorites = () => {
-    setActiveSection('favorites');
+    setActiveSection("favorites");
     if (favoritesRef.current) {
-      favoritesRef.current.scrollIntoView({ behavior: 'smooth' });
+      favoritesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  // État pour suivre le gain ou la perte nette
-const [netGainLoss, setNetGainLoss] = useState(0);
 
-const updateNetGainLoss = () => {
-  const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
-  const initialFunds = 1000; // Assumons que le fonds initial est de 1000
-  const currentNetGainLoss = availableFunds + totalInvested - initialFunds;
-  setNetGainLoss(currentNetGainLoss);
-};
+  const [netGainLoss, setNetGainLoss] = useState(0);
 
-useEffect(() => {
-  updateNetGainLoss();
-}, [purchased, availableFunds]);
+  const updateNetGainLoss = () => {
+    const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
+    const currentTotalValue = purchased.reduce((acc, item) => acc + (currentPrices[item.symbol] ?? item.price) * (item.quantity ?? 0), 0);
+    const initialFunds = 1000; // Assumons que le fonds initial est de 1000
+    const currentNetGainLoss = currentTotalValue - totalInvested;
+    setNetGainLoss(currentNetGainLoss);
+  };
 
-    function removeFavorite(symbol: string): void {
-        setFavorites(favorites => favorites.filter(fav => fav !== symbol));
-        addNotification(`${symbol} has been removed from favorites.`);
-      }
+  useEffect(() => {
+    updateNetGainLoss();
+  }, [purchased, currentPrices]);
 
+  function removeFavorite(symbol: string): void {
+    setFavorites((favorites) => favorites.filter((fav) => fav !== symbol));
+    addNotification(`${symbol} has been removed from favorites.`);
+  }
 
   return (
     <AuthenticatedLayout user={auth?.user}>
@@ -170,37 +223,39 @@ useEffect(() => {
         </div>
         <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
           <div className="grid grid-cols-3 gap-4">
-
             <div
-              className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${activeSection === 'historicalBars' ? 'border-4 border-blue-500' : ''}`}
+              className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
+                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
+              }`}
               ref={historicalBarsRef}
-              style={{ height: '500px' }} // Ajustez selon vos besoins
+              style={{ height: "500px" }} // Ajustez selon vos besoins
             >
               <HistoricalBars
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
                 onSearch={(symbol: string) => handleSearchChange(symbol)}
-
               />
             </div>
             <div
-  className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${activeSection === 'availableFunds' ? 'border-4 border-blue-500' : ''}`}
-  ref={availableFundsRef}
-  style={{ maxHeight: '350px' }}
->
-  <h2 className="text-white text-lg">Available Funds</h2>
-  <div className="text-white">${availableFunds.toFixed(2)}</div>
-  <div className={`text-${netGainLoss >= 0 ? 'green' : 'red'}-500 text-md`}>
-    {netGainLoss >= 0 ? 'Profit' : 'Loss'}: ${Math.abs(netGainLoss).toFixed(2)}
-  </div>
-</div>
-
-            <div
-              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${activeSection === 'favorites' ? 'border-4 border-blue-500' : ''}`}
-              ref={favoritesRef}
-              style={{ maxHeight: '150px', overflowY: 'scroll' }}
+              className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
+                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
+              }`}
+              ref={availableFundsRef}
+              style={{ height: "150px" }}
             >
-              {/* Additional Widget */}
+              <h2 className="text-white text-lg">Available Funds</h2>
+              <div className="text-white">${availableFunds.toFixed(2)}</div>
+              <div className={`text-${netGainLoss >= 0 ? "text-green" : "text-red"}-500 text-md`}>
+                {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
+              </div>
+            </div>
+            <div
+              className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
+                activeSection === "favorites" ? "border-4 border-blue-500" : ""
+              }`}
+              ref={favoritesRef}
+              style={{ height: "150px", maxHeight: "150px", overflowY: "scroll" }}
+            >
               <div className="">
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
@@ -218,34 +273,66 @@ useEffect(() => {
                 </ul>
               </div>
             </div>
-
             <div
-  className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 ${activeSection === 'assets' ? 'border-4 border-blue-500' : ''}`}
-  ref={assetsRef}
-  style={{ maxHeight: '150px', overflowY: 'scroll' }}  // Assurez-vous que `overflowY: 'scroll'` est ajouté ici
->
-  <div className="scrollbar">
-    <h2 className="text-white text-lg">Assets</h2>
-    <ul>
-      {purchased.map((asset, index) => (
-        <li key={index} className="text-white flex justify-between">
-          {asset.symbol} - {asset.quantity} shares @ ${asset.price.toFixed(2)} each - Total: ${(asset.totalPrice || 0).toFixed(2)}
-          <button
-            className="bg-red-500 p-2 rounded"
-            onClick={() => sellAsset(asset.symbol)}
-          >
-            Sell
-          </button>
-        </li>
-      ))}
-    </ul>
-  </div>
-</div>
-
+              className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
+                activeSection === "assets" ? "border-4 border-blue-500" : ""
+              }`}
+              ref={assetsRef}
+              style={{ height: "100px", maxHeight: "100px", overflowY: "scroll" }}
+            >
+              <div className="scrollbar">
+                <h2 className="text-white text-lg">Assets</h2>
+                <ul>
+                  {purchased.map((asset, index) => (
+                    <li key={index} className="text-white flex justify-between">
+                      {asset.symbol} - {asset.quantity} - Shares ${asset.price.toFixed(2)} each -
+                      Total: ${(asset.totalPrice || 0).toFixed(2)}
+                      <button
+                        className="bg-red-500 p-2 rounded"
+                        onClick={() => sellAsset(asset.symbol)}
+                      >
+                        Sell
+                      </button>
+                    </li>
+                  ))}
+                  {showPopup && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                      <div className="bg-white p-4 rounded shadow-lg">
+                        <h2 className="text-black">Confirm Sell</h2>
+                        <div className="mt-2">
+                          <label className="text-black">Quantity:</label>
+                          <input
+                            type="number"
+                            value={formData.quantity}
+                            onChange={handleQuantityChange}
+                            className="ml-2 p-1 border rounded text-dark-purple"
+                            min="1"
+                          />
+                        </div>
+                        <div className="mt-2 text-black">
+                          Total Price: ${formData.totalPrice.toFixed(2)}
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                          <button
+                            className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
+                            onClick={handleConfirmSell}
+                            disabled={processing}
+                          >
+                            Confirm
+                          </button>
+                          <button className="bg-red-500 text-dark-purple p-2 rounded" onClick={handleCancelSell}>
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-     
     </AuthenticatedLayout>
   );
 }

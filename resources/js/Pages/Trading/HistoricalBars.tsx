@@ -167,7 +167,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 <div>Aucune donnée historique disponible pour ce symbole.</div>
             )}
 
-            {showPopup && (
+{showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-4 rounded shadow-lg">
                         <h2 className="text-black">Confirm Purchase</h2>
