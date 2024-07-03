@@ -1,11 +1,31 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 interface SearchBarProps {
-    onSearch: (symbol: string) => void;
-}
+    placeholder?: string;
+    onSearch: (searchTerm: string) => void;
+  }
+
+// Mock function to simulate fetching symbols based on input
+// Replace this with your actual API call
+const fetchSymbolSuggestions = async (input: string) => {
+  const symbols = ['AAPL','MSFT','AMZN','GOOGL','GOOG','TSLA','BRK.B','NVDA','JPM','JNJ','V','UNH','HD','PG','MA','DIS','PYPL','BAC','ADBE']; // Example symbols
+  return symbols.filter(symbol => symbol.includes(input.toUpperCase()));
+};
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [symbol, setSymbol] = useState("");
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+
+    useEffect(() => {
+      if (symbol.length > 0) {
+        const loadSuggestions = async () => {
+          const fetchedSuggestions = await fetchSymbolSuggestions(symbol);
+          setSuggestions(fetchedSuggestions);
+        };
+        loadSuggestions();
+      } else {
+        setSuggestions([]);
+      }
+    }, [symbol]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSymbol(event.target.value);
@@ -14,6 +34,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         onSearch(symbol.toUpperCase());
+        setSuggestions([]);
+    };
+
+    const handleSuggestionClick = (suggestion: string) => {
+      setSymbol(suggestion);
+      setSuggestions([]);
     };
 
     return (
@@ -31,6 +57,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             >
                 Search
             </button>
+            <ul>
+              {suggestions.map(suggestion => (
+                <li key={suggestion} onClick={() => handleSuggestionClick(suggestion)}>
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
         </form>
     );
 };

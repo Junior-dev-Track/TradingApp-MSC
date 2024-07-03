@@ -20,6 +20,8 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     const { barsData }: { barsData: { original: any } } = usePage()
         .props as unknown as { barsData: { original: any } };
 
+    console.log(barsData);
+
     const [filteredData, setFilteredData] = useState<BarData[]>(() => {
         const savedData = localStorage.getItem("filteredData");
         return savedData ? JSON.parse(savedData) : [];
