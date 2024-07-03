@@ -154,12 +154,12 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
   return (
     <animated.div style={props}>
       <div>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>Day</button>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>Week</button>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>Month</button>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('3 months')}>3 Months</button>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('6 months')}>6 Months</button>
-        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('year')}>Year</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('3 months')}>3M</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('6 months')}>6M</button>
+        <button className='text-black gap-4 ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4' onClick={() => setFilterSelection('year')}>YEAR</button>
       </div>
 
       <ResponsiveContainer width="100%" height={chartHeight}>
