@@ -77,10 +77,8 @@ export default function Authenticated({
       {/* Affichage du composant Notifications */}
                         </div>
                     </div>
-
                 </nav>
             </header>
-
             <main>{children}</main>
         </div>
     );
