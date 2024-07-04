@@ -34,11 +34,13 @@ const Notifications: React.FC = () => {
     })) : [];
   });
 
-
   useEffect(() => {
     const handleStorageChange = () => {
       const savedNotifications = localStorage.getItem("notifications");
-      setNotifications(savedNotifications ? JSON.parse(savedNotifications) : []);
+      setNotifications(savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
+        ...notification,
+        timestamp: new Date(notification.timestamp)
+      })) : []);
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -49,9 +51,11 @@ const Notifications: React.FC = () => {
   }, []);
 
   const removeNotification = (id: number) => {
-    setNotifications(prevNotifications =>
-      prevNotifications.filter(notification => notification.id !== id)
-    );
+    setNotifications(prevNotifications => {
+      const updatedNotifications = prevNotifications.filter(notification => notification.id !== id);
+      localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+      return updatedNotifications;
+    });
   };
 
   // Tri des notifications par timestamp décroissant avant affichage

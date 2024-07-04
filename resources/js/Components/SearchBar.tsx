@@ -53,7 +53,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, allSymbols }) => {
             </button>
             {suggestions.length > 0 && (
                 /* Ajoutez cette condition pour afficher les suggestions uniquement si elles existent */
-                <ul className="absolute bg-white border rounded mt-1 w-full">
+                <ul className="absolute bg-white border rounded mt-1">
                     {suggestions.map((suggestion, index) => (
                         <li
                             key={index}

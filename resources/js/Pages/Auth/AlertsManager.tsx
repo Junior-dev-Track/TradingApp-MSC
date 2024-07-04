@@ -11,8 +11,8 @@ interface AlertsManagerProps {
     dividends: boolean;
     accountSecurity: boolean;
     supportMessages: boolean;
-    assetMovements: boolean; // Nouvelle propriété pour les mouvements importants des actifs
-    deadlines: boolean; // Nouvelle propriété pour les échéances
+    assetMovements: boolean;
+    deadlines: boolean;
 }
 
 const AlertsManager: React.FC<AlertsManagerProps> = ({
@@ -27,11 +27,18 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
     assetMovements,
     deadlines,
 }) => {
-    const [notifications, setNotifications] = useState<string[]>([]);
+    const [notifications, setNotifications] = useState<string[]>(() => {
+        const savedNotifications = localStorage.getItem("notifications");
+        return savedNotifications ? JSON.parse(savedNotifications) : [];
+    });
 
     useEffect(() => {
         const addNotification = (message: string) => {
-            setNotifications((prevNotifications) => [...prevNotifications, message]);
+            setNotifications((prevNotifications) => {
+                const updatedNotifications = [...prevNotifications, message];
+                localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+                return updatedNotifications;
+            });
         };
 
         if (executeOrder) {
@@ -64,7 +71,7 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
     return (
         <div className="relative">
             <Link href={`/notifications`} preserveState>
-                <button className="flex flex-col text-gray-400 hover:text-gray-500">
+                <button className="flex flex-col text-white-400 hover:text-gray-500">
                     <FaBell className=" flex flex-col h-7 w-7 mb-2 ml-10" />
                     {notifications.length > 0 && (
                         <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0">
