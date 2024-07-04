@@ -7,6 +7,7 @@ import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
+import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
 
 interface PageProps {
   auth?: {
@@ -169,7 +170,11 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
   }, [notifications]);
 
   const addNotification = (message: string) => {
-    setNotifications((prevNotifications) => [...prevNotifications, message]);
+    setNotifications((prevNotifications) => {
+      const updatedNotifications = [...prevNotifications, message];
+      localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+      return updatedNotifications;
+    });
   };
 
   const addFavorite = (symbol: string) => {
@@ -265,7 +270,6 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     }
   };
 
-
   return (
     <AuthenticatedLayout user={auth?.user}>
       <Head title="Dashboard" />
@@ -337,7 +341,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                         className="bg-red-500 p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
-                        Remove
+                        <FaTrash /> {/* Utiliser l'icône de poubelle */}
                       </button>
                     </li>
                   ))}

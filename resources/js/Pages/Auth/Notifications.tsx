@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { usePage } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import { ErrorBag } from "@inertiajs/inertia";
+import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
 
 interface auth {
   auth?: string;
@@ -69,13 +70,15 @@ const Notifications: React.FC = () => {
         <div className="mt-4">
           {notifications.length > 0 ? (
             <ul>
-              {notifications.map((notification) => (
+              {notifications.map((notification, index) => (
                 <li
-                  key={notification.id}
+                  key={index}
                   className="text-white p-2 bg-gray-800 rounded mb-2 flex justify-between"
                 >
                   {notification.message}
-                  <button onClick={() => removeNotification(notification.id)} className="text-red-500">X</button>
+                  <button onClick={() => removeNotification(notification.id)} className="text-red-500">
+                    <FaTrash />
+                  </button>
                 </li>
               ))}
             </ul>
