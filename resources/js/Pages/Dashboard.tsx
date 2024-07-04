@@ -25,6 +25,12 @@ interface ApiResponse {
   [symbol: string]: Bar[];
 }
 
+interface Notification {
+  id: number;
+  message: string;
+  timestamp: Date;
+}
+
 export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: () => {} }) {
   const [favorites, setFavorites] = useState<string[]>(() => {
     const savedFavorites = localStorage.getItem("favorites");
@@ -125,7 +131,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
         const fundsFromSale = salePrice * formData.quantity;
         setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
         setTotalBalance(prevBalance => prevBalance + fundsFromSale);
-        addNotification(`${formData.quantity} shares of ${formData.symbol} have been sold.`);
+        addNotification(`You have sold ${formData.quantity} shares of ${formData.symbol}.`);
 
         updateNetGainLoss(currentPrices);
         setShowPopup(false);
@@ -152,9 +158,12 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     }));
   };
 
-  const [notifications, setNotifications] = useState<string[]>(() => {
+  const [notifications, setNotifications] = useState<Notification[]>(() => {
     const savedNotifications = localStorage.getItem("notifications");
-    return savedNotifications ? JSON.parse(savedNotifications) : [];
+    return savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
+      ...notification,
+      timestamp: new Date(notification.timestamp)
+    })) : [];
   });
 
   useEffect(() => {
@@ -171,8 +180,14 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
 
   const addNotification = (message: string) => {
     setNotifications((prevNotifications) => {
-      const updatedNotifications = [...prevNotifications, message];
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        timestamp: new Date(),
+      };
+      const updatedNotifications = [...prevNotifications, newNotification];
       localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+      console.log("Added notification:", newNotification); // Log for debugging
       return updatedNotifications;
     });
   };
@@ -191,7 +206,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       setPurchased([...purchased, newStock]);
       setAvailableFunds((prevFunds) => prevFunds - totalPrice);
       setTotalBalance((prevBalance) => prevBalance - totalPrice);
-      addNotification(`${quantity} shares of ${stock.symbol} have been purchased.`);
+      addNotification(`You have purchased ${quantity} shares of ${stock.symbol}.`);
       setCurrentPrices(prevPrices => ({ ...prevPrices, [stock.symbol]: stock.price }));
       updateNetGainLoss(currentPrices);
     } else {

@@ -70,9 +70,9 @@ const Notifications: React.FC = () => {
         <div className="mt-4">
           {notifications.length > 0 ? (
             <ul>
-              {notifications.map((notification, index) => (
+              {notifications.map((notification) => (
                 <li
-                  key={index}
+                  key={notification.id}
                   className="text-white p-2 bg-gray-800 rounded mb-2 flex justify-between"
                 >
                   {notification.message}
