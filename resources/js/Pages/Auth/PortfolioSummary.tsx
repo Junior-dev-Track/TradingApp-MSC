@@ -20,18 +20,16 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
     investedBalance = 0,
 }) => {
     return (
-        <div className=" portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
-            <div className="flex space-x-4 text-dark-blue">
-                <div className=" ml-1 p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
+            <div className="flex space-x-4 text-white">
+                <div className="ml-1 p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
                     <p>Total Balance: ${totalBalance.toLocaleString()}</p>
                 </div>
-                <div className="p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
-                    <p>
-                        Available Balance: ${availableBalance.toLocaleString()}
-                    </p>
+                <div className="p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
+                    <p>Available Balance: ${availableBalance.toLocaleString()}</p>
                 </div>
-                <div className="p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4">
+                <div className="p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
                     <p>Invested Balance: ${investedBalance.toLocaleString()}</p>
                 </div>
             </div>

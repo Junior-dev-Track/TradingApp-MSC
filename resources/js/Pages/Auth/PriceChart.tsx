@@ -33,7 +33,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="close" stroke="#8884d8" />
+        <Line type="monotone" dataKey="price" stroke="#8884d8" />
       </LineChart>
     </ResponsiveContainer>
   );

@@ -120,7 +120,6 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         }
     };
 
-
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);
@@ -135,7 +134,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
             </div>
             {filteredData.length > 0 ? (
                 <div>
-                    <h2>{filteredData[0].symbol}</h2>
+                    <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">{filteredData[0].symbol}</span>
                     <CombinedChart
                         data={filteredData.map((entry) => ({
                             t: entry.t!,
@@ -167,7 +166,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 <div>Aucune donnée historique disponible pour ce symbole.</div>
             )}
 
-            {showPopup && (
+{showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-4 rounded shadow-lg">
                         <h2 className="text-black">Confirm Purchase</h2>
