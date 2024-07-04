@@ -37,16 +37,16 @@ const Icons: React.FC<IconsProps> = ({ onAppStoreClick, onFundClick, onAssetsCli
   return (
     <div className="flex flex-col mt-8 space-y-4 text-gray-400">
       <button onClick={onAppStoreClick}>
-        <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Fund" />
+        <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Graphique" />
       </button>
       <button onClick={onFundClick}>
-        <IconWithTooltip icon={<AiOutlineDollarCircle className="w-7 h-7 hover:text-gray-500" />} name="Assets" />
+        <IconWithTooltip icon={<AiOutlineDollarCircle className="w-7 h-7 hover:text-gray-500" />} name="Funds" />
       </button>
       <button onClick={onFavoritesClick}>
         <IconWithTooltip icon={<AiFillPushpin className="w-7 h-7 hover:text-gray-500" />} name="Favorites" />
       </button>
       <button onClick={onAssetsClick}>
-        <IconWithTooltip icon={<AiFillBank className="w-7 h-7 hover:text-gray-500" />} name="AppStore" />
+        <IconWithTooltip icon={<AiFillBank className="w-7 h-7 hover:text-gray-500" />} name="Assets" />
       </button>
     </div>
   );

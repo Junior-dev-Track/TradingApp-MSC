@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef, ChangeEvent, MouseEvent } from "react";
+import React, { useState, useEffect, useRef, MouseEvent, ChangeEvent } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import PortfolioSummary from "./Auth/PortfolioSummary";
 import Icons from "@/Pages/Auth/Icons";
-import AlertsManager from "@/Pages/Auth/AlertsManager";
-import Notifications from "@/Pages/Auth/Notifications";
 import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
@@ -18,12 +16,12 @@ interface PageProps {
 }
 
 interface Bar {
-    c: number; // Close price
-    // Ajoutez d'autres propriétés si nécessaire
+  c: number; // Close price
+  // Ajoutez d'autres propriétés si nécessaire
 }
 
 interface ApiResponse {
-    [symbol: string]: Bar[];
+  [symbol: string]: Bar[];
 }
 
 export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: () => {} }) {
@@ -47,6 +45,8 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     price: 0,
     totalPrice: 0,
   });
+
+  const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -258,6 +258,14 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     addNotification(`${symbol} has been removed from favorites.`);
   }
 
+  const handleFavoriteClick = (symbol: string) => {
+    setSelectedSymbol(symbol);
+    if (historicalBarsRef.current) {
+      historicalBarsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
   return (
     <AuthenticatedLayout user={auth?.user}>
       <Head title="Dashboard" />
@@ -291,6 +299,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
                 onSearch={(symbol: string) => handleSearchChange(symbol)}
+                selectedSymbol={selectedSymbol}
               />
             </div>
             <div
@@ -318,7 +327,12 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 <ul>
                   {favorites.map((symbol, index) => (
                     <li key={index} className="text-red flex justify-between">
-                      {symbol}
+                      <button
+                        className="text-white"
+                        onClick={() => handleFavoriteClick(symbol)}
+                      >
+                        {symbol}
+                      </button>
                       <button
                         className="bg-red-500 p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
