@@ -59,56 +59,56 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
     });
   };
 
-  const filterByWeek = (data: BarData[]) => {
+const filterByWeek = (data: BarData[]) => {
     const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-    const endOfWeek = new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000); // 7 jours plus tard
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate >= startOfWeek && itemDate <= endOfWeek;
+        const itemDate = new Date(item.t);
+        return itemDate >= startOfWeek && itemDate <= endOfWeek;
     });
-  };
+};
 
-  const filterByMonth = (data: BarData[]) => {
+const filterByMonth = (data: BarData[]) => {
     const today = new Date();
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Dernier jour du mois actuel
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth() , today.getDate() - 30);
+    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate >= startOfMonth && itemDate <= endOfMonth;
+        const itemDate = new Date(item.t);
+        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
     });
-  };
+};
 
-  const filterBy3Months = (data: BarData[]) => {
+const filterBy3Months = (data: BarData[]) => {
     const today = new Date();
-    const startOfPeriod = new Date(today.getFullYear(), today.getMonth() - 2, 1); // 1er jour du mois 3 mois auparavant
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Dernier jour du mois actuel
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 90); // 90 days ago
+    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Yesterday
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+        const itemDate = new Date(item.t);
+        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
     });
-  };
+};
 
-  const filterBy6Months = (data: BarData[]) => {
+const filterBy6Months = (data: BarData[]) => {
     const today = new Date();
-    const startOfPeriod = new Date(today.getFullYear(), today.getMonth() - 5, 1); // 1er jour du mois 6 mois auparavant
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Dernier jour du mois actuel
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 180); // 180 days ago
+    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Yesterday
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+        const itemDate = new Date(item.t);
+        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
     });
-  };
+};
 
-  const filterByYear = (data: BarData[]) => {
+const filterByYear = (data: BarData[]) => {
     const today = new Date();
     const startOfPeriod = new Date(today);
     startOfPeriod.setDate(today.getDate() - 365); // Soustrayons 365 jours
     const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Hier
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+        const itemDate = new Date(item.t);
+        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
     });
-  };
+};
 
   const formattedData = filteredData.map(bar => ({
     time: new Date(bar.t).toLocaleDateString(),
@@ -153,13 +153,13 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
   return (
     <animated.div style={props}>
-      <div>
+      <div className='text-right '>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('3 months')}>3M</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('6 months')}>6M</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('year')}>YEAR</button>
+        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('year')}>Year</button>
       </div>
 
       <ResponsiveContainer width="100%" height={chartHeight}>

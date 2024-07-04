@@ -25,7 +25,6 @@ class APIFetch
             'feed' => 'iex',
             'sort' => 'asc'
         ];
-
         $all_data = $this->fetchData($params, 'bars');
 
         return response()->json($all_data);

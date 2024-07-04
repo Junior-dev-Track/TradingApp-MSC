@@ -20,6 +20,8 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
     const { barsData }: { barsData: { original: any } } = usePage()
         .props as unknown as { barsData: { original: any } };
 
+    console.log(barsData);
+
     const [filteredData, setFilteredData] = useState<BarData[]>(() => {
         const savedData = localStorage.getItem("filteredData");
         return savedData ? JSON.parse(savedData) : [];
@@ -133,7 +135,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 </button>
             </div>
             {filteredData.length > 0 ? (
-                <div>
+                <div className="">
                     <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">{filteredData[0].symbol}</span>
                     <CombinedChart
                         data={filteredData.map((entry) => ({
@@ -147,7 +149,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                     />
                     <div className="mt-4">
                         <button
-                            className="bg-blue-500 p-2 rounded mr-2"
+                            className="bg-darker-blue p-2 rounded mr-2"
                             onClick={() =>
                                 onAddFavorite(filteredData[0].symbol)
                             }

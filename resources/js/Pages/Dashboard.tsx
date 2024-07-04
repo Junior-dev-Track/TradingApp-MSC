@@ -282,7 +282,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
-                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
+                activeSection === "historicalBars" ? "border-2 border-white"  : ""
               }`}
               ref={historicalBarsRef}
               style={{ height: "500px" }} // Ajustez selon vos besoins
@@ -295,7 +295,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
-                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
+                activeSection === "availableFunds" ? "border-2 border-white" : ""
               }`}
               ref={availableFundsRef}
               style={{ height: "100px" }}
@@ -306,9 +306,10 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
+
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                activeSection === "favorites" ? "border-4 border-blue-500" : ""
+                activeSection === "favorites" ? "border-2 border-white"  : ""
               }`}
               ref={favoritesRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
@@ -317,10 +318,10 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
                   {favorites.map((symbol, index) => (
-                    <li key={index} className="text-red flex justify-between">
+                    <li key={index} className="text-white flex justify-between">
                       {symbol}
                       <button
-                        className="bg-red-500 p-2 rounded"
+                        className="bg-darker-blue p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
                         Remove
@@ -332,7 +333,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
-                activeSection === "assets" ? "border-4 border-blue-500" : ""
+                activeSection === "assets" ? "border-2 border-white"  : ""
               }`}
               ref={assetsRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
