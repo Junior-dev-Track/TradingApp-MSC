@@ -133,7 +133,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 
   return (
     <div className="text-white">
-      <div className="flex justify-between mr-10">
+      <div className="flex justify-between ">
         <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
         <button onClick={handleRefresh}>
           <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-5" />
