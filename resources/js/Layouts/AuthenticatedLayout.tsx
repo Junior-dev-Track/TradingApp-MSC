@@ -30,28 +30,28 @@ export default function Authenticated({
                         {/* Center navigation links */}
                         <div className="flex items-center space-x-20 text-white">
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
+                                className="bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
                                 href={route("dashboard")}
                                 active={route().current("dashboard")}
                             >
                                 Dashboard
                             </NavLink>
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300  hover:text-zinc-300"
+                                className="bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300  hover:text-zinc-300"
                                 href={route("guide")}
                                 active={route().current("guide")}
                             >
                                 Guide
                             </NavLink>
                             <NavLink
-                                className="bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white  active:text-zinc-300 hover:text-zinc-300"
+                                className="bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white  active:text-zinc-300 hover:text-zinc-300"
                                 href={route("profile.edit")}
                                 active={route().current("profile.edit")}
                             >
                                 Profile
                             </NavLink>
                             <NavLink
-                                className=" bg-gradient-to-b from-dark-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
+                                className=" bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4  bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
                                 href={route("logout")}
                                 method="post"
                                 as="button"

@@ -35,6 +35,21 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
   });
   const [processing, setProcessing] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+    console.log(barsData);
+
+    const [filteredData, setFilteredData] = useState<BarData[]>(() => {
+        const savedData = localStorage.getItem("filteredData");
+        return savedData ? JSON.parse(savedData) : [];
+    });
+    const [showPopup, setShowPopup] = useState(false);
+    const [formData, setFormData] = useState({
+        symbol: "",
+        quantity: 1,
+        price: 0,
+        totalPrice: 0,
+    });
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<string[]>([]);
 
   const allData: BarData[] = [];
   const allSymbols: string[] = [];
@@ -167,6 +182,47 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
       ) : (
         <div>Aucune donnée historique disponible pour ce symbole.</div>
       )}
+    return (
+        <div className="text-white">
+            <div className="flex justify-between mr-10">
+                <SearchBar onSearch={handleSearch} />
+                <button onClick={handleRefresh}>
+                    <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-5" />
+                </button>
+            </div>
+            {filteredData.length > 0 ? (
+                <div className="">
+                    <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">{filteredData[0].symbol}</span>
+                    <CombinedChart
+                        data={filteredData.map((entry) => ({
+                            t: entry.t!,
+                            o: entry.o!,
+                            h: entry.h!,
+                            l: entry.l!,
+                            c: entry.c!,
+                            v: entry.v!,
+                        }))}
+                    />
+                    <div className="mt-4">
+                        <button
+                            className="bg-darker-blue p-2 rounded mr-2"
+                            onClick={() =>
+                                onAddFavorite(filteredData[0].symbol)
+                            }
+                        >
+                            Add to Favorites
+                        </button>
+                        <button
+                            className="bg-green-500 p-2 rounded"
+                            onClick={handleBuyClick}
+                        >
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div>Aucune donnée historique disponible pour ce symbole.</div>
+            )}
 
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
