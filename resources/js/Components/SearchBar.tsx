@@ -2,13 +2,33 @@ import React, { useState, useEffect } from "react";
 interface SearchBarProps {
     placeholder?: string;
     onSearch: (searchTerm: string) => void;
-  }
+}
 
 // Mock function to simulate fetching symbols based on input
 // Replace this with your actual API call
 const fetchSymbolSuggestions = async (input: string) => {
-  const symbols = ['AAPL','MSFT','AMZN','GOOGL','GOOG','TSLA','BRK.B','NVDA','JPM','JNJ','V','UNH','HD','PG','MA','DIS','PYPL','BAC','ADBE']; // Example symbols
-  return symbols.filter(symbol => symbol.includes(input.toUpperCase()));
+    const symbols = [
+        "AAPL",
+        "MSFT",
+        "AMZN",
+        "GOOGL",
+        "GOOG",
+        "TSLA",
+        "BRK.B",
+        "NVDA",
+        "JPM",
+        "JNJ",+
+        "V",
+        "UNH",
+        "HD",
+        "PG",
+        "MA",
+        "DIS",
+        "PYPL",
+        "BAC",
+        "ADBE",
+    ]; // Example symbols
+    return symbols.filter((symbol) => symbol.includes(input.toUpperCase()));
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
@@ -16,15 +36,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
     useEffect(() => {
-      if (symbol.length > 0) {
-        const loadSuggestions = async () => {
-          const fetchedSuggestions = await fetchSymbolSuggestions(symbol);
-          setSuggestions(fetchedSuggestions);
-        };
-        loadSuggestions();
-      } else {
-        setSuggestions([]);
-      }
+        if (symbol.length > 0) {
+            const loadSuggestions = async () => {
+                const fetchedSuggestions = await fetchSymbolSuggestions(symbol);
+                setSuggestions(fetchedSuggestions);
+            };
+            loadSuggestions();
+        } else {
+            setSuggestions([]);
+        }
     }, [symbol]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +58,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     };
 
     const handleSuggestionClick = (suggestion: string) => {
-      setSymbol(suggestion);
-      setSuggestions([]);
+        setSymbol(suggestion);
+        setSuggestions([]);
     };
 
     return (
@@ -58,11 +78,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
                 Search
             </button>
             <ul>
-              {suggestions.map(suggestion => (
-                <li key={suggestion} onClick={() => handleSuggestionClick(suggestion)}>
-                  {suggestion}
-                </li>
-              ))}
+                {suggestions.map((suggestion) => (
+                    <li
+                        key={suggestion}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                        {suggestion}
+                    </li>
+                ))}
             </ul>
         </form>
     );
