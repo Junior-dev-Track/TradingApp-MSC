@@ -28,7 +28,7 @@ const fetchSymbolSuggestions = async (input: string) => {
         "BAC",
         "ADBE",
     ]; // Example symbols
-    return symbols.filter((symbol) => symbol.includes(input.toUpperCase()));
+    return symbols.filter((symbol) => symbol.toString().includes(input.toUpperCase()));
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         if (symbol.length > 0) {
             const loadSuggestions = async () => {
                 const fetchedSuggestions = await fetchSymbolSuggestions(symbol);
-                setSuggestions(fetchedSuggestions);
+                setSuggestions(fetchedSuggestions.map((suggestion) => suggestion.toString()));
             };
             loadSuggestions();
         } else {
