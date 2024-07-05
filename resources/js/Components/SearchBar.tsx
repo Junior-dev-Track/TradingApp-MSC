@@ -1,51 +1,24 @@
 import React, { useState, useEffect } from "react";
+
 interface SearchBarProps {
-    placeholder?: string;
-    onSearch: (searchTerm: string) => void;
+    onSearch: (symbol: string) => void;
+    allSymbols: string[]; // Ajoutez cette prop pour recevoir tous les symboles possibles
 }
 
-// Mock function to simulate fetching symbols based on input
-// Replace this with your actual API call
-const fetchSymbolSuggestions = async (input: string) => {
-    const symbols = [
-        "AAPL",
-        "MSFT",
-        "AMZN",
-        "GOOGL",
-        "GOOG",
-        "TSLA",
-        "BRK.B",
-        "NVDA",
-        "JPM",
-        "JNJ",+
-        "V",
-        "UNH",
-        "HD",
-        "PG",
-        "MA",
-        "DIS",
-        "PYPL",
-        "BAC",
-        "ADBE",
-    ]; // Example symbols
-    return symbols.filter((symbol) => symbol.toString().includes(input.toUpperCase()));
-};
-
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, allSymbols }) => {
     const [symbol, setSymbol] = useState("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
 
     useEffect(() => {
-        if (symbol.length > 0) {
-            const loadSuggestions = async () => {
-                const fetchedSuggestions = await fetchSymbolSuggestions(symbol);
-                setSuggestions(fetchedSuggestions.map((suggestion) => suggestion.toString()));
-            };
-            loadSuggestions();
+        if (symbol) {
+            const filteredSuggestions = allSymbols.filter((sym) =>
+                sym.toLowerCase().startsWith(symbol.toLowerCase())
+            );
+            setSuggestions(filteredSuggestions);
         } else {
             setSuggestions([]);
         }
-    }, [symbol]);
+    }, [symbol, allSymbols]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSymbol(event.target.value);
@@ -54,7 +27,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         onSearch(symbol.toUpperCase());
-        setSuggestions([]);
+        setSymbol(""); // Réinitialiser la barre de recherche
+        setSuggestions([]); // Effacer les suggestions
     };
 
     const handleSuggestionClick = (suggestion: string) => {
@@ -77,16 +51,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             >
                 Search
             </button>
-            <ul>
-                {suggestions.map((suggestion) => (
-                    <li
-                        key={suggestion}
-                        onClick={() => handleSuggestionClick(suggestion)}
-                    >
-                        {suggestion}
-                    </li>
-                ))}
-            </ul>
+            {suggestions.length > 0 && (
+                /* Ajoutez cette condition pour afficher les suggestions uniquement si elles existent */
+                <ul className="absolute bg-white border rounded mt-1">
+                    {suggestions.map((suggestion, index) => (
+                        <li
+                            key={index}
+                            className="p-2 cursor-pointer hover:bg-gray-200"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                            {suggestion}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </form>
     );
 };

@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { usePage } from "@inertiajs/react";
 import { Head } from "@inertiajs/react";
 import { ErrorBag } from "@inertiajs/inertia";
+import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
 
 interface auth {
   auth?: string;
@@ -34,11 +35,13 @@ const Notifications: React.FC = () => {
     })) : [];
   });
 
-
   useEffect(() => {
     const handleStorageChange = () => {
       const savedNotifications = localStorage.getItem("notifications");
-      setNotifications(savedNotifications ? JSON.parse(savedNotifications) : []);
+      setNotifications(savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
+        ...notification,
+        timestamp: new Date(notification.timestamp)
+      })) : []);
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -49,9 +52,11 @@ const Notifications: React.FC = () => {
   }, []);
 
   const removeNotification = (id: number) => {
-    setNotifications(prevNotifications =>
-      prevNotifications.filter(notification => notification.id !== id)
-    );
+    setNotifications(prevNotifications => {
+      const updatedNotifications = prevNotifications.filter(notification => notification.id !== id);
+      localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+      return updatedNotifications;
+    });
   };
 
   // Tri des notifications par timestamp décroissant avant affichage
@@ -71,7 +76,9 @@ const Notifications: React.FC = () => {
                   className="text-white p-2 bg-gray-800 rounded mb-2 flex justify-between"
                 >
                   {notification.message}
-                  <button onClick={() => removeNotification(notification.id)} className="text-red-500">X</button>
+                  <button onClick={() => removeNotification(notification.id)} className="text-red-500">
+                    <FaTrash />
+                  </button>
                 </li>
               ))}
             </ul>
