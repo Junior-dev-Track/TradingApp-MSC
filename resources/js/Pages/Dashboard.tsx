@@ -372,7 +372,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             >
               <div className="scrollbar">
                 <h2 className="text-white text-lg">Assets</h2>
-                <ul>
+                <ul className="space-y-2">
                   {purchased.map((asset, index) => {
                     const currentPrice = currentPrices[asset.symbol] ?? asset.price;
                     const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
@@ -386,7 +386,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                           {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
                         </span>
                         <button
-                          className="bg-red-500 p-2 rounded"
+                          className=" p-2 rounded bg-darker-blue"
                           onClick={() => sellAsset(asset.symbol)}
                         >
                           Sell
