@@ -154,7 +154,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
           />
           <div className="mt-4">
             <button
-              className="bg-blue-500 p-2 rounded mr-2"
+              className="bg-darker-blue  p-2 rounded mr-2"
               onClick={() => onAddFavorite(filteredData[0].symbol)}
             >
               Add to Favorites

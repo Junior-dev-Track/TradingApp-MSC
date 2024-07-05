@@ -322,15 +322,15 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
               />
             </div>
             <div
-              className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
+              className={`bg-gray-700 p-3 rounded-lg shadow h-70 col-span-1 ${
                 activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
               }`}
               ref={availableFundsRef}
               style={{ height: "100px" }}
             >
-              <h2 className="text-white text-lg">Available Funds</h2>
+              <h2 className="text-white text-lg mb-1">Available Funds</h2>
               <div className="text-white">${availableFunds.toFixed(2)}</div>
-              <div className={`text-${netGainLoss >= 0 ? "green" : "red"}-500 text-md`}>
+              <div className="text-white">
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
@@ -339,7 +339,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "favorites" ? "border-4 border-blue-500" : ""
               }`}
               ref={favoritesRef}
-              style={{ maxHeight: "150px", overflowY: "scroll" }}
+              style={{ height:"100px", maxHeight: "100px", overflowY: "scroll" }}
             >
               <div className="">
                 <h2 className="text-white text-lg">Favorites</h2>
@@ -353,7 +353,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                         {symbol}
                       </button>
                       <button
-                        className="bg-red-500 p-2 rounded"
+                        className="text-white p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
                         <FaTrash /> {/* Utiliser l'icône de poubelle */}
@@ -379,7 +379,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                     return (
                       <li key={index} className="text-white flex justify-between items-center">
                         <span>{asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each</span>
-                        <span>
+                        <span className="">
                           Total: ${(asset.totalPrice || 0).toFixed(2)}
                         </span>
                         <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
