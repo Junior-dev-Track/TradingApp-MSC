@@ -153,7 +153,7 @@ const filterByYear = (data: BarData[]) => {
 
   return (
     <animated.div style={props}>
-      <div className='text-right '>
+      <div className='text-right mr-4 '>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>
