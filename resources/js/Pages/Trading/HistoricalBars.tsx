@@ -122,7 +122,6 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         }
     };
 
-
     useEffect(() => {
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);

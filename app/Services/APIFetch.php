@@ -30,22 +30,6 @@ class APIFetch
         return response()->json($all_data);
     }
 
-    public function getHistoricalbarsBySymbol($symbol): JsonResponse
-    {
-        $params = [
-            'symbols' => $symbol,
-            'timeframe' => '1Min',
-            'limit' => 1000,
-            'adjustment' => 'raw',
-            'feed' => 'iex',
-            'sort' => 'asc'
-        ];
-
-        $symbol_data = $this->fetchData($params, 'bars');
-
-        return response()->json($symbol_data);
-    }
-
     public function getSpecificClosePrice($symbol): float
     {
         $params = [
