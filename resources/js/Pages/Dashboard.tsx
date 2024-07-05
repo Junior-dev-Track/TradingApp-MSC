@@ -309,7 +309,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
-                activeSection === "historicalBars" ? "border-2 border-white"  : ""
+                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
               }`}
               ref={historicalBarsRef}
               style={{ height: "500px" }} // Ajustez selon vos besoins
@@ -323,7 +323,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
-                activeSection === "availableFunds" ? "border-2 border-white" : ""
+                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
               }`}
               ref={availableFundsRef}
               style={{ height: "100px" }}
@@ -334,10 +334,9 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
-
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                activeSection === "favorites" ? "border-2 border-white"  : ""
+                activeSection === "favorites" ? "border-4 border-blue-500" : ""
               }`}
               ref={favoritesRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
@@ -354,7 +353,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                         {symbol}
                       </button>
                       <button
-                        className="bg-darker-blue p-2 rounded"
+                        className="bg-red-500 p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
                         <FaTrash /> {/* Utiliser l'icône de poubelle */}
@@ -366,7 +365,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
-                activeSection === "assets" ? "border-2 border-white"  : ""
+                activeSection === "assets" ? "border-4 border-blue-500" : ""
               }`}
               ref={assetsRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
