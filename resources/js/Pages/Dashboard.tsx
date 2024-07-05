@@ -413,7 +413,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                         </div>
                         <div className="mt-4 flex justify-end">
                           <button
-                            className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
+                            className="bg-darker-blue text-white p-2 rounded mr-2"
                             onClick={handleConfirmSell}
                             disabled={processing}
                           >
