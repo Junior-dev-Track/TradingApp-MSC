@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, ChangeEvent, MouseEvent } from "react";
+import React, { useState, useEffect, useRef, MouseEvent, ChangeEvent } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import PortfolioSummary from "./Auth/PortfolioSummary";
 import Icons from "@/Pages/Auth/Icons";
-import AlertsManager from "@/Pages/Auth/AlertsManager";
-import Notifications from "@/Pages/Auth/Notifications";
 import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
+import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
 
 interface PageProps {
   auth?: {
@@ -18,12 +17,18 @@ interface PageProps {
 }
 
 interface Bar {
-    c: number; // Close price
-    // Ajoutez d'autres propriétés si nécessaire
+  c: number; // Close price
+  // Ajoutez d'autres propriétés si nécessaire
 }
 
 interface ApiResponse {
-    [symbol: string]: Bar[];
+  [symbol: string]: Bar[];
+}
+
+interface Notification {
+  id: number;
+  message: string;
+  timestamp: Date;
 }
 
 export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: () => {} }) {
@@ -47,6 +52,8 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     price: 0,
     totalPrice: 0,
   });
+
+  const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -124,7 +131,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
         const fundsFromSale = salePrice * formData.quantity;
         setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
         setTotalBalance(prevBalance => prevBalance + fundsFromSale);
-        addNotification(`${formData.quantity} shares of ${formData.symbol} have been sold.`);
+        addNotification(`You have sold ${formData.quantity} shares of ${formData.symbol}.`);
 
         updateNetGainLoss(currentPrices);
         setShowPopup(false);
@@ -151,9 +158,12 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     }));
   };
 
-  const [notifications, setNotifications] = useState<string[]>(() => {
+  const [notifications, setNotifications] = useState<Notification[]>(() => {
     const savedNotifications = localStorage.getItem("notifications");
-    return savedNotifications ? JSON.parse(savedNotifications) : [];
+    return savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
+      ...notification,
+      timestamp: new Date(notification.timestamp)
+    })) : [];
   });
 
   useEffect(() => {
@@ -169,7 +179,17 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
   }, [notifications]);
 
   const addNotification = (message: string) => {
-    setNotifications((prevNotifications) => [...prevNotifications, message]);
+    setNotifications((prevNotifications) => {
+      const newNotification: Notification = {
+        id: Date.now(),
+        message,
+        timestamp: new Date(),
+      };
+      const updatedNotifications = [...prevNotifications, newNotification];
+      localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
+      console.log("Added notification:", newNotification); // Log for debugging
+      return updatedNotifications;
+    });
   };
 
     const addFavorite = (symbol: string) => {
@@ -186,7 +206,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       setPurchased([...purchased, newStock]);
       setAvailableFunds((prevFunds) => prevFunds - totalPrice);
       setTotalBalance((prevBalance) => prevBalance - totalPrice);
-      addNotification(`${quantity} shares of ${stock.symbol} have been purchased.`);
+      addNotification(`You have purchased ${quantity} shares of ${stock.symbol}.`);
       setCurrentPrices(prevPrices => ({ ...prevPrices, [stock.symbol]: stock.price }));
       updateNetGainLoss(currentPrices);
     } else {
@@ -258,6 +278,13 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     addNotification(`${symbol} has been removed from favorites.`);
   }
 
+  const handleFavoriteClick = (symbol: string) => {
+    setSelectedSymbol(symbol);
+    if (historicalBarsRef.current) {
+      historicalBarsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
     return (
         <AuthenticatedLayout user={auth?.user}>
             <Head title="Dashboard" />
@@ -282,7 +309,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
           <div className="grid grid-cols-3 gap-4">
             <div
               className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
-                activeSection === "historicalBars" ? "border-2 border-white"  : ""
+                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
               }`}
               ref={historicalBarsRef}
               style={{ height: "500px" }} // Ajustez selon vos besoins
@@ -291,11 +318,12 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 onAddFavorite={addFavorite}
                 onAddPurchase={addPurchase}
                 onSearch={(symbol: string) => handleSearchChange(symbol)}
+                selectedSymbol={selectedSymbol}
               />
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
-                activeSection === "availableFunds" ? "border-2 border-white" : ""
+                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
               }`}
               ref={availableFundsRef}
               style={{ height: "100px" }}
@@ -306,10 +334,9 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
               </div>
             </div>
-
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                activeSection === "favorites" ? "border-2 border-white"  : ""
+                activeSection === "favorites" ? "border-4 border-blue-500" : ""
               }`}
               ref={favoritesRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
@@ -318,13 +345,18 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 <h2 className="text-white text-lg">Favorites</h2>
                 <ul>
                   {favorites.map((symbol, index) => (
-                    <li key={index} className="text-white flex justify-between">
-                      {symbol}
+                    <li key={index} className="text-red flex justify-between">
                       <button
-                        className="bg-darker-blue p-2 rounded"
+                        className="text-white"
+                        onClick={() => handleFavoriteClick(symbol)}
+                      >
+                        {symbol}
+                      </button>
+                      <button
+                        className="bg-red-500 p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
-                        Remove
+                        <FaTrash /> {/* Utiliser l'icône de poubelle */}
                       </button>
                     </li>
                   ))}
@@ -333,7 +365,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
-                activeSection === "assets" ? "border-2 border-white"  : ""
+                activeSection === "assets" ? "border-4 border-blue-500" : ""
               }`}
               ref={assetsRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
