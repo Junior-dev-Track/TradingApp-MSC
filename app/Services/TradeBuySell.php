@@ -29,7 +29,7 @@ class TradeBuySell
     {
         $newQuantity = $existingOpenTrade->quantity + $request->input('quantity');
 
-        $existingOpenTrade->update(['quantity' => $newQuantity]);
+        $existingOpenTrade->update(['quantity' => $newQuantity, 'open_price' => $closePrice,]);
 
         $profile->update([
             'wallet' => $profile->wallet - $request->input('quantity') * $closePrice,

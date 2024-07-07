@@ -19,7 +19,8 @@ interface PageProps {
     auth?: {
         user?: User; // Marquer la propriété 'user' comme optionnelle
     };
-    onAddSell: (stock: BarData, quantity: number) => void;
+    wallet: number;
+    totalAssets: number;
 }
 
 interface Bar {
@@ -37,9 +38,7 @@ interface Notification {
     timestamp: Date;
 }
 
-export default function Dashboard(
-    { auth, onAddSell }: PageProps = { onAddSell: () => {} }
-) {
+export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     const [favorites, setFavorites] = useState<string[]>(() => {
         const savedFavorites = localStorage.getItem("favorites");
         return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -52,8 +51,10 @@ export default function Dashboard(
         [symbol: string]: number;
     }>({});
 
-    const [availableFunds, setAvailableFunds] = useState<number>(1000);
-    const [totalBalance, setTotalBalance] = useState<number>(1000);
+    const [availableFunds, setAvailableFunds] = useState<number>(wallet);
+    const [totalBalance, setTotalBalance] = useState<number>(
+        wallet + totalAssets
+    );
     const [showPopup, setShowPopup] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [formData, setFormData] = useState({
@@ -74,7 +75,7 @@ export default function Dashboard(
 
     const updateCurrentPrices = async () => {
         try {
-            const response = await fetch("/api/current-prices");
+            const response = await fetch("/api/current-prices"); // A CHANGER
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -282,10 +283,7 @@ export default function Dashboard(
         // Mettre à jour la recherche ici si nécessaire
     };
 
-    const investedBalance = purchased.reduce(
-        (acc, asset) => acc + (asset.totalPrice || 0),
-        0
-    );
+    const investedBalance = totalAssets;
 
     const historicalBarsRef = useRef<HTMLDivElement>(null);
     const availableFundsRef = useRef<HTMLDivElement>(null);
