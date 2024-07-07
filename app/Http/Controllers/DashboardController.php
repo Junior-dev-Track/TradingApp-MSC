@@ -31,10 +31,10 @@ class DashboardController extends Controller
         $barsLatestData = $this->apiFetch->getLastestBars();
 
         $user_id = Auth::id();
-        $wallet = Profile::getWallet($user_id);
+        $wallet = (float) (Profile::getWallet($user_id));
         $openTrades = Trade::getOpenTrades($user_id);
 
-        $totalAssets = 0;
+        $totalAssets =  0;
         foreach ($openTrades as $openTrade) {
             $totalAssets += $openTrade->quantity * $this->apiFetch->getSpecificClosePrice($openTrade->symbol);
         }
