@@ -7,18 +7,17 @@ import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
-import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
+import { FaTrash } from "react-icons/fa";
 
 interface PageProps {
   auth?: {
-    user?: User; // Marquer la propriété 'user' comme optionnelle
+    user?: User;
   };
   onAddSell: (stock: BarData, quantity: number) => void;
 }
 
 interface Bar {
-  c: number; // Close price
-  // Ajoutez d'autres propriétés si nécessaire
+  c: number;
 }
 
 interface ApiResponse {
@@ -36,12 +35,13 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
+
   const [purchased, setPurchased] = useState<BarData[]>(() => {
     const savedPurchased = localStorage.getItem("purchased");
     return savedPurchased ? JSON.parse(savedPurchased) : [];
   });
-  const [currentPrices, setCurrentPrices] = useState<{ [symbol: string]: number }>({});
 
+  const [currentPrices, setCurrentPrices] = useState<{ [symbol: string]: number }>({});
   const [availableFunds, setAvailableFunds] = useState<number>(1000);
   const [totalBalance, setTotalBalance] = useState<number>(1000);
   const [showPopup, setShowPopup] = useState(false);
@@ -54,13 +54,32 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
   });
 
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<Notification[]>(() => {
+    const savedNotifications = localStorage.getItem("notifications");
+    return savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
+      ...notification,
+      timestamp: new Date(notification.timestamp)
+    })) : [];
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
       updateCurrentPrices();
-    }, 5000); // Update prices every 5 seconds
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem("purchased", JSON.stringify(purchased));
+  }, [purchased]);
+
+  useEffect(() => {
+    localStorage.setItem("notifications", JSON.stringify(notifications));
+  }, [notifications]);
 
   const updateCurrentPrices = async () => {
     try {
@@ -72,7 +91,6 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       const formattedData = Object.fromEntries(
         Object.entries(data).map(([symbol, bars]) => [symbol, bars[0].c])
       );
-      console.log('Formatted data:', formattedData); // Ajoutez cette ligne pour déboguer
       setCurrentPrices(formattedData);
       updateNetGainLoss(formattedData);
     } catch (error) {
@@ -81,14 +99,12 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
   };
 
   const updateNetGainLoss = (prices: { [x: string]: number; }) => {
-    console.log('Prices:', prices); // Ajoutez cette ligne pour déboguer
     const totalInvested = purchased.reduce((acc, item) => acc + (item.totalPrice || 0), 0);
     const currentTotalValue = purchased.reduce((acc, item) => {
       const currentPrice = prices[item.symbol] ?? item.price;
       return acc + currentPrice * (item.quantity ?? 0);
     }, 0);
     const currentNetGainLoss = currentTotalValue - totalInvested;
-    console.log('Net gain/loss:', currentNetGainLoss); // Ajoutez cette ligne pour déboguer
     setNetGainLoss(currentNetGainLoss);
   };
 
@@ -108,16 +124,13 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
         throw new Error("Network response was not ok");
       }
 
-      // Update state after successful sale
       const assetToSell = purchased.find(asset => asset.symbol === formData.symbol);
       if (assetToSell) {
         const purchasePrice = assetToSell.price;
         const salePrice = formData.price;
         const gainOrLoss = (salePrice - purchasePrice) * formData.quantity;
-
         const remainingQuantity = (assetToSell.quantity ?? 0) - formData.quantity;
 
-        // Update the asset quantity or remove it if all shares are sold
         if (remainingQuantity > 0) {
           setPurchased(purchased.map(asset =>
             asset.symbol === formData.symbol
@@ -132,7 +145,6 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
         setAvailableFunds(prevFunds => prevFunds + fundsFromSale);
         setTotalBalance(prevBalance => prevBalance + fundsFromSale);
         addNotification(`You have sold ${formData.quantity} shares of ${formData.symbol}.`);
-
         updateNetGainLoss(currentPrices);
         setShowPopup(false);
         setProcessing(false);
@@ -150,33 +162,13 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
 
   const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     const quantity = parseInt(event.target.value, 10);
-    const price = formData.price !== undefined ? formData.price : 0; // Ensure price is defined
+    const price = formData.price !== undefined ? formData.price : 0;
     setFormData((prevData) => ({
       ...prevData,
       quantity,
       totalPrice: quantity * price,
     }));
   };
-
-  const [notifications, setNotifications] = useState<Notification[]>(() => {
-    const savedNotifications = localStorage.getItem("notifications");
-    return savedNotifications ? JSON.parse(savedNotifications).map((notification: any) => ({
-      ...notification,
-      timestamp: new Date(notification.timestamp)
-    })) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
-
-  useEffect(() => {
-    localStorage.setItem("purchased", JSON.stringify(purchased));
-  }, [purchased]);
-
-  useEffect(() => {
-    localStorage.setItem("notifications", JSON.stringify(notifications));
-  }, [notifications]);
 
   const addNotification = (message: string) => {
     setNotifications((prevNotifications) => {
@@ -187,7 +179,6 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
       };
       const updatedNotifications = [...prevNotifications, newNotification];
       localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
-      console.log("Added notification:", newNotification); // Log for debugging
       return updatedNotifications;
     });
   };
@@ -219,7 +210,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
     if (assetToSell) {
       setFormData({
         symbol: assetToSell.symbol,
-        quantity: assetToSell.quantity ?? 0, // Utilisation de ?? pour fournir une valeur par défaut
+        quantity: assetToSell.quantity ?? 0,
         price: assetToSell.price,
         totalPrice: assetToSell.totalPrice || 0,
       });
@@ -312,7 +303,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
               }`}
               ref={historicalBarsRef}
-              style={{ height: "500px" }} // Ajustez selon vos besoins
+              style={{ height: "550px" }}
             >
               <HistoricalBars
                 onAddFavorite={addFavorite}
@@ -336,7 +327,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
             </div>
             <div
               className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                activeSection === "favorites" ? "border-4 border-blue-500" : ""
+                activeSection === "favorites" ? "border-2 border-violet" : ""
               }`}
               ref={favoritesRef}
               style={{ maxHeight: "150px", overflowY: "scroll" }}
@@ -356,7 +347,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                         className="bg-red-500 p-2 rounded"
                         onClick={() => removeFavorite(symbol)}
                       >
-                        <FaTrash /> {/* Utiliser l'icône de poubelle */}
+                        <FaTrash />
                       </button>
                     </li>
                   ))}
@@ -368,7 +359,7 @@ export default function Dashboard({ auth, onAddSell }: PageProps = { onAddSell: 
                 activeSection === "assets" ? "border-4 border-blue-500" : ""
               }`}
               ref={assetsRef}
-              style={{ maxHeight: "150px", overflowY: "scroll" }}
+              style={{height:"100px", maxHeight: "100px", overflowY: "scroll" }}
             >
               <div className="scrollbar">
                 <h2 className="text-white text-lg">Assets</h2>

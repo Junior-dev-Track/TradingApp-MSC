@@ -19,18 +19,22 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
     availableBalance = 0,
     investedBalance = 0,
 }) => {
+    const getColorClass = (amount: number) => {
+        return amount < 1000 ? 'text-violet' : 'text-vert';
+    };
+
     return (
         <div className="portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
-            <div className="flex space-x-4 text-white">
-                <div className="ml-1 p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
-                    <p>Total Balance: ${totalBalance.toLocaleString()}</p>
+            <div className="flex space-x-6 text-white">
+                <div className="ml-1 p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+                    <p>Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
-                    <p>Available Balance: ${availableBalance.toLocaleString()}</p>
+                <div className="p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+                    <p>Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-4 border border-gray-300  rounded-lg mb-4 bg-darker-blue">
-                    <p>Invested Balance: ${investedBalance.toLocaleString()}</p>
+                <div className="p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+                    <p>Invested Balance: <span className={getColorClass(investedBalance)}>${investedBalance.toLocaleString()}</span></p>
                 </div>
             </div>
         </div>

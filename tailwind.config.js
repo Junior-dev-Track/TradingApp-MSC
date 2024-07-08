@@ -29,11 +29,13 @@ export default {
                 "deeper-night-blue": "#0a053f",
                 'red': "#ff0000",
                 'green': "#00ff00",
+                'violet': "#8884d8",
+                'vert': "#82ca9d",
             },
         },
 
     },
 
     plugins: [forms],
-    
+
 };
