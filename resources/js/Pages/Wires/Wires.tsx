@@ -72,7 +72,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                     <strong>Balance: </strong>${balance.toFixed(2)}
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-4 ">
-                    <form onSubmit={(e) => { e.preventDefault(); handleDeposit(); }}>
+                    <form  onSubmit={(e) => { e.preventDefault(); handleDeposit(); }}>
                         <label htmlFor="depositAmount" className="block mb-2 text-white">Deposit:</label>
                         <input
                             type="number"
