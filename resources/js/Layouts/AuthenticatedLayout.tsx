@@ -25,7 +25,7 @@ export default function Authenticated({
                             className="flex items-center space-x-2"
                         >
                             <span className="text-white font-semibold text-lg">
-                                Trade
+                                SimTrade
                             </span>
                         </Link>
 
