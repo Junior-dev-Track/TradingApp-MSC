@@ -74,8 +74,15 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                     <strong>Balance: </strong>${balance.toFixed(2)}
                 </div>
                 <div className="mb-4">
-                    <form onSubmit={(e) => { e.preventDefault(); handleDeposit(); }}>
-                        <label htmlFor="depositAmount" className="block mb-2">Deposit:</label>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleDeposit();
+                        }}
+                    >
+                        <label htmlFor="depositAmount" className="block mb-2">
+                            Deposit:
+                        </label>
                         <input
                             type="text"
                             id="depositAmount"
@@ -92,8 +99,15 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                     </form>
                 </div>
                 <div className="mb-4">
-                    <form onSubmit={(e) => { e.preventDefault(); handleWithdraw(); }}>
-                        <label htmlFor="withdrawAmount" className="block mb-2">Withdraw:</label>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleWithdraw();
+                        }}
+                    >
+                        <label htmlFor="withdrawAmount" className="block mb-2">
+                            Withdraw:
+                        </label>
                         <input
                             type="text"
                             id="withdrawAmount"
@@ -110,10 +124,14 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                     </form>
                 </div>
                 <div className="mt-6">
-                    <h4 className="text-xl font-semibold mb-4">Payment methods</h4>
+                    <h4 className="text-xl font-semibold mb-4">
+                        Payment methods
+                    </h4>
                     <form>
                         <div className="mb-4">
-                            <label htmlFor="cardNumber" className="block mb-2">Card Number</label>
+                            <label htmlFor="cardNumber" className="block mb-2">
+                                Card Number
+                            </label>
                             <input
                                 type="text"
                                 id="cardNumber"
@@ -122,7 +140,9 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="cardHolder" className="block mb-2">Cardholder Name</label>
+                            <label htmlFor="cardHolder" className="block mb-2">
+                                Cardholder Name
+                            </label>
                             <input
                                 type="text"
                                 id="cardHolder"
@@ -132,7 +152,12 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         </div>
                         <div className="flex mb-4">
                             <div className="w-1/2 mr-2">
-                                <label htmlFor="expiryDate" className="block mb-2">Expiration Date</label>
+                                <label
+                                    htmlFor="expiryDate"
+                                    className="block mb-2"
+                                >
+                                    Expiration Date
+                                </label>
                                 <input
                                     type="text"
                                     id="expiryDate"
@@ -141,7 +166,9 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 />
                             </div>
                             <div className="w-1/2 ml-2">
-                                <label htmlFor="cvv" className="block mb-2">CVV</label>
+                                <label htmlFor="cvv" className="block mb-2">
+                                    CVV
+                                </label>
                                 <input
                                     type="text"
                                     id="cvv"
@@ -150,9 +177,16 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 />
                             </div>
                         </div>
-                        <h6 className="text-lg font-semibold mb-4">Billing Address</h6>
+                        <h6 className="text-lg font-semibold mb-4">
+                            Billing Address
+                        </h6>
                         <div className="mb-4">
-                            <label htmlFor="streetAddress" className="block mb-2">Street Address</label>
+                            <label
+                                htmlFor="streetAddress"
+                                className="block mb-2"
+                            >
+                                Street Address
+                            </label>
                             <input
                                 type="text"
                                 id="streetAddress"
@@ -161,7 +195,9 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="city" className="block mb-2">City</label>
+                            <label htmlFor="city" className="block mb-2">
+                                City
+                            </label>
                             <input
                                 type="text"
                                 id="city"
@@ -171,7 +207,9 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         </div>
                         <div className="flex mb-4">
                             <div className="w-1/2 mr-2">
-                                <label htmlFor="state" className="block mb-2">State/Province</label>
+                                <label htmlFor="state" className="block mb-2">
+                                    State/Province
+                                </label>
                                 <input
                                     type="text"
                                     id="state"
@@ -180,7 +218,9 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 />
                             </div>
                             <div className="w-1/2 ml-2">
-                                <label htmlFor="zipCode" className="block mb-2">Zip code</label>
+                                <label htmlFor="zipCode" className="block mb-2">
+                                    Zip code
+                                </label>
                                 <input
                                     type="text"
                                     id="zipCode"
