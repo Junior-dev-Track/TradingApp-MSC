@@ -430,7 +430,7 @@ export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
                                                 {symbol}
                                             </button>
                                             <button
-                                                className="bg-white p-2 rounded"
+                                                className="text-white p-2 rounded"
                                                 onClick={() =>
                                                     removeFavorite(symbol)
                                                 }
