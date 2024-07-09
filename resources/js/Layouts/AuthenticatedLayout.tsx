@@ -18,7 +18,7 @@ export default function Authenticated({
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20">
                         <Link href={route("dashboard")} className="flex items-center space-x-2">
-                            <span className="text-white font-bold text-lg">Trade</span>
+                            <span className="text-white font-bold text-lg">SimTrade</span>
                         </Link>
 
                         {/* Burger menu button for tablet and smaller screens */}
