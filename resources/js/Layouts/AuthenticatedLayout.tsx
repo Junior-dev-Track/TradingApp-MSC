@@ -3,8 +3,7 @@ import { Link } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
 import { User } from "@/types";
 import { FaBell, FaBars, FaTimes } from "react-icons/fa";
-import AlertsManager from "@/Pages/Auth/AlertsManager";
-
+import AlertsManager from "./Trading/AlertsManager";
 export default function Authenticated({
     user,
     children,
