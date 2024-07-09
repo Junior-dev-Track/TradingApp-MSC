@@ -38,7 +38,7 @@ interface Notification {
     timestamp: Date;
 }
 
-export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
+export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
     const [favorites, setFavorites] = useState<string[]>(() => {
         const savedFavorites = localStorage.getItem("favorites");
         return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -69,7 +69,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     useEffect(() => {
         const interval = setInterval(() => {
             updateCurrentPrices();
-        }, 5000); // Update prices every 5 seconds
+        }, 60000); // Update prices every 60 seconds
         return () => clearInterval(interval);
     }, []);
 
@@ -393,9 +393,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                 ${availableFunds.toFixed(2)}
                             </div>
                             <div
-                                className={`text-${
-                                    netGainLoss >= 0 ? "green" : "red"
-                                }-500 text-md`}
+                                className="text-white"
                             >
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
@@ -432,7 +430,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                                 {symbol}
                                             </button>
                                             <button
-                                                className="bg-red-500 p-2 rounded"
+                                                className="text-white p-2 rounded"
                                                 onClick={() =>
                                                     removeFavorite(symbol)
                                                 }

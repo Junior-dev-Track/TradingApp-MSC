@@ -74,7 +74,7 @@ const AlertsManager: React.FC<AlertsManagerProps> = ({
             <button className="flex flex-col text-white hover:text-gray-500">
                     <FaBell className="flex flex-col h-7 w-7 mb-2 ml-10" />
                     {notifications.length > 0 && (
-                        <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0 right-0 -mt-1 -mr-2">
+                        <span className="bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center absolute top-0 right-0 -mt-1 -mr-3">
                             {notifications.length}
                         </span>
                     )}
