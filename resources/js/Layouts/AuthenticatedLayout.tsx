@@ -23,7 +23,7 @@ export default function Authenticated({
                     <div className="flex justify-between h-20">
                         <Link href={route("dashboard")} className="flex items-center space-x-2">
                             <span className="text-white font-semibold text-lg">
-                                Trade
+                                SimTrade
                             </span>
                         </Link>
 
