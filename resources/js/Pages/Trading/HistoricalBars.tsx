@@ -134,42 +134,49 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
         localStorage.setItem("filteredData", JSON.stringify(filteredData));
     }, [filteredData]);
 
-  return (
-    <div className="text-white">
-      <div className="flex flex-col md:flex-row justify-between mr-10">
-        <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
-        <button onClick={handleRefresh}>
-          <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-5" />
-        </button>
-      </div>
-      {filteredData.length > 0 ? (
-        <div>
-          <span className="text-black gap-4 ml-1 p-2 rounded-lg mb-4 flex justify-center">{filteredData[0].symbol}</span>
-          <CombinedChart
-            data={filteredData.map((entry) => ({
-              t: entry.t!,
-              o: entry.o!,
-              h: entry.h!,
-              l: entry.l!,
-              c: entry.c!,
-              v: entry.v!,
-            }))}
-          />
-          <div className="mt-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-            <button
-              className="bg-blue-500 p-2 rounded"
-              onClick={() => onAddFavorite(filteredData[0].symbol)}
-            >
-              Add to Favorites
-            </button>
-            <button className="bg-green-500 p-2 rounded" onClick={handleBuyClick}>
-              Buy
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div>Aucune donnée historique disponible pour ce symbole.</div>
-      )}
+    return (
+        <div className="text-white">
+            <div className="flex justify-between mr-10">
+                <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
+                <button onClick={handleRefresh}>
+                    <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-6" />
+                </button>
+            </div>
+            {filteredData.length > 0 ? (
+                <div>
+                    <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">
+                        {filteredData[0].symbol}
+                    </span>
+                    <CombinedChart
+                        data={filteredData.map((entry) => ({
+                            t: entry.t!,
+                            o: entry.o!,
+                            h: entry.h!,
+                            l: entry.l!,
+                            c: entry.c!,
+                            v: entry.v!,
+                        }))}
+                    />
+                    <div className="mt-4">
+                        <button
+                            className="bg-darker-blue p-2 rounded mr-2"
+                            onClick={() =>
+                                onAddFavorite(filteredData[0].symbol)
+                            }
+                        >
+                            Add to Favorites
+                        </button>
+                        <button
+                            className="bg-green-500 p-2 rounded"
+                            onClick={handleBuyClick}
+                        >
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div>Aucune donnée historique disponible pour ce symbole.</div>
+            )}
 
             {showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

@@ -18,7 +18,8 @@ Marilou:
 
 
 Cyrille:
-Fetch pour day et semaines mieux.
+Fetch pour day et semaines mieux. (crypto? and time)
+
 
 
 
