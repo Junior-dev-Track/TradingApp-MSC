@@ -38,7 +38,7 @@ interface Notification {
     timestamp: Date;
 }
 
-export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
+export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     const [favorites, setFavorites] = useState<string[]>(() => {
         const savedFavorites = localStorage.getItem("favorites");
         return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -65,34 +65,6 @@ export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
     });
 
     const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            updateCurrentPrices();
-        }, 60000); // Update prices every 60 seconds
-        return () => clearInterval(interval);
-    }, []);
-
-    const updateCurrentPrices = async () => {
-        try {
-            const response = await fetch("/api/current-prices"); // A CHANGER
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data: ApiResponse = await response.json();
-            const formattedData = Object.fromEntries(
-                Object.entries(data).map(([symbol, bars]) => [
-                    symbol,
-                    bars[0].c,
-                ])
-            );
-            console.log("Formatted data:", formattedData); // Ajoutez cette ligne pour déboguer
-            setCurrentPrices(formattedData);
-            updateNetGainLoss(formattedData);
-        } catch (error) {
-            console.error("Error fetching current prices:", error);
-        }
-    };
 
     const updateNetGainLoss = (prices: { [x: string]: number }) => {
         console.log("Prices:", prices); // Ajoutez cette ligne pour déboguer
@@ -397,9 +369,7 @@ export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
                             <div className="text-white">
                                 ${availableFunds.toFixed(2)}
                             </div>
-                            <div
-                                className="text-white"
-                            >
+                            <div className="text-white">
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
                                     : `Loss: $${Math.abs(netGainLoss).toFixed(
