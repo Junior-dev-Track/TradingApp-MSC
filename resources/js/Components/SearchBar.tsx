@@ -11,7 +11,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, allSymbols }) => {
 
     useEffect(() => {
         if (symbol) {
-            const filteredSuggestions = allSymbols.filter(sym =>
+            const filteredSuggestions = allSymbols.filter((sym) =>
                 sym.toLowerCase().startsWith(symbol.toLowerCase())
             );
             setSuggestions(filteredSuggestions);
