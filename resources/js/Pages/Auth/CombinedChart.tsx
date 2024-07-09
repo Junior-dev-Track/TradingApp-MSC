@@ -48,24 +48,21 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
   };
 
   // Fonctions de filtre spécifiques
-  const filterByDay = (data: BarData[]) => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+const filterByDay = (data: BarData[]) => {
+    const twentyFourHoursAgo = new Date();
+    twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 48);
+    console.log(twentyFourHoursAgo)
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate.getDate() === yesterday.getDate() &&
-        itemDate.getMonth() === yesterday.getMonth() &&
-        itemDate.getFullYear() === yesterday.getFullYear();
+        const itemDate = new Date(item.t);
+        return itemDate >= twentyFourHoursAgo;
     });
-  };
+};
 
 const filterByWeek = (data: BarData[]) => {
     const today = new Date();
-    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14);
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
     const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    console.log(startOfWeek);
-        console.log(endOfWeek);
 
     return data.filter(item => {
         const itemDate = new Date(item.t);
