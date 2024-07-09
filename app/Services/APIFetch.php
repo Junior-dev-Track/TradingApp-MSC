@@ -14,8 +14,6 @@ class APIFetch
         $startTime = time() - 365 * 24 * 60 * 60;
         $startDate = date('Y-m-d', $startTime);
 
-
-
         $params = [
             'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
             'timeframe' => '1D',
@@ -30,20 +28,42 @@ class APIFetch
         return response()->json($all_data);
     }
 
-    public function getHistoricalbarsBySymbol($symbol): JsonResponse
+    public function getHistoricalbarsWeek(): JsonResponse
     {
+        $startTime = time() - 7 * 24 * 60 * 60;
+        $startDate = date('Y-m-d', $startTime);
+
         $params = [
-            'symbols' => $symbol,
-            'timeframe' => '1Min',
+            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
+            'timeframe' => '1Hour',
+            'start' => $startDate,
             'limit' => 1000,
             'adjustment' => 'raw',
             'feed' => 'iex',
             'sort' => 'asc'
         ];
 
-        $symbol_data = $this->fetchData($params, 'bars');
+        $all_data = $this->fetchData($params, 'bars');
+        return response()->json($all_data);
+    }
 
-        return response()->json($symbol_data);
+    public function getHistoricalbarsDay(): JsonResponse
+    {
+        $startTime = time() - 1 * 24 * 60 * 60;
+        $startDate = date('Y-m-d', $startTime);
+
+        $params = [
+            'symbols' => 'AAPL,MSFT,AMZN,GOOGL,GOOG,TSLA,BRK.B,NVDA,JPM,JNJ,V,UNH,HD,PG,MA,DIS,PYPL,BAC,ADBE',
+            'timeframe' => '5Min',
+            'start' => $startDate,
+            'limit' => 1000,
+            'adjustment' => 'raw',
+            'feed' => 'iex',
+            'sort' => 'asc'
+        ];
+        $all_data = $this->fetchData($params, 'bars');
+
+        return response()->json($all_data);
     }
 
     public function getSpecificClosePrice($symbol): float

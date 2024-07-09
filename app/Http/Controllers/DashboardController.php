@@ -26,16 +26,19 @@ class DashboardController extends Controller
     public function index()
     {
         $barsData = $this->apiFetch->getHistoricalBars();
+        $barsWeekData = $this->apiFetch->getHistoricalBarsWeek();
+        $barsDayData = $this->apiFetch->getHistoricalBarsDay();
         $barsLatestData = $this->apiFetch->getLastestBars();
+
         $user_id = Auth::id();
-        $wallet = Profile::getWallet($user_id);
+        $wallet = (float) (Profile::getWallet($user_id));
         $openTrades = Trade::getOpenTrades($user_id);
 
-        $totalAssets = 0;
+        $totalAssets =  0;
         foreach ($openTrades as $openTrade) {
             $totalAssets += $openTrade->quantity * $this->apiFetch->getSpecificClosePrice($openTrade->symbol);
         }
 
-        return Inertia::render('Dashboard', ['barsData' => $barsData, 'barsLatestData' => $barsLatestData, 'wallet' => $wallet, 'openTrades' => $openTrades, 'totalAssets' => $totalAssets]);
+        return Inertia::render('Dashboard', ['barsData' => $barsData, 'barsWeekData' => $barsWeekData, 'barsDayData' => $barsDayData, 'barsLatestData' => $barsLatestData, 'wallet' => $wallet, 'openTrades' => $openTrades, 'totalAssets' => $totalAssets]);
     }
 }
