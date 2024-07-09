@@ -18,12 +18,11 @@ class WireController extends Controller
     {
 
         $user = Auth::user();
-        $userId = $user->id;
         $profile = $user->profile;
         $profile_id = $profile->id;
         $wallet = (float) $profile->wallet;
         $wires = Wire::getUserWires($profile_id);
-        $recentWires = Wire::getRecentWires($userId);
+        $recentWires = Wire::getRecentWires($profile_id);
 
 
         return Inertia::render('Wires/Wires', ['wires' => $wires, 'wallet' => $wallet, 'recentWires' => $recentWires]);

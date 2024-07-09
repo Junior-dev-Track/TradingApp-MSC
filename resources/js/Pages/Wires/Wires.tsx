@@ -15,24 +15,49 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
     const [depositAmount, setDepositAmount] = useState<string>("");
     const [withdrawAmount, setWithdrawAmount] = useState<string>("");
 
-    const handleDeposit = () => {
+    const [status, setStatus] = useState<string>("");
+    const [error, setError] = useState<string>("");
+
+    const handleDeposit = async () => {
         const amount = parseFloat(depositAmount);
         if (amount > 0) {
-            const response: any = router.post(`/wires/deposit`);
-            setBalance(balance + amount);
-            setDepositAmount("");
+            try {
+                const response = router.post(`/wires/deposit`, {
+                    amount,
+                });
+                setDepositAmount("");
+                setStatus("Deposit successful!");
+                router.visit("/wires", {
+                    only: ["wallet"],
+                });
+            } catch (error) {
+                setError(
+                    "An error occurred while depositing funds. Please try again later."
+                );
+            }
         } else {
             alert("Please enter a positive amount to deposit.");
         }
     };
 
-    const handleWithdraw = () => {
+    const handleWithdraw = async () => {
         const amount = parseFloat(withdrawAmount);
         if (amount > 0) {
             if (amount <= balance) {
-                const response: any = router.post(`/wires/withdraw`);
-                setBalance(balance - amount);
-                setWithdrawAmount("");
+                try {
+                    const response = router.post(`/wires/withdraw`, {
+                        amount,
+                    });
+                    setWithdrawAmount("");
+                    setStatus("Withdrawal successful!");
+                    router.visit("/wires", {
+                        only: ["wallet"],
+                    });
+                } catch (error) {
+                    setError(
+                        "An error occurred while withdrawing funds. Please try again later."
+                    );
+                }
             } else {
                 alert("Insufficient funds.");
             }
