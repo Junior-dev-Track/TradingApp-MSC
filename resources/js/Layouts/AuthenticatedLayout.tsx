@@ -4,6 +4,7 @@ import NavLink from "@/Components/NavLink";
 import { User } from "@/types";
 import { FaBell, FaBars, FaTimes } from "react-icons/fa";
 import AlertsManager from "@/Pages/Trading/AlertsManager";
+import Wires from "@/Pages/Wires/Wires";
 export default function Authenticated({
     user,
     children,
@@ -18,7 +19,7 @@ export default function Authenticated({
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20">
                         <Link href={route("dashboard")} className="flex items-center space-x-2">
-                            <span className="text-white font-bold text-lg">SimTrade</span>
+                            <span className="text-white font-bold text-lg">Trade</span>
                         </Link>
 
                         {/* Burger menu button for tablet and smaller screens */}
@@ -39,6 +40,13 @@ export default function Authenticated({
                                 active={route().current("dashboard")}
                             >
                                 Dashboard
+                            </NavLink>
+                            <NavLink
+                                className="bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
+                                href={route("wires")}
+                                active={route().current("wires")}
+                            >
+                                Wires
                             </NavLink>
                             <NavLink
                                 className="bg-gradient-to-b from-deeper-night-blue to-gray-400 pt-2 pb-2 pl-2 pr-2 ml-5 p-4 bg-gray-50 rounded-lg mb-4 mt-4 text-white active:text-zinc-300 hover:text-zinc-300"
