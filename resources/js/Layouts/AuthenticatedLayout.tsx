@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import NavLink from "@/Components/NavLink";
 import { User } from "@/types";
 import { FaBell } from "react-icons/fa";
-import AlertsManager from "@/Pages/Auth/AlertsManager";
+import AlertsManager from "@/Pages/Trading/AlertsManager";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 
 export default function Authenticated({
@@ -17,11 +17,13 @@ export default function Authenticated({
 
     return (
         <div className="min-h-screen bg-dark-blue">
-
             <header>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-20">
-                        <Link href={route("dashboard")} className="flex items-center space-x-2">
+                        <Link
+                            href={route("dashboard")}
+                            className="flex items-center space-x-2"
+                        >
                             <span className="text-white font-semibold text-lg">
                                 Trade
                             </span>
@@ -60,21 +62,20 @@ export default function Authenticated({
                                 Log Out
                             </NavLink>{" "}
                             {/* classname hover bg dark blue ne fonctionne pas*/}
-
-                             {/* Intégration d'AlertsManager avec les props favorites et purchased */}
-      <AlertsManager
-        executeOrder={false}
-        priceAlerts={[]}
-        marketNews={false}
-        accountStatus={false}
-        marketMovements={false}
-        dividends={false}
-        accountSecurity={false}
-        supportMessages={false}
-        assetMovements={false}
-        deadlines={false}
-      />
-      {/* Affichage du composant Notifications */}
+                            {/* Intégration d'AlertsManager avec les props favorites et purchased */}
+                            <AlertsManager
+                                executeOrder={false}
+                                priceAlerts={[]}
+                                marketNews={false}
+                                accountStatus={false}
+                                marketMovements={false}
+                                dividends={false}
+                                accountSecurity={false}
+                                supportMessages={false}
+                                assetMovements={false}
+                                deadlines={false}
+                            />
+                            {/* Affichage du composant Notifications */}
                         </div>
                     </div>
                 </nav>
@@ -83,4 +84,3 @@ export default function Authenticated({
         </div>
     );
 }
-
