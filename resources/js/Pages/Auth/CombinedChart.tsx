@@ -61,13 +61,20 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
 const filterByWeek = (data: BarData[]) => {
     const today = new Date();
-    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14);
     const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    console.log(startOfWeek);
+        console.log(endOfWeek);
+
     return data.filter(item => {
         const itemDate = new Date(item.t);
         return itemDate >= startOfWeek && itemDate <= endOfWeek;
+
     });
+
 };
+
 
 const filterByMonth = (data: BarData[]) => {
     const today = new Date();
