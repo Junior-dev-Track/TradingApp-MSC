@@ -133,7 +133,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 
   return (
     <div className="text-white">
-      <div className="flex justify-between mr-10">
+      <div className="flex flex-col md:flex-row justify-between mr-10">
         <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
         <button onClick={handleRefresh}>
           <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-5" />
@@ -152,9 +152,9 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
               v: entry.v!,
             }))}
           />
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
             <button
-              className="bg-blue-500 p-2 rounded mr-2"
+              className="bg-blue-500 p-2 rounded"
               onClick={() => onAddFavorite(filteredData[0].symbol)}
             >
               Add to Favorites

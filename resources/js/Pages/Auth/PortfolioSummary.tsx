@@ -1,13 +1,5 @@
-import { useEffect, FormEventHandler } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-// Définissez ici les types pour les props si nécessaire
 interface PortfolioSummaryProps {
     totalBalance?: number;
     availableBalance?: number;
@@ -15,7 +7,7 @@ interface PortfolioSummaryProps {
 }
 
 const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
-    totalBalance = 0, // Valeurs par défaut pour les props
+    totalBalance = 0,
     availableBalance = 0,
     investedBalance = 0,
 }) => {
@@ -24,16 +16,16 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
     };
 
     return (
-        <div className="portfolio-summary max-w-7xl w-px-50 mx-auto sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div className="portfolio-summary max-w-4xl mx-auto w-4/5 sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
-            <div className="flex space-x-6 text-white">
-                <div className="ml-1 p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+            <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0 text-white">
+                <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p>Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+                <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p>Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-6 border border-gray-300 rounded-lg mb-4 bg-darker-blue">
+                <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p>Invested Balance: <span className={getColorClass(investedBalance)}>${investedBalance.toLocaleString()}</span></p>
                 </div>
             </div>
