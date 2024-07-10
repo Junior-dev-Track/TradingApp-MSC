@@ -118,6 +118,13 @@ export default function Authenticated({
                         Dashboard
                     </NavLink>
                     <NavLink
+                                className="flex flex-col items-start p-4 space-y-4 text-dark-blue"
+                                href={route("wires")}
+                                active={route().current("wires")}
+                            >
+                                Wires
+                            </NavLink>
+                    <NavLink
                         className="block"
                         href={route("guide")}
                         active={route().current("guide")}
