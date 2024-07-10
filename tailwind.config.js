@@ -12,6 +12,13 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                'xs': '320px', 
+                '2xl': '1440px',
+              },
+              spacing: {
+                '18': '4.5rem',
+              },
             fontFamily: {
                 sans: ['Arial', 'sans-serif'],
             },

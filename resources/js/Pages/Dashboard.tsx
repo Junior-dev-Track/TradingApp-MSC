@@ -389,7 +389,7 @@ export default function Dashboard({ auth, wallet, totalAssets, }: PageProps) {
                         >
                             <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Available Funds</h2>
                             <div className="text-white text-lg font-bold"> <p>${availableFunds.toFixed(2)}</p></div>
-                            <div className="text-white text-lg font-bold">
+                            <div className="text-white text-lg ">
                                 {netGainLoss >= 0 ? `Profit: $${netGainLoss.toFixed(2)}` : `Loss: $${Math.abs(netGainLoss).toFixed(2)}`}
                             </div>
                         </div>

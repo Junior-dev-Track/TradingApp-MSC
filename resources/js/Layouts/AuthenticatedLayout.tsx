@@ -81,23 +81,27 @@ export default function Authenticated({
             </header>
 
             {/* Burger menu overlay for tablet and smaller screens */}
-            <div
-                className={`fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
-                    isMenuOpen ? "translate-x-0" : "-translate-x-full"
-                } lg:hidden`}
-                style={{ width: "75%" }}
-            >
-                <div className="flex justify-between items-center p-4">
-                    <button
-                        onClick={() => setIsMenuOpen(false)}
-                        className="text-dark-blue focus:outline-none"
-                    >
-                        <FaTimes size={24} />
-                    </button>
-                    {/* L'icône de notification ici pour qu'elle soit visible en tout temps */}
-                    <FaBell size={24} className="text-dark-blue" />
-                </div>
-                <div className="flex flex-col items-start p-4 space-y-4 text-dark-blue">
+<div
+    className={`fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
+        isMenuOpen ? "translate-x-0" : "-translate-x-full"
+    } lg:hidden`}
+    style={{ width: "75%" }}
+>
+    <div className="flex justify-between items-center p-4">
+        <button
+            onClick={() => setIsMenuOpen(false)}
+            className="text-dark-blue focus:outline-none"
+        >
+            <FaTimes size={24} />
+        </button>
+        {/* Icône de notification enveloppée dans NavLink */}
+        <NavLink
+                        href={route("notifications")} // Assurez-vous que cette route est correctement définie
+                        className="text-dark-blue" active={false}        >
+            <FaBell size={24} />
+        </NavLink>
+    </div>
+    <div className="flex flex-col items-start p-4 space-y-4 text-dark-blue">
                     <NavLink
                         className="block"
                         href={route("dashboard")}
