@@ -360,11 +360,9 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             style={{ height: "100px" }}
                         >
                             <h2 className="text-white text-lg">Available Funds</h2>
-                            <div className="text-white">${availableFunds.toFixed(2)}</div>
-                            <div className="text-white">
-                                ${availableFunds.toFixed(2)}
-                            </div>
-                            <div className="text-white">
+                            <div className="text-white text-lg font-bold">${availableFunds.toFixed(2)}</div>
+
+                            <div className="text-white text-lg">
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
                                     : `Loss: $${Math.abs(netGainLoss).toFixed(
@@ -427,7 +425,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                             <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
                                                 {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
                                             </span>
-                                            <button className="bg-red-500 p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
+                                            <button className="hoover-bg-vert p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
                                                 Sell
                                             </button>
                                         </li>
