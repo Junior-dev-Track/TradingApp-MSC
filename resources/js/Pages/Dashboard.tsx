@@ -7,13 +7,13 @@ import React, {
 } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import PortfolioSummary from "./Auth/PortfolioSummary";
+import PortfolioSummary from "./Trading/PortfolioSummary";
 import Icons from "@/Pages/Auth/Icons";
 import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
-import { FaTrash } from "react-icons/fa"; // Importer l'icône de poubelle
+import { FaTrash } from "react-icons/fa";
 
 interface PageProps {
     auth?: {
@@ -65,34 +65,6 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     });
 
     const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            updateCurrentPrices();
-        }, 5000); // Update prices every 5 seconds
-        return () => clearInterval(interval);
-    }, []);
-
-    const updateCurrentPrices = async () => {
-        try {
-            const response = await fetch("/api/current-prices"); // A CHANGER
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data: ApiResponse = await response.json();
-            const formattedData = Object.fromEntries(
-                Object.entries(data).map(([symbol, bars]) => [
-                    symbol,
-                    bars[0].c,
-                ])
-            );
-            console.log("Formatted data:", formattedData); // Ajoutez cette ligne pour déboguer
-            setCurrentPrices(formattedData);
-            updateNetGainLoss(formattedData);
-        } catch (error) {
-            console.error("Error fetching current prices:", error);
-        }
-    };
 
     const updateNetGainLoss = (prices: { [x: string]: number }) => {
         console.log("Prices:", prices); // Ajoutez cette ligne pour déboguer
@@ -353,27 +325,32 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                         onAssetsClick={scrollToAssets}
                         onFavoritesClick={scrollToFavorites}
                     />
-                </div>
-                <div className="w-3/7 py-1 p-1 w-10/12 mr-16">
-                    <div className="grid grid-cols-3 gap-4">
-                        <div
-                            className={`col-span-3 bg-gray-700 p-3 h-25 rounded-lg shadow ${
-                                activeSection === "historicalBars"
-                                    ? "border-4 border-blue-500"
-                                    : ""
-                            }`}
-                            ref={historicalBarsRef}
-                            style={{ height: "500px" }} // Ajustez selon vos besoins
-                        >
-                            <HistoricalBars
-                                onAddFavorite={addFavorite}
-                                onAddPurchase={addPurchase}
-                                onSearch={(symbol: string) =>
-                                    handleSearchChange(symbol)
-                                }
-                                selectedSymbol={selectedSymbol}
-                            />
-                        </div>
+       </div>
+<div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div
+            className={`col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow ${
+                activeSection === "historicalBars"
+                    ? "border-4 border-blue-500"
+                    : ""
+            }`}
+            ref={historicalBarsRef}
+            // Utilisation de classes responsives Tailwind pour définir la largeur
+
+            style={{ minHeight: "500px" }} // Ajustez selon vos besoins
+        >
+            <HistoricalBars
+                onAddFavorite={addFavorite}
+                onAddPurchase={addPurchase}
+                onSearch={(symbol: string) =>
+                    handleSearchChange(symbol)
+                }
+                selectedSymbol={selectedSymbol}
+            />
+        </div>
+
+
+
                         <div
                             className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
                                 activeSection === "availableFunds"
@@ -389,11 +366,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             <div className="text-white">
                                 ${availableFunds.toFixed(2)}
                             </div>
-                            <div
-                                className={`text-${
-                                    netGainLoss >= 0 ? "green" : "red"
-                                }-500 text-md`}
-                            >
+                            <div className="text-white">
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
                                     : `Loss: $${Math.abs(netGainLoss).toFixed(
@@ -429,7 +402,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                                 {symbol}
                                             </button>
                                             <button
-                                                className="bg-red-500 p-2 rounded"
+                                                className="text-white p-2 rounded"
                                                 onClick={() =>
                                                     removeFavorite(symbol)
                                                 }

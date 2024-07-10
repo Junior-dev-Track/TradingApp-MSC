@@ -48,26 +48,30 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
   };
 
   // Fonctions de filtre spécifiques
-  const filterByDay = (data: BarData[]) => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+const filterByDay = (data: BarData[]) => {
+    const twentyFourHoursAgo = new Date();
+    twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 48);
+    console.log(twentyFourHoursAgo)
     return data.filter(item => {
-      const itemDate = new Date(item.t);
-      return itemDate.getDate() === yesterday.getDate() &&
-        itemDate.getMonth() === yesterday.getMonth() &&
-        itemDate.getFullYear() === yesterday.getFullYear();
+        const itemDate = new Date(item.t);
+        return itemDate >= twentyFourHoursAgo;
     });
-  };
+};
 
 const filterByWeek = (data: BarData[]) => {
     const today = new Date();
     const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
     const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+
     return data.filter(item => {
         const itemDate = new Date(item.t);
         return itemDate >= startOfWeek && itemDate <= endOfWeek;
+
     });
+
 };
+
 
 const filterByMonth = (data: BarData[]) => {
     const today = new Date();
@@ -153,7 +157,7 @@ const filterByYear = (data: BarData[]) => {
 
   return (
     <animated.div style={props}>
-      <div className='text-right '>
+      <div className='text-right mr-4 '>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
         <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>

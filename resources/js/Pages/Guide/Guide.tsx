@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 
@@ -229,7 +230,15 @@ const Guide: React.FC = () => {
                         <p>Trading can be an exciting and potentially lucrative activity, but it carries risks. By following this guide, you
                              will be better prepared to navigate the world of trading. Use our platform responsibly, and remember that
                              practice is essential to becoming a competent trader. Good luck and happy trading!</p>
+                             <div className='flex items-center'>
+                    <Link href={route("dashboard")} className="">
+                            <span className="text-white font-bold text-lg">
+                                let's start trading
+                            </span>
+                        </Link>
                     </div>
+                    </div>
+
                 </section>
 
             </div>

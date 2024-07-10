@@ -20,8 +20,12 @@ class WireController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
         $profile_id = $profile->id;
+        $wallet = (float) $profile->wallet;
         $wires = Wire::getUserWires($profile_id);
-        return Inertia::render('Wallet/Wires', ['wires' => $wires]);
+        $recentWires = Wire::getRecentWires($profile_id);
+
+
+        return Inertia::render('Wires/Wires', ['wires' => $wires, 'wallet' => $wallet, 'recentWires' => $recentWires]);
     }
 
     public function storeDeposit(Request $request): RedirectResponse
@@ -46,9 +50,9 @@ class WireController extends Controller
                 'withdrawal' => false
             ]);
 
-            return Redirect::route('wallet')->with('status', 'Deposit successful!');
+            return Redirect::route('wires')->with('status', 'Deposit successful!');
         } else {
-            return Redirect::route('wallet')->with('error', 'Profile not found.');
+            return Redirect::route('wires')->with('error', 'Profile not found.');
         }
     }
 
@@ -73,9 +77,9 @@ class WireController extends Controller
                 'withdrawal' => true
             ]);
 
-            return Redirect::route('wallet')->with('status', 'Withdrawal successful!');
+            return Redirect::route('wires')->with('status', 'Withdrawal successful!');
         } else {
-            return Redirect::route('wallet')->with('error', 'Insufficient balance or profile not found.');
+            return Redirect::route('wires')->with('error', 'Insufficient balance or profile not found.');
         }
     }
 }

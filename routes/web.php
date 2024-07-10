@@ -50,14 +50,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/wallet', [WalletController::class, 'index'])->name('wallet');
-    Route::get('/wallet/deposit', [WalletController::class, 'createDepositForm'])->name('wallet.createDepositForm');
-    Route::get('/wallet/withdraw', [WalletController::class, 'createWithdrawForm'])->name('wallet.createWithdrawForm');
-    Route::post('/wallet/deposit', [WireController::class, 'storeDeposit'])->name('wallet.storeDeposit');
-    Route::post('/wallet/withdraw', [WireController::class, 'storeWithdrawal'])->name('wallet.storeWithdrawal');
-
     Route::get('/wires', [WireController::class, 'index'])->name('wires');
-
+    Route::post('/wires/deposit', [WireController::class, 'storeDeposit'])->name('wallet.storeDeposit');
+    Route::post('/wires/withdraw', [WireController::class, 'storeWithdrawal'])->name('wallet.storeWithdrawal');
 
 
     Route::get('/trade/{symbol}/buy', [TradeController::class, 'show'])->name('trade.showBuy');

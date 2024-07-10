@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wires', function (Blueprint $table) {
             $table->id();
             $table->foreignId('profile_id')->constrained();
-            $table->decimal('amount');
+            $table->decimal('amount', 8, 2);
             $table->boolean('withdrawal');
             $table->timestamps();
 
