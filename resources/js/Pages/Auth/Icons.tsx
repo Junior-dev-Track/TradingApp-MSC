@@ -1,8 +1,5 @@
 import React from 'react';
-import { AiFillBank } from "react-icons/ai";
-import { AiOutlineFund } from "react-icons/ai";
-import { AiFillPushpin } from "react-icons/ai";
-import { AiOutlineDollarCircle } from "react-icons/ai";
+import { AiFillBank, AiOutlineFund, AiFillPushpin, AiOutlineDollarCircle } from "react-icons/ai";
 
 interface IconsProps {
   onAppStoreClick: () => void;
@@ -35,7 +32,7 @@ const Icons: React.FC<IconsProps> = ({ onAppStoreClick, onFundClick, onAssetsCli
   };
 
   return (
-    <div className="flex flex-col mt-8 space-y-4 text-gray-400">
+    <div className="hidden md:flex flex-col mt-8 space-y-4 text-gray-400">
       <button onClick={onAppStoreClick}>
         <IconWithTooltip icon={<AiOutlineFund className="w-7 h-7 hover:text-gray-500" />} name="Graphique" />
       </button>

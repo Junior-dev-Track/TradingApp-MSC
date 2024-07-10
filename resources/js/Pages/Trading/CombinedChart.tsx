@@ -153,14 +153,15 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
 
   return (
     <animated.div style={props}>
-      <div className='flex flex-wrap justify-end gap-2 mr-4'>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('day')}>1D</button>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('week')}>1W</button>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('month')}>1M</button>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('3 months')}>3M</button>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('6 months')}>6M</button>
-        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('year')}>Year</button>
-      </div>
+   <div className="flex flex-nowrap justify-end items-center gap-2 mr-4">
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('day')}>1D</button>
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('week')}>1W</button>
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('month')}>1M</button>
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('3 months')}>3M</button>
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('6 months')}>6M</button>
+  <button className="bg-gray-800 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 lg:px-5 py-1 sm:py-1.5 md:py-2 lg:py-2.5 rounded-lg hover:bg-gray-700 transition-colors" onClick={() => setFilterSelection('year')}>Year</button>
+</div>
+
 
       <ResponsiveContainer width="100%" height={chartHeight}>
         <ComposedChart data={formattedData}>
