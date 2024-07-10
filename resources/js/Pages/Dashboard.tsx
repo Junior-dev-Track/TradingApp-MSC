@@ -109,10 +109,6 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
         setNetGainLoss(currentNetGainLoss);
     };
 
-    const handleBuyClick = () => {
-        // Logic for buy click (if needed)
-    };
-
     const handleConfirmSell = async () => {
         try {
             setProcessing(true);
@@ -284,6 +280,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     };
 
     const investedBalance = totalAssets;
+    console.log("investedBalance", investedBalance);
 
     const historicalBarsRef = useRef<HTMLDivElement>(null);
     const availableFundsRef = useRef<HTMLDivElement>(null);
