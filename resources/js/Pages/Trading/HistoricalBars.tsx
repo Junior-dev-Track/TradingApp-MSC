@@ -5,6 +5,7 @@ import SearchBar from "@/Components/SearchBar";
 import { BarData } from "@/types/types";
 import { router } from "@inertiajs/react";
 import { MdOutlineRefresh } from "react-icons/md";
+import { FaTrash, FaHeart } from 'react-icons/fa';
 
 interface HistoricalBarsProps {
     onAddFavorite: (symbol: string) => void;
@@ -136,47 +137,52 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 
     return (
         <div className="text-white">
-            <div className="flex justify-between mr-10">
-                <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
-                <button onClick={handleRefresh}>
-                    <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-6" />
-                </button>
-            </div>
-            {filteredData.length > 0 ? (
-                <div>
-                    <span className="text-black gap-4 ml-1 p-2 border border-gray-300 bg-gray-50 rounded-lg mb-4">
-                        {filteredData[0].symbol}
-                    </span>
-                    <CombinedChart
-                        data={filteredData.map((entry) => ({
-                            t: entry.t!,
-                            o: entry.o!,
-                            h: entry.h!,
-                            l: entry.l!,
-                            c: entry.c!,
-                            v: entry.v!,
-                        }))}
-                    />
-                    <div className="mt-4">
-                        <button
-                            className="bg-darker-blue p-2 rounded mr-2"
-                            onClick={() =>
-                                onAddFavorite(filteredData[0].symbol)
-                            }
-                        >
-                            Add to Favorites
-                        </button>
-                        <button
-                            className="bg-green-500 p-2 rounded"
-                            onClick={handleBuyClick}
-                        >
-                            Buy
-                        </button>
-                    </div>
-                </div>
-            ) : (
-                <div>Aucune donnée historique disponible pour ce symbole.</div>
-            )}
+  <div className="flex justify-between mr-10">
+    <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
+    <button onClick={handleRefresh}>
+        <MdOutlineRefresh className="h-8 w-8 text-white-500 hover:text-gray-700 transition-colors duration-300 mr-6" />
+    </button>
+</div>
+{filteredData.length > 0 ? (
+    <div>
+       <div className="flex justify-center w-full"> {/* Conteneur Flex pour centrer le span */}
+    <span className="text-black p-2 sm:p-3 md:p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4 text-sm sm:text-base md:text-lg">
+        {filteredData[0].symbol}
+    </span>
+</div>
+
+        <CombinedChart
+            data={filteredData.map((entry) => ({
+                t: entry.t!,
+                o: entry.o!,
+                h: entry.h!,
+                l: entry.l!,
+                c: entry.c!,
+                v: entry.v!,
+            }))}
+        />
+        <div className="mt-4 flex justify-start items-center space-x-2">
+            <button
+                className="bg-darker-blue text-white p-2 rounded hover:bg-gray-600 flex items-center"
+                onClick={() => onAddFavorite(filteredData[0].symbol)}
+            >
+                <FaHeart className="mr-2" /> Add to Favorites
+            </button>
+            <button
+                className="bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                onClick={handleBuyClick}
+            >
+                Buy
+            </button>
+        </div>
+    </div>
+) : (
+    <div className="text-center">
+        Aucune donnée historique disponible pour ce symbole.
+    </div>
+)}
+
+
 
             {showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

@@ -13,7 +13,7 @@ import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaHeart } from "react-icons/fa";
 
 interface PageProps {
     auth?: {
@@ -338,7 +338,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                 activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
                             }`}
                             ref={historicalBarsRef}
-                            style={{ minHeight: "500px" }}
+                            style={{ minHeight: "450px" }}
                         >
                             <HistoricalBars
                                 onAddFavorite={addFavorite}
@@ -350,7 +350,8 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                     </div>
 
                     {/* Second section - Available Funds */}
-                    <div className="col-span-1 bg-gray-700 p-3 rounded-lg shadow">
+
+                    <div className="space-y-4 col-span-1 bg-gray-700 p-3 rounded-lg shadow">
                         <div
                             className={`${
                                 activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
@@ -374,7 +375,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                     </div>
 
                     {/* Third section - Favorites */}
-                    <div className="col-span-1 md:col-span-2 bg-gray-700 p-3 rounded-lg shadow">
+                    <div className="col-span-1 md:col-span-2 bg-gray-700 p-4 rounded-lg shadow">
                         <div
                             className={`h-30 overflow-y-scroll ${
                                 activeSection === "favorites" ? "border-4 border-blue-500" : ""
@@ -382,7 +383,9 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             ref={favoritesRef}
                             style={{ height: "100px", maxHeight: "100px" }}
                         >
-                            <h2 className="text-white text-lg">Favorites</h2>
+                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">
+                            <FaHeart className="mr-2" /> Favorites
+                            </h2>
                             <ul>
                                 {favorites.map((symbol, index) => (
                                     <li key={index} className="text-white flex justify-between">
@@ -407,7 +410,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             ref={assetsRef}
                             style={{ height: "150px", maxHeight: "150px" }}
                         >
-                            <h2 className="text-white text-lg">Assets</h2>
+                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Assets</h2>
                             <ul>
                                 {purchased.map((asset, index) => {
                                     const currentPrice = currentPrices[asset.symbol] ?? asset.price;
@@ -468,6 +471,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                 )}
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
