@@ -69,7 +69,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
             <div className="container mx-auto p-4 bg-gray-700 rounded-lg shadow-md max-w-6xl">
                 <h2 className="text-2xl text-white font-semibold mb-4">Bank Account</h2>
                 <div className="mb-4 text-white">
-                    <strong>Balance: </strong>${balance.toFixed(2)}
+                    <strong >Balance: </strong>${balance.toFixed(2)}
                 </div>
                 <div className="mb-4">
                     <form
@@ -122,11 +122,11 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                     </form>
                 </div>
                 <div className="mt-6">
-                    <h4 className="text-xl font-semibold mb-4">
+                    <h4 className="text-xl text-white font-semibold mb-4">
                         Payment methods
                     </h4>
                     <form>
-                        <div className="mb-4">
+                        <div className="mb-4 ">
                             <label htmlFor="cardNumber" className="block mb-2">
                                 Card Number
                             </label>
@@ -137,7 +137,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 required
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 ">
                             <label htmlFor="cardHolder" className="block mb-2">
                                 Cardholder Name
                             </label>
@@ -148,7 +148,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 required
                             />
                         </div>
-                        <div className="flex mb-4">
+                        <div className="flex mb-4 ">
                             <div className="w-1/2 mr-2">
                                 <label
                                     htmlFor="expiryDate"
@@ -175,13 +175,13 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 />
                             </div>
                         </div>
-                        <h6 className="text-lg font-semibold mb-4">
+                        <h6 className="text-white text-lg font-semibold mb-4">
                             Billing Address
                         </h6>
                         <div className="mb-4">
                             <label
                                 htmlFor="streetAddress"
-                                className="block mb-2"
+                                className="block mb-2 "
                             >
                                 Street Address
                             </label>
@@ -205,7 +205,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         </div>
                         <div className="flex mb-4">
                             <div className="w-1/2 mr-2">
-                                <label htmlFor="state" className="block mb-2">
+                                <label htmlFor="state" className="block mb-2 ">
                                     State/Province
                                 </label>
                                 <input
