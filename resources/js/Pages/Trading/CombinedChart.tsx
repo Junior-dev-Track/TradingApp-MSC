@@ -136,11 +136,11 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
     if (payload && payload.length) {
       const { open, high, low, close, volume } = payload[0].payload;
       return (
-        <div className="custom-tooltip text-dark-purple bg-white p-2 border border-gray-300">
-          <p>Date: {label}</p>
-          <p>Open: {open}</p>
-          <p>High: {high}</p>
-          <p>Low: {low}</p>
+        <div className="custom-tooltip text-dark-purple bg-white p-2 border border-gray-300 ">
+           <p className='text-dark-blue'>{label}</p>
+          <p>Open: <>{open}</></p>
+          <p>High: <>{high}</></p>
+          <p>Low:<>{low}</></p>
           <p>Close: {close}</p>
           <p>Volume: {formatNumber(volume)}</p>
         </div>
