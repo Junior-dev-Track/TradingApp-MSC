@@ -21,13 +21,27 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
   // State for filter selection
   const [filterSelection, setFilterSelection] = useState<'day' | 'week' | 'month' | '3 months' | '6 months' | 'year'>('year');
   const [filteredData, setFilteredData] = useState(data);
+  const [chartHeight, setChartHeight] = useState(250); // Hauteur initiale
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newHeight = window.innerWidth < 600 ? 200 : 250;
+      setChartHeight(newHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const filtered = applyFilter(filterSelection, data);
     setFilteredData(filtered);
   }, [filterSelection, data]);
 
-  // Fonction générique pour appliquer un filtre
   const applyFilter = (type: string, data: BarData[]) => {
     switch (type) {
       case 'day':
@@ -43,76 +57,61 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
       case 'year':
         return filterByYear(data);
       default:
-        return data; // Retourne les données non filtrées si aucun filtre n'est spécifié
+        return data;
     }
   };
 
-  // Fonctions de filtre spécifiques
-const filterByDay = (data: BarData[]) => {
+  const filterByDay = (data: BarData[]) => {
     const twentyFourHoursAgo = new Date();
     twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 48);
-    console.log(twentyFourHoursAgo)
-    return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= twentyFourHoursAgo;
-    });
-};
+    return data.filter(item => new Date(item.t) >= twentyFourHoursAgo);
+  };
 
-const filterByWeek = (data: BarData[]) => {
+  const filterByWeek = (data: BarData[]) => {
     const today = new Date();
     const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-
     return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= startOfWeek && itemDate <= endOfWeek;
-
+      const itemDate = new Date(item.t);
+      return itemDate >= startOfWeek && itemDate <= today;
     });
+  };
 
-};
-
-
-const filterByMonth = (data: BarData[]) => {
+  const filterByMonth = (data: BarData[]) => {
     const today = new Date();
-    const startOfPeriod = new Date(today.getFullYear(), today.getMonth() , today.getDate() - 30);
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30);
     return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+      const itemDate = new Date(item.t);
+      return itemDate >= startOfPeriod && itemDate <= today;
     });
-};
+  };
 
-const filterBy3Months = (data: BarData[]) => {
+  const filterBy3Months = (data: BarData[]) => {
     const today = new Date();
-    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 90); // 90 days ago
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Yesterday
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 90);
     return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+      const itemDate = new Date(item.t);
+      return itemDate >= startOfPeriod && itemDate <= today;
     });
-};
+  };
 
-const filterBy6Months = (data: BarData[]) => {
+  const filterBy6Months = (data: BarData[]) => {
     const today = new Date();
-    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 180); // 180 days ago
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Yesterday
+    const startOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 180);
     return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+      const itemDate = new Date(item.t);
+      return itemDate >= startOfPeriod && itemDate <= today;
     });
-};
+  };
 
-const filterByYear = (data: BarData[]) => {
+  const filterByYear = (data: BarData[]) => {
     const today = new Date();
     const startOfPeriod = new Date(today);
-    startOfPeriod.setDate(today.getDate() - 365); // Soustrayons 365 jours
-    const endOfPeriod = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); // Hier
+    startOfPeriod.setDate(today.getDate() - 365);
     return data.filter(item => {
-        const itemDate = new Date(item.t);
-        return itemDate >= startOfPeriod && itemDate <= endOfPeriod;
+      const itemDate = new Date(item.t);
+      return itemDate >= startOfPeriod && itemDate <= today;
     });
-};
+  };
 
   const formattedData = filteredData.map(bar => ({
     time: new Date(bar.t).toLocaleDateString(),
@@ -133,13 +132,11 @@ const filterByYear = (data: BarData[]) => {
     }
   };
 
-  const [chartHeight, setChartHeight] = useState(250); // Hauteur initiale
-
   const renderTooltipContent = ({ payload, label }: any) => {
     if (payload && payload.length) {
       const { open, high, low, close, volume } = payload[0].payload;
       return (
-        <div className="custom-tooltip text-dark-purple" style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #ccc' }}>
+        <div className="custom-tooltip text-dark-purple bg-white p-2 border border-gray-300">
           <p>Date: {label}</p>
           <p>Open: {open}</p>
           <p>High: {high}</p>
@@ -152,18 +149,17 @@ const filterByYear = (data: BarData[]) => {
     return null;
   };
 
-  // Animation for the entire chart container
   const props = useSpring({ opacity: 1, from: { opacity: 0 }, config: { duration: 1000 } });
 
   return (
     <animated.div style={props}>
-      <div className='text-right mr-4 '>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('day')}>1D</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('week')}>1W</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('month')}>1M</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('3 months')}>3M</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('6 months')}>6M</button>
-        <button className='text-white gap-4 ml-1 p-4 rounded-lg mb-4' onClick={() => setFilterSelection('year')}>Year</button>
+      <div className='flex flex-wrap justify-end gap-2 mr-4'>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('day')}>1D</button>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('week')}>1W</button>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('month')}>1M</button>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('3 months')}>3M</button>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('6 months')}>6M</button>
+        <button className='bg-gray-800 text-white px-4 py-2 rounded-lg mb-2 hover:bg-gray-700 sm:px-3 sm:py-1.5 md:px-2 md:py-1 lg:px-1.5 lg:py-1' onClick={() => setFilterSelection('year')}>Year</button>
       </div>
 
       <ResponsiveContainer width="100%" height={chartHeight}>
