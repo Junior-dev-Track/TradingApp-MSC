@@ -254,6 +254,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     };
 
     const investedBalance = totalAssets;
+    console.log("investedBalance", investedBalance);
 
     const historicalBarsRef = useRef<HTMLDivElement>(null);
     const availableFundsRef = useRef<HTMLDivElement>(null);
@@ -309,66 +310,76 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
 
     return (
         <AuthenticatedLayout user={auth?.user}>
-        <Head title="Dashboard" />
-        <div className="mb-10 mt-10">
-            <PortfolioSummary
-                totalBalance={totalBalance}
-                availableBalance={availableFunds}
-                investedBalance={investedBalance}
-            />
-        </div>
-
-        <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/6 flex justify-center order-last md:order-first mt-4 md:mt-0">
-                <Icons
-                    onAppStoreClick={scrollToHistoricalBars}
-                    onFundClick={scrollToAvailableFunds}
-                    onAssetsClick={scrollToAssets}
-                    onFavoritesClick={scrollToFavorites}
+            <Head title="Dashboard" />
+            <div className="mb-10 mt-10">
+                <PortfolioSummary
+                    totalBalance={totalBalance}
+                    availableBalance={availableFunds}
+                    investedBalance={investedBalance}
                 />
             </div>
-            <div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    {/* First section - HistoricalBars */}
-                    <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow mb-4 md:mb-0">
-                        <div
-                            className={`${
-                                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
-                            }`}
-                            ref={historicalBarsRef}
-                            style={{ minHeight: "450px" }}
-                        >
-                            <HistoricalBars
-                                onAddFavorite={addFavorite}
-                                onAddPurchase={addPurchase}
-                                onSearch={(symbol: string) => handleSearchChange(symbol)}
-                                selectedSymbol={selectedSymbol}
-                            />
-                        </div>
-                    </div>
 
-                    {/* Second section - Available Funds */}
-
-                    <div className="space-y-4 col-span-1 bg-gray-700 p-3 rounded-lg shadow">
-                        <div
-                            className={`${
-                                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
-                            }`}
-                            ref={availableFundsRef}
-                            style={{ height: "100px" }}
-                        >
-                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Available Funds</h2>
-                            <div className="text-white text-lg font-bold">${availableFunds.toFixed(2)}</div>
-
-                            <div className="text-white text-lg">
-                                {netGainLoss >= 0
-                                    ? `Profit: $${netGainLoss.toFixed(2)}`
-                                    : `Loss: $${Math.abs(netGainLoss).toFixed(
-                                          2
-                                      )}`}
+            <div className="flex flex-col md:flex-row">
+                <div className="md:w-1/6 flex justify-center order-last md:order-first mt-4 md:mt-0">
+                    <Icons
+                        onAppStoreClick={scrollToHistoricalBars}
+                        onFundClick={scrollToAvailableFunds}
+                        onAssetsClick={scrollToAssets}
+                        onFavoritesClick={scrollToFavorites}
+                    />
+                </div>
+                <div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        {/* First section - HistoricalBars */}
+                        <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow mb-4 md:mb-0">
+                            <div
+                                className={`${
+                                    activeSection === "historicalBars"
+                                        ? "border-4 border-blue-500"
+                                        : ""
+                                }`}
+                                ref={historicalBarsRef}
+                                style={{ minHeight: "450px" }}
+                            >
+                                <HistoricalBars
+                                    onAddFavorite={addFavorite}
+                                    onAddPurchase={addPurchase}
+                                    onSearch={(symbol: string) =>
+                                        handleSearchChange(symbol)
+                                    }
+                                    selectedSymbol={selectedSymbol}
+                                />
                             </div>
                         </div>
-                    </div>
+
+                        {/* Second section - Available Funds */}
+
+                        <div className="space-y-4 col-span-1 bg-gray-700 p-3 rounded-lg shadow">
+                            <div
+                                className={`${
+                                    activeSection === "availableFunds"
+                                        ? "border-4 border-blue-500"
+                                        : ""
+                                }`}
+                                ref={availableFundsRef}
+                                style={{ height: "100px" }}
+                            >
+                                <h2 className="text-white text-lg mt-2 ml-2">
+                                    Available Funds
+                                </h2>
+                                <div className="text-violet text-lg font-bold ml-2">
+                                    ${availableFunds.toFixed(2)}
+                                </div>
+
+                                <div className="text-white text-lg ml-2">
+                                    {netGainLoss >= 0
+                                        ? `Profit: $${netGainLoss.toFixed(2)}`
+                                        : `Loss: $${Math.abs(
+                                              netGainLoss
+                                          ).toFixed(2)}`}
+                                </div>
+                            </div>
+                        </div>
 
                   {/* Third section - Favorites */}
 <div className="col-span-1 md:col-span-2 bg-gray-700 p-4 rounded-lg shadow">
