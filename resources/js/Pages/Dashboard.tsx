@@ -387,7 +387,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                         <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
                                             {symbol}
                                         </button>
-                                        <button className="text-white p-2 rounded mr-5" onClick={() => removeFavorite(symbol)}>
+                                        <button className="text-white p-2 rounded mr-4" onClick={() => removeFavorite(symbol)}>
                                             <FaTrash /> {/* Use trash icon */}
                                         </button>
                                     </li>
@@ -411,7 +411,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                     const currentPrice = currentPrices[asset.symbol] ?? asset.price;
                                     const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
                                     return (
-                                        <li key={index} className="text-white flex justify-between items-center ml-2 mr-5">
+                                        <li key={index} className="text-white flex justify-between items-center ml-2 mr-4">
                                             <span>
                                                 {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
                                             </span>
