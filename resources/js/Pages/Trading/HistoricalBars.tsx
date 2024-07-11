@@ -172,7 +172,7 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                             <FaHeart className="mr-2" /> Add to Favorites
                         </button>
                         <button
-                            className="bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                            className="hover:bg-gray-500 text-white p-2 rounded hover:bg-green-600"
                             onClick={handleBuyClick}
                         >
                             Buy
@@ -185,41 +185,43 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
                 </div>
             )}
 
-            {showPopup && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-4 rounded shadow-lg">
-                        <h2 className="text-black">Confirm Purchase</h2>
-                        <div className="mt-2">
-                            <label className="text-black">Quantity:</label>
-                            <input
-                                type="number"
-                                value={formData.quantity}
-                                onChange={handleQuantityChange}
-                                className="ml-2 p-1 border rounded text-dark-purple"
-                                min="1"
-                            />
-                        </div>
-                        <div className="mt-2 text-black">
-                            Total Price: ${formData.totalPrice.toFixed(2)}
-                        </div>
-                        <div className="mt-4 flex justify-end">
-                            <button
-                                className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
-                                onClick={handleConfirmPurchase}
-                                disabled={processing}
-                            >
-                                Confirm
-                            </button>
-                            <button
-                                className="bg-red-500 text-dark-purple p-2 rounded"
-                                onClick={handleCancelPurchase}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+{showPopup && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-lg sm:text-xl font-semibold text-darker-blue mb-4">Confirm Purchase</h2>
+            <div className="mt-2">
+                <label className="text-dark-blue text-lg">Quantity:</label>
+                <input
+                    type="number"
+                    value={formData.quantity}
+                    onChange={handleQuantityChange}
+                    className="ml-2 p-2 border rounded text-dark-purple w-full appearance-none"
+                    min="1"
+                />
+            </div>
+            <div className="mt-2 text-dark-gray text-lg">
+                Total Price: <span className={formData.totalPrice < 1000 ? 'text-violet' : 'text-vert'}>${formData.totalPrice.toFixed(2)}</span>
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+                <button
+                    className="bg-dark-purple text-white p-2 rounded-lg"
+                    onClick={handleConfirmPurchase}
+                    disabled={processing}
+                >
+                    Confirm
+                </button>
+                <button
+                    className="bg-red-500 text-dark-purple p-2 rounded-lg hover:bg-red"
+                    onClick={handleCancelPurchase}
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+)}
+
+
         </div>
     );
 };

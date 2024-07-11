@@ -81,9 +81,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
         setNetGainLoss(currentNetGainLoss);
     };
 
-    const handleBuyClick = () => {
-        // Logic for buy click (if needed)
-    };
+
 
     const handleConfirmSell = async () => {
         try {
@@ -372,105 +370,107 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                         </div>
                     </div>
 
-                    {/* Third section - Favorites */}
-                    <div className="col-span-1 md:col-span-2 bg-gray-700 p-4 rounded-lg shadow">
-                        <div
-                            className={`h-30 overflow-y-scroll ${
-                                activeSection === "favorites" ? "border-4 border-blue-500" : ""
-                            }`}
-                            ref={favoritesRef}
-                            style={{ height: "100px", maxHeight: "100px" }}
-                        >
-                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">
-                            <FaHeart className="mr-2" /> Favorites
-                            </h2>
-                            <ul>
-                                {favorites.map((symbol, index) => (
-                                    <li key={index} className="text-white flex justify-between">
-                                        <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
-                                            {symbol}
-                                        </button>
-                                        <button className="text-white p-2 rounded" onClick={() => removeFavorite(symbol)}>
-                                            <FaTrash /> {/* Use trash icon */}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                  {/* Third section - Favorites */}
+<div className="col-span-1 md:col-span-2 bg-gray-700 p-4 rounded-lg shadow">
+    <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">
+        <FaHeart className="mr-2" /> Favorites
+    </h2>
+    <div
+        className={`h-30 overflow-y-scroll bg-darker-blue rounded-lg p-2 ${
+            activeSection === "favorites" ? "border-4 border-blue-500" : ""
+        }`}
+        ref={favoritesRef}
+        style={{ height: "100px", maxHeight: "100px" }}
+    >
+        <ul>
+            {favorites.map((symbol, index) => (
+                <li key={index} className="text-white flex justify-between">
+                    <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
+                        {symbol}
+                    </button>
+                    <button className="text-white p-2 rounded" onClick={() => removeFavorite(symbol)}>
+                        <FaTrash /> {/* Use trash icon */}
+                    </button>
+                </li>
+            ))}
+        </ul>
+    </div>
+</div>
 
-                    {/* Fourth section - Assets */}
-                    <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow">
-                        <div
-                            className={`overflow-y-scroll ${
-                                activeSection === "assets" ? "border-4 border-blue-500" : ""
-                            }`}
-                            ref={assetsRef}
-                            style={{ height: "150px", maxHeight: "150px" }}
-                        >
-                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Assets</h2>
-                            <ul>
-                                {purchased.map((asset, index) => {
-                                    const currentPrice = currentPrices[asset.symbol] ?? asset.price;
-                                    const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
-                                    return (
-                                        <li key={index} className="text-white flex justify-between items-center">
-                                            <span>
-                                                {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
-                                            </span>
-                                            <span>
-                                                Total: ${asset.totalPrice !== undefined ? asset.totalPrice.toFixed(2) : 'N/A'}
-                                            </span>
 
-                                            <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
-                                                {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
-                                            </span>
-                                            <button className="hover:bg-gray-600  p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
-                                                Sell
-                                            </button>
-                                        </li>
-                                    );
-                                })}
-                                {/* Popup for selling */}
-                                {showPopup && (
-                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                                        <div className="bg-white p-4 rounded shadow-lg">
-                                            <h2 className="text-black">Confirm Sell</h2>
-                                            <div className="mt-2">
-                                                <label className="text-black">Quantity:</label>
-                                                <input
-                                                    type="number"
-                                                    value={formData.quantity}
-                                                    onChange={handleQuantityChange}
-                                                    className="ml-2 p-1 border rounded text-dark-purple"
-                                                    min="0"
-                                                />
-                                            </div>
-                                            <div className="mt-2 text-black">
-                                                Total Price: ${formData.totalPrice.toFixed(2)}
-                                            </div>
-                                            <div className="mt-4 flex justify-end">
-                                                <button
-                                                    className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
-                                                    onClick={handleConfirmSell}
-                                                    disabled={processing}
-                                                >
-                                                    Confirm
-                                                </button>
-                                                <button
-                                                    className="bg-red-500 text-dark-purple p-2 rounded"
-                                                    onClick={handleCancelSell}
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </ul>
-                        </div>
+        {/* Fourth section - Assets */}
+<div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow">
+    <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Assets</h2>
+    <div
+        className={`overflow-y-scroll bg-dark-purple ${
+            activeSection === "assets" ? "border-4 border-blue-500" : ""
+        }`}
+        ref={assetsRef}
+        style={{ height: "100px", maxHeight: "100px" }}
+    >
+        <ul>
+            {purchased.map((asset, index) => {
+                const currentPrice = currentPrices[asset.symbol] ?? asset.price;
+                const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
+                return (
+                    <li key={index} className="text-white flex justify-between items-center">
+                        <span>
+                            {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
+                        </span>
+                        <span>
+                            Total: ${asset.totalPrice !== undefined ? asset.totalPrice.toFixed(2) : 'N/A'}
+                        </span>
 
-                    </div>
+                        <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
+                            {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
+                        </span>
+                        <button className="hover:bg-gray-600 p-1 rounded" onClick={() => sellAsset(asset.symbol)}>
+                            Sell
+                        </button>
+                    </li>
+                );
+            })}
+        </ul>
+    </div>
+    {/* Popup for selling */}
+    {showPopup && (
+        <div className="fixed inset-0  bg-black bg-opacity-50 flex justify-center items-center p-4">
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-lg sm:text-xl font-semibold text-darker-blue mb-4">Confirm Sell</h2>
+                <div className="mt-2">
+                    <label className="text-dark-blue text-lg">Quantity:</label>
+                    <input
+                        type="number"
+                        value={formData.quantity}
+                        onChange={handleQuantityChange}
+                        className="ml-2 p-2 border rounded text-dark-purple w-full appearance-none"
+                        min="0"
+                    />
+                </div>
+                <div className="mt-2 text-dark-gray text-lg">
+                    Total Price: <span className={formData.totalPrice < 1000 ? 'text-violet' : 'text-vert'}>${formData.totalPrice.toFixed(2)}</span>
+                </div>
+                <div className="mt-4 flex justify-end space-x-2">
+                    <button
+                        className="bg-dark-purple text-white p-2 rounded-lg"
+                        onClick={handleConfirmSell}
+                        disabled={processing}
+                    >
+                        Confirm
+                    </button>
+                    <button
+                        className="bg-red-500 text-dark-purple p-2 rounded-lg hover:bg-red"
+                        onClick={handleCancelSell}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    )}
+</div>
+
+
                 </div>
             </div>
         </div>
