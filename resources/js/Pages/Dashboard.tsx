@@ -387,7 +387,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
         <FaHeart className="mr-2" /> Favorites
     </h2>
     <div
-        className={`h-30 overflow-y-scroll bg-darker-blue rounded-lg p-2 ${
+        className={`h-30 overflow-y-scroll  rounded-lg p-2 ${
             activeSection === "favorites" ? "border-4 border-blue-500" : ""
         }`}
         ref={favoritesRef}
@@ -413,7 +413,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
 <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow">
     <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Assets</h2>
     <div
-        className={`overflow-y-scroll bg-dark-purple ${
+        className={`overflow-y-scroll  ${
             activeSection === "assets" ? "border-4 border-blue-500" : ""
         }`}
         ref={assetsRef}
