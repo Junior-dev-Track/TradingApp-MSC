@@ -13,7 +13,7 @@ import HistoricalBars from "./Trading/HistoricalBars";
 import { BarData } from "@/types/types";
 import { User } from "@/types";
 import { MdOutlineRefresh } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaHeart } from "react-icons/fa";
 
 interface PageProps {
     auth?: {
@@ -308,65 +308,58 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
 
     return (
         <AuthenticatedLayout user={auth?.user}>
-            <Head title="Dashboard" />
-            <div className="mb-10 mt-10">
-                <PortfolioSummary
-                    totalBalance={totalBalance}
-                    availableBalance={availableFunds}
-                    investedBalance={investedBalance}
-                />
-            </div>
-
-            <div className="flex">
-                <div className="w-1/6 flex justify-center">
-                    <Icons
-                        onAppStoreClick={scrollToHistoricalBars}
-                        onFundClick={scrollToAvailableFunds}
-                        onAssetsClick={scrollToAssets}
-                        onFavoritesClick={scrollToFavorites}
-                    />
-       </div>
-<div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div
-            className={`col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow ${
-                activeSection === "historicalBars"
-                    ? "border-4 border-blue-500"
-                    : ""
-            }`}
-            ref={historicalBarsRef}
-            // Utilisation de classes responsives Tailwind pour définir la largeur
-
-            style={{ minHeight: "500px" }} // Ajustez selon vos besoins
-        >
-            <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-                onSearch={(symbol: string) =>
-                    handleSearchChange(symbol)
-                }
-                selectedSymbol={selectedSymbol}
+        <Head title="Dashboard" />
+        <div className="mb-10 mt-10">
+            <PortfolioSummary
+                totalBalance={totalBalance}
+                availableBalance={availableFunds}
+                investedBalance={investedBalance}
             />
         </div>
 
-
-
+        <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/6 flex justify-center order-last md:order-first mt-4 md:mt-0">
+                <Icons
+                    onAppStoreClick={scrollToHistoricalBars}
+                    onFundClick={scrollToAvailableFunds}
+                    onAssetsClick={scrollToAssets}
+                    onFavoritesClick={scrollToFavorites}
+                />
+            </div>
+            <div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    {/* First section - HistoricalBars */}
+                    <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow mb-4 md:mb-0">
                         <div
-                            className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
-                                activeSection === "availableFunds"
-                                    ? "border-4 border-blue-500"
-                                    : ""
+                            className={`${
+                                activeSection === "historicalBars" ? "border-4 border-blue-500" : ""
+                            }`}
+                            ref={historicalBarsRef}
+                            style={{ minHeight: "450px" }}
+                        >
+                            <HistoricalBars
+                                onAddFavorite={addFavorite}
+                                onAddPurchase={addPurchase}
+                                onSearch={(symbol: string) => handleSearchChange(symbol)}
+                                selectedSymbol={selectedSymbol}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Second section - Available Funds */}
+
+                    <div className="space-y-4 col-span-1 bg-gray-700 p-3 rounded-lg shadow">
+                        <div
+                            className={`${
+                                activeSection === "availableFunds" ? "border-4 border-blue-500" : ""
                             }`}
                             ref={availableFundsRef}
                             style={{ height: "100px" }}
                         >
-                            <h2 className="text-white text-lg">
-                                Available Funds
-                            </h2>
-                            <div className="text-white">
-                                ${availableFunds.toFixed(2)}
-                            </div>
-                            <div className="text-white">
+                            <h2 className="text-white text-lg">Available Funds</h2>
+                            <div className="text-white text-lg font-bold">${availableFunds.toFixed(2)}</div>
+
+                            <div className="text-white text-lg">
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
                                     : `Loss: $${Math.abs(netGainLoss).toFixed(
@@ -374,165 +367,111 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                       )}`}
                             </div>
                         </div>
+                    </div>
+
+                    {/* Third section - Favorites */}
+                    <div className="col-span-1 md:col-span-2 bg-gray-700 p-4 rounded-lg shadow">
                         <div
-                            className={`bg-gray-700 p-3 rounded-lg shadow h-30 overflow-y-scroll col-span-2 ${
-                                activeSection === "favorites"
-                                    ? "border-4 border-blue-500"
-                                    : ""
+                            className={`h-30 overflow-y-scroll ${
+                                activeSection === "favorites" ? "border-4 border-blue-500" : ""
                             }`}
                             ref={favoritesRef}
-                            style={{ maxHeight: "150px", overflowY: "scroll" }}
+                            style={{ height: "100px", maxHeight: "100px" }}
                         >
-                            <div className="">
-                                <h2 className="text-white text-lg">
-                                    Favorites
-                                </h2>
-                                <ul>
-                                    {favorites.map((symbol, index) => (
-                                        <li
-                                            key={index}
-                                            className="text-red flex justify-between"
-                                        >
-                                            <button
-                                                className="text-white"
-                                                onClick={() =>
-                                                    handleFavoriteClick(symbol)
-                                                }
-                                            >
-                                                {symbol}
-                                            </button>
-                                            <button
-                                                className="text-white p-2 rounded"
-                                                onClick={() =>
-                                                    removeFavorite(symbol)
-                                                }
-                                            >
-                                                <FaTrash />{" "}
-                                                {/* Utiliser l'icône de poubelle */}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">
+                            <FaHeart className="mr-2" /> Favorites
+                            </h2>
+                            <ul>
+                                {favorites.map((symbol, index) => (
+                                    <li key={index} className="text-white flex justify-between">
+                                        <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
+                                            {symbol}
+                                        </button>
+                                        <button className="text-white p-2 rounded" onClick={() => removeFavorite(symbol)}>
+                                            <FaTrash /> {/* Use trash icon */}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
+                    </div>
+
+                    {/* Fourth section - Assets */}
+                    <div className="col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow">
                         <div
-                            className={`bg-gray-700 p-3 rounded-lg shadow overflow-y-scroll col-span-3 mb-2 ${
-                                activeSection === "assets"
-                                    ? "border-4 border-blue-500"
-                                    : ""
+                            className={`overflow-y-scroll ${
+                                activeSection === "assets" ? "border-4 border-blue-500" : ""
                             }`}
                             ref={assetsRef}
-                            style={{ maxHeight: "150px", overflowY: "scroll" }}
+                            style={{ height: "150px", maxHeight: "150px" }}
                         >
-                            <div className="scrollbar">
-                                <h2 className="text-white text-lg">Assets</h2>
-                                <ul>
-                                    {purchased.map((asset, index) => {
-                                        const currentPrice =
-                                            currentPrices[asset.symbol] ??
-                                            asset.price;
-                                        const gainOrLoss =
-                                            (currentPrice - asset.price) *
-                                            (asset.quantity ?? 0);
-                                        return (
-                                            <li
-                                                key={index}
-                                                className="text-white flex justify-between items-center"
-                                            >
-                                                <span>
-                                                    {asset.symbol} -{" "}
-                                                    {asset.quantity} Shares @ $
-                                                    {asset.price.toFixed(2)}{" "}
-                                                    each
-                                                </span>
-                                                <span>
-                                                    Total: $
-                                                    {(
-                                                        asset.totalPrice || 0
-                                                    ).toFixed(2)}
-                                                </span>
-                                                <span
-                                                    className={`text-${
-                                                        gainOrLoss >= 0
-                                                            ? "green"
-                                                            : "red"
-                                                    }-500`}
-                                                >
-                                                    {gainOrLoss >= 0
-                                                        ? `+${gainOrLoss.toFixed(
-                                                              2
-                                                          )}`
-                                                        : `${gainOrLoss.toFixed(
-                                                              2
-                                                          )}`}
-                                                </span>
+                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Assets</h2>
+                            <ul>
+                                {purchased.map((asset, index) => {
+                                    const currentPrice = currentPrices[asset.symbol] ?? asset.price;
+                                    const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
+                                    return (
+                                        <li key={index} className="text-white flex justify-between items-center">
+                                            <span>
+                                                {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
+                                            </span>
+                                            <span>
+                                                Total: ${asset.totalPrice !== undefined ? asset.totalPrice.toFixed(2) : 'N/A'}
+                                            </span>
+
+                                            <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
+                                                {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
+                                            </span>
+                                            <button className="hoover-bg-vert p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
+                                                Sell
+                                            </button>
+                                        </li>
+                                    );
+                                })}
+                                {/* Popup for selling */}
+                                {showPopup && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                                        <div className="bg-white p-4 rounded shadow-lg">
+                                            <h2 className="text-black">Confirm Sell</h2>
+                                            <div className="mt-2">
+                                                <label className="text-black">Quantity:</label>
+                                                <input
+                                                    type="number"
+                                                    value={formData.quantity}
+                                                    onChange={handleQuantityChange}
+                                                    className="ml-2 p-1 border rounded text-dark-purple"
+                                                    min="0"
+                                                />
+                                            </div>
+                                            <div className="mt-2 text-black">
+                                                Total Price: ${formData.totalPrice.toFixed(2)}
+                                            </div>
+                                            <div className="mt-4 flex justify-end">
                                                 <button
-                                                    className="bg-red-500 p-2 rounded"
-                                                    onClick={() =>
-                                                        sellAsset(asset.symbol)
-                                                    }
+                                                    className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
+                                                    onClick={handleConfirmSell}
+                                                    disabled={processing}
                                                 >
-                                                    Sell
+                                                    Confirm
                                                 </button>
-                                            </li>
-                                        );
-                                    })}
-                                    {showPopup && (
-                                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                                            <div className="bg-white p-4 rounded shadow-lg">
-                                                <h2 className="text-black">
-                                                    Confirm Sell
-                                                </h2>
-                                                <div className="mt-2">
-                                                    <label className="text-black">
-                                                        Quantity:
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        value={
-                                                            formData.quantity
-                                                        }
-                                                        onChange={
-                                                            handleQuantityChange
-                                                        }
-                                                        className="ml-2 p-1 border rounded text-dark-purple"
-                                                        min="1"
-                                                    />
-                                                </div>
-                                                <div className="mt-2 text-black">
-                                                    Total Price: $
-                                                    {formData.totalPrice.toFixed(
-                                                        2
-                                                    )}
-                                                </div>
-                                                <div className="mt-4 flex justify-end">
-                                                    <button
-                                                        className="bg-blue-500 text-dark-purple p-2 rounded mr-2"
-                                                        onClick={
-                                                            handleConfirmSell
-                                                        }
-                                                        disabled={processing}
-                                                    >
-                                                        Confirm
-                                                    </button>
-                                                    <button
-                                                        className="bg-red-500 text-dark-purple p-2 rounded"
-                                                        onClick={
-                                                            handleCancelSell
-                                                        }
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                </div>
+                                                <button
+                                                    className="bg-red-500 text-dark-purple p-2 rounded"
+                                                    onClick={handleCancelSell}
+                                                >
+                                                    Cancel
+                                                </button>
                                             </div>
                                         </div>
-                                    )}
-                                </ul>
-                            </div>
+                                    </div>
+                                )}
+                            </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </div>
+    </AuthenticatedLayout>
+
     );
 }

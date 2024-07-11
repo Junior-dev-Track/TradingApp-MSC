@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 import { Link } from "@inertiajs/react";
 
+
 interface AlertsManagerProps {
     executeOrder: boolean;
     priceAlerts: { symbol: string; targetPrice: number }[];

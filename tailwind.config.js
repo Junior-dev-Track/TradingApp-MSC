@@ -12,8 +12,15 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                'xs': '320px', 
+                '2xl': '1440px',
+              },
+              spacing: {
+                '18': '4.5rem',
+              },
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ['Arial', 'sans-serif'],
             },
             colors: {
                 "dark-purple": "#0e0b1d",
@@ -31,6 +38,8 @@ export default {
                 'green': "#00ff00",
                 'violet': "#8884d8",
                 'vert': "#82ca9d",
+                'brand-blue': '#007ace',
+                'brand-red': '#ff4136',
             },
         },
 
