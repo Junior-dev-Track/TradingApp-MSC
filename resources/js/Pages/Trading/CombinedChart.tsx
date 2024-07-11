@@ -136,11 +136,11 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
     if (payload && payload.length) {
       const { open, high, low, close, volume } = payload[0].payload;
       return (
-        <div className="custom-tooltip text-dark-purple bg-white p-2 border border-gray-300 ">
-           <p className='text-dark-blue'>{label}</p>
-          <p>Open: <>{open}</></p>
-          <p>High: <>{high}</></p>
-          <p>Low:<>{low}</></p>
+        <div className="p-2 text-dark-purple bg-white border border-gray-300 shadow-md">
+          <p className='text-blue-800'>{label}</p>
+          <p>Open: {open}</p>
+          <p>High: {high}</p>
+          <p>Low: {low}</p>
           <p>Close: {close}</p>
           <p>Volume: {formatNumber(volume)}</p>
         </div>
@@ -148,6 +148,7 @@ const CombinedChart: React.FC<CombinedChartProps> = ({ data }) => {
     }
     return null;
   };
+
 
   const props = useSpring({ opacity: 1, from: { opacity: 0 }, config: { duration: 1000 } });
 
