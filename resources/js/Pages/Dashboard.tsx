@@ -358,7 +358,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             <div
                                 className={`${
                                     activeSection === "availableFunds"
-                                        ? "border-4 border-blue-500"
+                                        ? "border-2 border-vert"
                                         : ""
                                 }`}
                                 ref={availableFundsRef}
@@ -395,11 +395,11 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
     >
         <ul>
             {favorites.map((symbol, index) => (
-                <li key={index} className="text-white flex justify-between">
+                <li key={index} className="text-white flex justify-between ml-2">
                     <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
                         {symbol}
                     </button>
-                    <button className="text-white p-2 rounded" onClick={() => removeFavorite(symbol)}>
+                    <button className="text-white p-2 rounded mr-4" onClick={() => removeFavorite(symbol)}>
                         <FaTrash /> {/* Use trash icon */}
                     </button>
                 </li>
@@ -424,7 +424,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                 const currentPrice = currentPrices[asset.symbol] ?? asset.price;
                 const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
                 return (
-                    <li key={index} className="text-white flex justify-between items-center">
+                    <li key={index} className="text-white flex justify-between items-center ml-2 mr-4">
                         <span>
                             {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
                         </span>
