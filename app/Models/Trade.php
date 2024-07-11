@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Services\APIFetch;
+use Illuminate\Database\Eloquent\Collection;
 
 class Trade extends Model
 {
@@ -35,7 +34,7 @@ class Trade extends Model
     }
 
 
-    public static function getOpenTrades($profileId)
+    public static function getOpenTrades($profileId): Collection
     {
         return self::where('profile_id', $profileId)->where('open', true)->get();
     }
