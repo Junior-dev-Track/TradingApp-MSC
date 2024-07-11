@@ -118,6 +118,13 @@ export default function Authenticated({
                         Dashboard
                     </NavLink>
                     <NavLink
+                                className=""
+                                href={route("wires")}
+                                active={route().current("wires")}
+                            >
+                                Wires
+                            </NavLink>
+                    <NavLink
                         className="block"
                         href={route("guide")}
                         active={route().current("guide")}
