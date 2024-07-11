@@ -359,7 +359,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             ref={availableFundsRef}
                             style={{ height: "100px" }}
                         >
-                            <h2 className="text-white text-lg">Available Funds</h2>
+                            <h2 className="text-white p-2 rounded hover:bg-gray-600 flex items-center">Available Funds</h2>
                             <div className="text-white text-lg font-bold">${availableFunds.toFixed(2)}</div>
 
                             <div className="text-white text-lg">
@@ -425,7 +425,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                             <span className={`text-${gainOrLoss >= 0 ? "green" : "red"}-500`}>
                                                 {gainOrLoss >= 0 ? `+${gainOrLoss.toFixed(2)}` : `${gainOrLoss.toFixed(2)}`}
                                             </span>
-                                            <button className="hoover-bg-vert p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
+                                            <button className="hover:bg-gray-600  p-2 rounded" onClick={() => sellAsset(asset.symbol)}>
                                                 Sell
                                             </button>
                                         </li>

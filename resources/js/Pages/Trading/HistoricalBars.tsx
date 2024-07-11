@@ -137,57 +137,53 @@ const HistoricalBars: React.FC<HistoricalBarsProps> = ({
 
     return (
         <div className="text-white">
- <div className="flex items-center justify-between mr-2 sm:mr-10">
-    <div className="flex-grow">
-        <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
-    </div>
-    <button onClick={handleRefresh} className="ml-1 sm:ml-4 flex-shrink-0">
-        <MdOutlineRefresh className="h-5 w-5 sm:h-8 sm:w-8 text-white-500  transition-colors duration-300" />
-    </button>
-</div>
+            <div className="flex items-center justify-between mr-2 sm:mr-10">
+                <div className="flex-grow">
+                    <SearchBar onSearch={handleSearch} allSymbols={allSymbols} />
+                </div>
+                <button onClick={handleRefresh} className="ml-1 sm:ml-4 flex-shrink-0 sm:block hidden">
+                    <MdOutlineRefresh className="h-5 w-5 sm:h-8 sm:w-8 text-white-500  transition-colors duration-300" />
+                </button>
+            </div>
 
+            {filteredData.length > 0 ? (
+                <div>
+                    <div className="flex justify-center w-full">
+                        <span className="text-black p-2 sm:p-3 md:p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4 text-sm sm:text-base md:text-lg">
+                            {filteredData[0].symbol}
+                        </span>
+                    </div>
 
-
-{filteredData.length > 0 ? (
-    <div>
-       <div className="flex justify-center w-full"> {/* Conteneur Flex pour centrer le span */}
-    <span className="text-black p-2 sm:p-3 md:p-4 border border-gray-300 bg-gray-50 rounded-lg mb-4 text-sm sm:text-base md:text-lg">
-        {filteredData[0].symbol}
-    </span>
-</div>
-
-        <CombinedChart
-            data={filteredData.map((entry) => ({
-                t: entry.t!,
-                o: entry.o!,
-                h: entry.h!,
-                l: entry.l!,
-                c: entry.c!,
-                v: entry.v!,
-            }))}
-        />
-        <div className="mt-4 flex justify-start items-center space-x-2">
-            <button
-                className="bg-darker-blue text-white p-2 rounded hover:bg-gray-600 flex items-center"
-                onClick={() => onAddFavorite(filteredData[0].symbol)}
-            >
-                <FaHeart className="mr-2" /> Add to Favorites
-            </button>
-            <button
-                className="bg-green-500 text-white p-2 rounded hover:bg-green-600"
-                onClick={handleBuyClick}
-            >
-                Buy
-            </button>
-        </div>
-    </div>
-) : (
-    <div className="text-center">
-        Aucune donnée historique disponible pour ce symbole.
-    </div>
-)}
-
-
+                    <CombinedChart
+                        data={filteredData.map((entry) => ({
+                            t: entry.t!,
+                            o: entry.o!,
+                            h: entry.h!,
+                            l: entry.l!,
+                            c: entry.c!,
+                            v: entry.v!,
+                        }))}
+                    />
+                    <div className="mt-4 flex justify-start items-center space-x-2">
+                        <button
+                            className="bg-darker-blue text-white p-2 rounded hover:bg-gray-600 flex items-center"
+                            onClick={() => onAddFavorite(filteredData[0].symbol)}
+                        >
+                            <FaHeart className="mr-2" /> Add to Favorites
+                        </button>
+                        <button
+                            className="bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                            onClick={handleBuyClick}
+                        >
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="text-center">
+                    Aucune donnée historique disponible pour ce symbole.
+                </div>
+            )}
 
             {showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
