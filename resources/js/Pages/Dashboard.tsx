@@ -21,6 +21,7 @@ interface PageProps {
     };
     wallet: number;
     totalAssets: number;
+    openTrades: any[];
 }
 
 interface Bar {
@@ -38,7 +39,12 @@ interface Notification {
     timestamp: Date;
 }
 
-export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
+export default function Dashboard({
+    auth,
+    wallet,
+    totalAssets,
+    openTrades,
+}: PageProps) {
     const [favorites, setFavorites] = useState<string[]>(() => {
         const savedFavorites = localStorage.getItem("favorites");
         return savedFavorites ? JSON.parse(savedFavorites) : [];
@@ -328,31 +334,29 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                         onAssetsClick={scrollToAssets}
                         onFavoritesClick={scrollToFavorites}
                     />
-       </div>
-<div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div
-            className={`col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow ${
-                activeSection === "historicalBars"
-                    ? "border-4 border-blue-500"
-                    : ""
-            }`}
-            ref={historicalBarsRef}
-            // Utilisation de classes responsives Tailwind pour définir la largeur
+                </div>
+                <div className="w-full md:w-4/5 py-1 p-1 md:mr-16">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div
+                            className={`col-span-1 md:col-span-3 bg-gray-700 p-3 rounded-lg shadow ${
+                                activeSection === "historicalBars"
+                                    ? "border-4 border-blue-500"
+                                    : ""
+                            }`}
+                            ref={historicalBarsRef}
+                            // Utilisation de classes responsives Tailwind pour définir la largeur
 
-            style={{ minHeight: "500px" }} // Ajustez selon vos besoins
-        >
-            <HistoricalBars
-                onAddFavorite={addFavorite}
-                onAddPurchase={addPurchase}
-                onSearch={(symbol: string) =>
-                    handleSearchChange(symbol)
-                }
-                selectedSymbol={selectedSymbol}
-            />
-        </div>
-
-
+                            style={{ minHeight: "500px" }} // Ajustez selon vos besoins
+                        >
+                            <HistoricalBars
+                                onAddFavorite={addFavorite}
+                                onAddPurchase={addPurchase}
+                                onSearch={(symbol: string) =>
+                                    handleSearchChange(symbol)
+                                }
+                                selectedSymbol={selectedSymbol}
+                            />
+                        </div>
 
                         <div
                             className={`bg-gray-700 p-3 rounded-lg shadow h-70 overflow-y-auto col-span-1 ${
