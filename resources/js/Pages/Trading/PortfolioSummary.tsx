@@ -19,7 +19,7 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
         <div className="portfolio-summary max-w-4xl mx-auto w-full sm:w-4/5 px-4 sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center md:text-left">Portfolio</h2>
             <div className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-white">
-                <div className=" p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
+                <div className="p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p className="ml-5">Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
                 </div>
                 <div className="p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
