@@ -368,14 +368,14 @@ export default function Dashboard({
                                 ref={availableFundsRef}
                                 style={{ height: "100px" }}
                             >
-                                <h2 className="text-white text-lg">
+                                <h2 className="text-white text-lg mt-2 ml-2">
                                     Available Funds
                                 </h2>
-                                <div className="text-white text-lg font-bold">
+                                <div className="text-violet text-lg font-bold ml-2">
                                     ${availableFunds.toFixed(2)}
                                 </div>
 
-                                <div className="text-white text-lg">
+                                <div className="text-white text-lg ml-2">
                                     {netGainLoss >= 0
                                         ? `Profit: $${netGainLoss.toFixed(2)}`
                                         : `Loss: $${Math.abs(
@@ -403,7 +403,7 @@ export default function Dashboard({
                                     {favorites.map((symbol, index) => (
                                         <li
                                             key={index}
-                                            className="text-white flex justify-between"
+                                            className="text-white flex justify-between ml-2"
                                         >
                                             <button
                                                 className="text-white"
@@ -414,7 +414,7 @@ export default function Dashboard({
                                                 {symbol}
                                             </button>
                                             <button
-                                                className="text-white p-2 rounded"
+                                                className="text-white p-2 rounded mr-5"
                                                 onClick={() =>
                                                     removeFavorite(symbol)
                                                 }
@@ -453,7 +453,7 @@ export default function Dashboard({
                                         return (
                                             <li
                                                 key={index}
-                                                className="text-white flex justify-between items-center"
+                                                className="text-white flex justify-between items-center ml-2 mr-5"
                                             >
                                                 <span>
                                                     {asset.symbol} -{" "}
