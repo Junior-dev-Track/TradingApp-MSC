@@ -22,18 +22,17 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
         const amount = parseFloat(depositAmount);
         if (amount > 0) {
             try {
-                const response = router.post(`/wires/deposit`, {
+                const response = await router.post(`/wires/deposit`, {
                     amount,
                 });
+                setBalance(balance + amount);
                 setDepositAmount("");
                 setStatus("Deposit successful!");
-                router.visit("/wires", {
-                    only: ["wallet"],
-                });
             } catch (error) {
                 setError(
                     "An error occurred while depositing funds. Please try again later."
                 );
+                console.error("Deposit error:", error);
             }
         } else {
             alert("Please enter a positive amount to deposit.");
@@ -45,18 +44,17 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
         if (amount > 0) {
             if (amount <= balance) {
                 try {
-                    const response = router.post(`/wires/withdraw`, {
+                    const response = await router.post(`/wires/withdraw`, {
                         amount,
                     });
+                    setBalance(balance - amount);
                     setWithdrawAmount("");
                     setStatus("Withdrawal successful!");
-                    router.visit("/wires", {
-                        only: ["wallet"],
-                    });
                 } catch (error) {
                     setError(
                         "An error occurred while withdrawing funds. Please try again later."
                     );
+                    console.error("Withdrawal error:", error);
                 }
             } else {
                 alert("Insufficient funds.");
@@ -68,10 +66,10 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
 
     return (
         <AuthenticatedLayout user={auth?.user}>
-            <div className="container mx-auto p-6 max-w-lg bg-white rounded-lg shadow-md">
-                <h2 className="text-2xl font-semibold mb-4">Bank Account</h2>
-                <div className="mb-4">
-                    <strong>Balance: </strong>${balance.toFixed(2)}
+            <div className="container mx-auto p-4 bg-gray-700 rounded-lg shadow-md max-w-6xl">
+                <h2 className="text-2xl text-white font-semibold mb-4">Bank Account</h2>
+                <div className="mb-4 text-white">
+                    <strong >Balance: </strong>${balance.toFixed(2)}
                 </div>
                 <div className="mb-4">
                     <form
@@ -84,7 +82,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             Deposit:
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="depositAmount"
                             value={depositAmount}
                             onChange={(e) => setDepositAmount(e.target.value)}
@@ -92,7 +90,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         />
                         <button
                             type="submit"
-                            className="btn btn-success mt-2  bg-darker-blue mt-4 rounded-lg px-6 py-2 font-semibold text-white ml-2"
+                            className="btn btn-success bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold ml-2 "
                         >
                             Deposit
                         </button>
@@ -109,7 +107,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             Withdraw:
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             id="withdrawAmount"
                             value={withdrawAmount}
                             onChange={(e) => setWithdrawAmount(e.target.value)}
@@ -117,18 +115,18 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         />
                         <button
                             type="submit"
-                            className="btn btn-danger mt-2  bg-darker-blue mt-4 rounded-lg px-6 py-2 font-semibold text-white ml-2"
+                            className="btn btn-danger bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold ml-2 "
                         >
                             Withdraw
                         </button>
                     </form>
                 </div>
                 <div className="mt-6">
-                    <h4 className="text-xl font-semibold mb-4">
+                    <h4 className="text-xl text-white font-semibold mb-4">
                         Payment methods
                     </h4>
                     <form>
-                        <div className="mb-4">
+                        <div className="mb-4 ">
                             <label htmlFor="cardNumber" className="block mb-2">
                                 Card Number
                             </label>
@@ -139,7 +137,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 required
                             />
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 ">
                             <label htmlFor="cardHolder" className="block mb-2">
                                 Cardholder Name
                             </label>
@@ -150,7 +148,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 required
                             />
                         </div>
-                        <div className="flex mb-4">
+                        <div className="flex mb-4 ">
                             <div className="w-1/2 mr-2">
                                 <label
                                     htmlFor="expiryDate"
@@ -177,13 +175,13 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                                 />
                             </div>
                         </div>
-                        <h6 className="text-lg font-semibold mb-4">
+                        <h6 className="text-white text-lg font-semibold mb-4">
                             Billing Address
                         </h6>
                         <div className="mb-4">
                             <label
                                 htmlFor="streetAddress"
-                                className="block mb-2"
+                                className="block mb-2 "
                             >
                                 Street Address
                             </label>
@@ -207,7 +205,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         </div>
                         <div className="flex mb-4">
                             <div className="w-1/2 mr-2">
-                                <label htmlFor="state" className="block mb-2">
+                                <label htmlFor="state" className="block mb-2 ">
                                     State/Province
                                 </label>
                                 <input
@@ -232,7 +230,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         <div className="text-center">
                             <button
                                 type="submit"
-                                className="btn btn-primary bg-darker-blue mt-4 rounded-lg px-6 py-2 font-semibold text-white"
+                                className="btn btn-primary bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold "
                             >
                                 Pay Now
                             </button>
