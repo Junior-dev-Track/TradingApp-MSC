@@ -19,14 +19,14 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
         <div className="portfolio-summary max-w-4xl mx-auto w-full sm:w-4/5 px-4 sm:px-6 lg:px-8 text-white overflow-hidden shadow-sm sm:rounded-lg">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center md:text-left">Portfolio</h2>
             <div className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-white">
-                <div className=" p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
-                    <p className="ml-5">Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
+                <div className=" p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
+                    <p className="ml-4">Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
                 </div>
                 <div className="p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
-                    <p className="ml-5">Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
+                    <p className="ml-2 mt-2">Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
-                    <p className="ml-5">Invested Balance: <span className={getColorClass(investedBalance)}>${investedBalance.toLocaleString()}</span></p>
+                <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
+                    <p className="ml-1">Invested Balance: <span className={getColorClass(investedBalance)}>${investedBalance.toLocaleString()}</span></p>
                 </div>
             </div>
         </div>
