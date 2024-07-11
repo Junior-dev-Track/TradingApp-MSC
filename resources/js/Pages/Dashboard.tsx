@@ -356,10 +356,10 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             ref={availableFundsRef}
                             style={{ height: "100px" }}
                         >
-                            <h2 className="text-white text-lg">Available Funds</h2>
-                            <div className="text-white text-lg font-bold">${availableFunds.toFixed(2)}</div>
+                            <h2 className="text-white text-lg mt-2 ml-2">Available Funds</h2>
+                            <div className="text-violet text-lg font-bold ml-2">${availableFunds.toFixed(2)}</div>
 
-                            <div className="text-white text-lg">
+                            <div className="text-white text-lg ml-2">
                                 {netGainLoss >= 0
                                     ? `Profit: $${netGainLoss.toFixed(2)}`
                                     : `Loss: $${Math.abs(netGainLoss).toFixed(
@@ -383,11 +383,11 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                             </h2>
                             <ul>
                                 {favorites.map((symbol, index) => (
-                                    <li key={index} className="text-white flex justify-between">
+                                    <li key={index} className="text-white flex justify-between ml-2">
                                         <button className="text-white" onClick={() => handleFavoriteClick(symbol)}>
                                             {symbol}
                                         </button>
-                                        <button className="text-white p-2 rounded" onClick={() => removeFavorite(symbol)}>
+                                        <button className="text-white p-2 rounded mr-5" onClick={() => removeFavorite(symbol)}>
                                             <FaTrash /> {/* Use trash icon */}
                                         </button>
                                     </li>
@@ -411,7 +411,7 @@ export default function Dashboard({ auth, wallet, totalAssets }: PageProps) {
                                     const currentPrice = currentPrices[asset.symbol] ?? asset.price;
                                     const gainOrLoss = (currentPrice - asset.price) * (asset.quantity ?? 0);
                                     return (
-                                        <li key={index} className="text-white flex justify-between items-center">
+                                        <li key={index} className="text-white flex justify-between items-center ml-2 mr-5">
                                             <span>
                                                 {asset.symbol} - {asset.quantity} Shares @ ${asset.price.toFixed(2)} each
                                             </span>
