@@ -22,8 +22,8 @@ const PortfolioSummary: React.FC<PortfolioSummaryProps> = ({
                 <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p>Total Balance: <span className={getColorClass(totalBalance)}>${totalBalance.toLocaleString()}</span></p>
                 </div>
-                <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
-                    <p>Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
+                <div className="p-4 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
+                    <p className="mt-2">Available Balance: <span className={getColorClass(availableBalance)}>${availableBalance.toLocaleString()}</span></p>
                 </div>
                 <div className="p-6 border border-gray-300 rounded-lg bg-darker-blue w-full md:w-1/3">
                     <p>Invested Balance: <span className={getColorClass(investedBalance)}>${investedBalance.toLocaleString()}</span></p>
