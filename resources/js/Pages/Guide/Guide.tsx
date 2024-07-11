@@ -5,9 +5,6 @@ import { Link } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 
-
-
-
 interface AuthData {
     user: {
         id: number;
@@ -37,7 +34,6 @@ const Guide: React.FC = () => {
     const faqItems = [
         {
             question: "What is Trading?",
-
             answer: (
                 <>
                     <p>Trading involves buying and selling financial assets to make a profit. These assets can include stocks, currencies (forex), commodities, cryptocurrencies, and more. The goal is to profit from the price fluctuations of these assets.</p>
@@ -111,7 +107,8 @@ const Guide: React.FC = () => {
                 </>
             ),
             toggleIcon: <FaChevronDown />
-        },         {
+        },
+        {
             question: "What is day trading?",
             answer: (
                 <p>Day trading is a style where the trader primarily holds positions for the day, aiming to avoid movements or analyses made
@@ -170,26 +167,26 @@ const Guide: React.FC = () => {
         {
             question: "What is a limit order?",
             answer: (
-                    <p>A limit order is a type of order that allows a trader to buy or sell an asset at a specific price or better.
-                        When a limit order is placed, it remains active until the market reaches the specified price, and the order is then
-                        executed automatically.</p>
+                <p>A limit order is a type of order that allows a trader to buy or sell an asset at a specific price or better.
+                   When a limit order is placed, it remains active until the market reaches the specified price, and the order is then
+                   executed automatically.</p>
             ),
             toggleIcon: <FaChevronDown />
         },
         {
             question: "What is a stop loss?",
             answer: (
-                    <p>
+                <p>
                     A stop-loss is an automatic order that limits the potential losses of an open position. It is placed at a specific price
                     level, and if the market reaches this level, the stop-loss order is executed, closing the position to limit the losses.
-                    </p>
+                </p>
             ),
             toggleIcon: <FaChevronDown />
         },
         {
             question: "What is take-profit?",
             answer: (
-                    <p>
+                <p>
                     A take-profit is an automatic order that closes an open position when the market reaches a predetermined price level,
                     thereby locking in the profits. This allows the trader to exit the position with a gain before the market changes
                     direction.</p>
@@ -197,50 +194,46 @@ const Guide: React.FC = () => {
             toggleIcon: <FaChevronDown />
         }
     ];
-    const getToggleIcon = (isVisible: boolean, initialIcon: any): any => isVisible? <FaChevronUp /> : initialIcon;
+
+    const getToggleIcon = (isVisible: boolean, initialIcon: any): any => isVisible ? <FaChevronUp /> : initialIcon;
 
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Comprehensive Beginner's Guide to Trading" />
-            <div className="p-10 font-sans text-gray-200 w-5/6 m-auto">
-
-                <h1 className="text-2xl font-bold mb-4">
+            <div className="p-4 sm:p-6 md:p-10 font-sans text-gray-200 w-full md:w-5/6 lg:w-3/4 xl:w-2/3 mx-auto">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-center">
                     Comprehensive Beginner's Guide to Trading
                 </h1>
 
                 {faqItems.map((item, index) => (
-                    <section key={index} className="mb-6">
-                        <div className="border border-gray-800 rounded shadow-lg p-6">
+                    <section key={index} className="mb-4 sm:mb-6">
+                        <div className="border border-gray-800 rounded shadow-lg p-4 sm:p-6">
                             <div onClick={() => toggleQuestion(index)} className="cursor-pointer">
-                                <h2 className="text-xl font-semibold mb-2 flex justify-between items-center">
-                                {item.question}
-                                {getToggleIcon(visibleQuestions.includes(index), item.toggleIcon)}
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 flex justify-between items-center">
+                                    {item.question}
+                                    {getToggleIcon(visibleQuestions.includes(index), item.toggleIcon)}
                                 </h2>
                             </div>
                             {visibleQuestions.includes(index) && (
-                                <div>{item.answer}</div>
+                                <div className="mt-2 text-sm sm:text-base md:text-lg">{item.answer}</div>
                             )}
                         </div>
                     </section>
                 ))}
 
-                <section className="mb-8">
-                    <div className="border border-gray-800 rounded shadow-lg p-6">
-                        <h2 className="text-2xl font-semibold mb-4">Conclusion</h2>
-                        <p>Trading can be an exciting and potentially lucrative activity, but it carries risks. By following this guide, you
-                             will be better prepared to navigate the world of trading. Use our platform responsibly, and remember that
-                             practice is essential to becoming a competent trader. Good luck and happy trading!</p>
-                             <div className='flex items-center'>
-                    <Link href={route("dashboard")} className="">
-                            <span className="text-white font-bold text-lg">
-                                let's start trading
-                            </span>
-                        </Link>
+                <section className="mb-6 sm:mb-8">
+                    <div className="border border-gray-800 rounded shadow-lg p-4 sm:p-6">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4">Conclusion</h2>
+                        <p>Trading can be an exciting and potentially lucrative activity, but it carries risks. By following this guide, you will be better prepared to navigate the world of trading. Use our platform responsibly, and remember that practice is essential to becoming a competent trader. Good luck and happy trading!</p>
+                        <div className='flex items-center mt-4'>
+                            <Link href={route("dashboard")} className="">
+                                <span className="text-white hover:bg-gray-600 p-2 font-bold text-lg">
+                                    let's start trading
+                                </span>
+                            </Link>
+                        </div>
                     </div>
-                    </div>
-
                 </section>
-
             </div>
         </AuthenticatedLayout>
     );

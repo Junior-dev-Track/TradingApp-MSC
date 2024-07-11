@@ -69,7 +69,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
             <div className="container mx-auto p-4 bg-gray-700 rounded-lg shadow-md max-w-6xl">
                 <h2 className="text-2xl text-white font-semibold mb-4">Bank Account</h2>
                 <div className="mb-4 text-white">
-                    <strong >Balance: </strong>${balance.toFixed(2)}
+                    <strong>Balance: </strong>${balance.toFixed(2)}
                 </div>
                 <div className="mb-4">
                     <form
@@ -78,22 +78,24 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             handleDeposit();
                         }}
                     >
-                        <label htmlFor="depositAmount" className="block mb-2">
+                        <label htmlFor="depositAmount" className="block mb-2 text-white">
                             Deposit:
                         </label>
-                        <input
-                            type="number"
-                            id="depositAmount"
-                            value={depositAmount}
-                            onChange={(e) => setDepositAmount(e.target.value)}
-                            className="form-control"
-                        />
-                        <button
-                            type="submit"
-                            className="btn btn-success bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold ml-2 "
-                        >
-                            Deposit
-                        </button>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                            <input
+                                type="number"
+                                id="depositAmount"
+                                value={depositAmount}
+                                onChange={(e) => setDepositAmount(e.target.value)}
+                                className="form-control mb-2 sm:mb-0 sm:mr-2 p-2 rounded-lg w-full sm:w-auto"
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-success bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold"
+                            >
+                                Deposit
+                            </button>
+                        </div>
                     </form>
                 </div>
                 <div className="mb-4">
@@ -103,22 +105,24 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             handleWithdraw();
                         }}
                     >
-                        <label htmlFor="withdrawAmount" className="block mb-2">
+                        <label htmlFor="withdrawAmount" className="block mb-2 text-white">
                             Withdraw:
                         </label>
-                        <input
-                            type="number"
-                            id="withdrawAmount"
-                            value={withdrawAmount}
-                            onChange={(e) => setWithdrawAmount(e.target.value)}
-                            className="form-control"
-                        />
-                        <button
-                            type="submit"
-                            className="btn btn-danger bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold ml-2 "
-                        >
-                            Withdraw
-                        </button>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                            <input
+                                type="number"
+                                id="withdrawAmount"
+                                value={withdrawAmount}
+                                onChange={(e) => setWithdrawAmount(e.target.value)}
+                                className="form-control mb-2 sm:mb-0 sm:mr-2 p-2 rounded-lg w-full sm:w-auto"
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-danger bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold"
+                            >
+                                Withdraw
+                            </button>
+                        </div>
                     </form>
                 </div>
                 <div className="mt-6">
@@ -126,51 +130,48 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         Payment methods
                     </h4>
                     <form>
-                        <div className="mb-4 ">
-                            <label htmlFor="cardNumber" className="block mb-2">
+                        <div className="mb-4">
+                            <label htmlFor="cardNumber" className="block mb-2 text-white">
                                 Card Number
                             </label>
                             <input
                                 type="text"
                                 id="cardNumber"
-                                className="form-control"
+                                className="form-control p-2 rounded-lg w-full"
                                 required
                             />
                         </div>
-                        <div className="mb-4 ">
-                            <label htmlFor="cardHolder" className="block mb-2">
+                        <div className="mb-4">
+                            <label htmlFor="cardHolder" className="block mb-2 text-white">
                                 Cardholder Name
                             </label>
                             <input
                                 type="text"
                                 id="cardHolder"
-                                className="form-control"
+                                className="form-control p-2 rounded-lg w-full"
                                 required
                             />
                         </div>
-                        <div className="flex mb-4 ">
-                            <div className="w-1/2 mr-2">
-                                <label
-                                    htmlFor="expiryDate"
-                                    className="block mb-2"
-                                >
+                        <div className="flex flex-col sm:flex-row sm:space-x-2 mb-4">
+                            <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
+                                <label htmlFor="expiryDate" className="block mb-2 text-white">
                                     Expiration Date
                                 </label>
                                 <input
                                     type="text"
                                     id="expiryDate"
-                                    className="form-control"
+                                    className="form-control p-2 rounded-lg w-full"
                                     required
                                 />
                             </div>
-                            <div className="w-1/2 ml-2">
-                                <label htmlFor="cvv" className="block mb-2">
+                            <div className="w-full sm:w-1/2">
+                                <label htmlFor="cvv" className="block mb-2 text-white">
                                     CVV
                                 </label>
                                 <input
                                     type="text"
                                     id="cvv"
-                                    className="form-control"
+                                    className="form-control p-2 rounded-lg w-full"
                                     required
                                 />
                             </div>
@@ -179,50 +180,47 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                             Billing Address
                         </h6>
                         <div className="mb-4">
-                            <label
-                                htmlFor="streetAddress"
-                                className="block mb-2 "
-                            >
+                            <label htmlFor="streetAddress" className="block mb-2 text-white">
                                 Street Address
                             </label>
                             <input
                                 type="text"
                                 id="streetAddress"
-                                className="form-control"
+                                className="form-control p-2 rounded-lg w-full"
                                 required
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="city" className="block mb-2">
+                            <label htmlFor="city" className="block mb-2 text-white">
                                 City
                             </label>
                             <input
                                 type="text"
                                 id="city"
-                                className="form-control"
+                                className="form-control p-2 rounded-lg w-full"
                                 required
                             />
                         </div>
-                        <div className="flex mb-4">
-                            <div className="w-1/2 mr-2">
-                                <label htmlFor="state" className="block mb-2 ">
+                        <div className="flex flex-col sm:flex-row sm:space-x-2 mb-4">
+                            <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
+                                <label htmlFor="state" className="block mb-2 text-white">
                                     State/Province
                                 </label>
                                 <input
                                     type="text"
                                     id="state"
-                                    className="form-control"
+                                    className="form-control p-2 rounded-lg w-full"
                                     required
                                 />
                             </div>
-                            <div className="w-1/2 ml-2">
-                                <label htmlFor="zipCode" className="block mb-2">
+                            <div className="w-full sm:w-1/2">
+                                <label htmlFor="zipCode" className="block mb-2 text-white">
                                     Zip code
                                 </label>
                                 <input
                                     type="text"
                                     id="zipCode"
-                                    className="form-control"
+                                    className="form-control p-2 rounded-lg w-full"
                                     required
                                 />
                             </div>
@@ -230,7 +228,7 @@ const WiresPage: React.FC<WiresPageProps> = ({ wallet, auth }) => {
                         <div className="text-center">
                             <button
                                 type="submit"
-                                className="btn btn-primary bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold "
+                                className="btn btn-primary bg-darker-blue text-white rounded-lg px-4 py-2 font-semibold"
                             >
                                 Pay Now
                             </button>
